@@ -1,0 +1,46 @@
+{% extends "dashboard_base.html" %}
+
+{% block title %}
+Volunteer Chat
+{% endblock %}
+
+{% block content %}
+
+<h2>Volunteer Chat</h2>
+
+<hr>
+
+<h3>Pending Requests</h3>
+
+{% for request in requests %}
+
+<div class="request-card">
+
+    <strong>Anonymous User</strong>
+
+    <br>
+
+    Requested:
+    {{ request.requested_at.strftime("%B %d, %Y %I:%M %p") }}
+
+    <br><br>
+
+    <button disabled>
+        Accept
+    </button>
+
+    <button disabled>
+        Reject
+    </button>
+
+</div>
+
+<hr>
+
+{% else %}
+
+<p>No pending chat requests.</p>
+
+{% endfor %}
+
+{% endblock %}

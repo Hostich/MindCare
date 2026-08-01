@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>
+        {% block title %}
+        MindCare
+        {% endblock %}
+    </title>
+
+</head>
+
+<body>
+
+    {% if current_user.is_authenticated %}
+
+    <aside>
+
+        <h2>MindCare</h2>
+
+        <!-- ===================== -->
+        <!-- SEEKER SIDEBAR -->
+        <!-- ===================== -->
+
+        {% if current_user.role == "Seeker" %}
+
+            <a href="{{ url_for('dashboard.seeker_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('community.community_feed') }}">Community Feed</a>
+            <a href="#">Mood Tracker</a>
+            <a href="#">Chat</a>
+            <a href="#">Resources</a>
+            <a href="{{ url_for('profile.view_profile') }}">Profile</a>
+
+        <!-- ===================== -->
+        <!-- VOLUNTEER SIDEBAR -->
+        <!-- ===================== -->
+
+        {% elif current_user.role == "Volunteer" %}
+
+            <a href="{{ url_for('volunteer.dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('community.community_feed') }}">Community Feed</a>
+            <a href="{{ url_for('volunteer.chat') }}">Chat</a>
+            <a href="#">Counselor Referral</a>
+            <a href="#">Resources</a>
+            <a href="{{ url_for('profile.view_profile') }}">Profile</a>
+
+        <!-- ===================== -->
+        <!-- COUNSELOR SIDEBAR -->
+        <!-- ===================== -->
+
+        {% elif current_user.role == "Counselor" %}
+
+            <a href="#">Dashboard</a>
+            <a href="#">Counseling Sessions</a>
+            <a href="#">Appointments</a>
+            <a href="#">Resources</a>
+            <a href="{{ url_for('profile.view_profile') }}">Profile</a>
+
+        <!-- ===================== -->
+        <!-- ADMIN SIDEBAR -->
+        <!-- ===================== -->
+
+        {% elif current_user.role == "Admin" %}
+
+            <a href="#">Dashboard</a>
+            <a href="#">Users</a>
+            <a href="#">Community</a>
+            <a href="#">Volunteers</a>
+            <a href="#">Counselors</a>
+            <a href="#">Reports</a>
+            <a href="#">Resources</a>
+
+        {% endif %}
+
+        <hr>
+
+        <a href="#">Logout</a>
+
+    </aside>
+
+    {% endif %}
+
+    <main>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="flash {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+</body>
+
+</html>

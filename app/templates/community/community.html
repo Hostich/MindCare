@@ -1,0 +1,130 @@
+{% extends "dashboard_base.html" %}
+
+{% block title %}
+Community
+{% endblock %}
+
+{% block content %}
+
+<h2>Community</h2>
+
+<form method="POST">
+
+    <textarea
+        name="content"
+        rows="6"
+        placeholder="What's on your mind?"
+        required
+    ></textarea>
+
+    <br><br>
+
+    <button type="submit">
+        POST
+    </button>
+
+</form>
+
+<hr>
+
+<h3>Community Feed</h3>
+
+{% for post in posts %}
+
+<div class="post">
+
+    <!-- POSTS ARE ALWAYS ANONYMOUS -->
+    <strong>Anonymous</strong>
+
+    <p>{{ post.content }}</p>
+
+    <small>
+        {{ post.created_at.strftime("%B %d, %Y %I:%M %p") }}
+    </small>
+
+    <hr>
+
+    <!-- COMMENTS -->
+
+    {% for comment in post.comments %}
+
+        <div class="comment">
+
+            {% if comment.user.role == "Volunteer" %}
+
+                <strong>{{ comment.user.username }}</strong>
+                <span style="color: green;">
+                    ✔ Verified Volunteer
+                </span>
+                {%if current_user.role == "Seeker"%}
+                <form
+                    method="POST"
+                    action="{{ url_for('chat_request.send_request') }}"
+                >
+
+                    <input
+                        type="hidden"
+                        name="volunteer_id"
+                        value="{{ comment.user.user_id }}"
+                    >
+
+                    <button type="submit">
+                        Request Private Chat
+                    </button>
+
+                </form>
+                {% endif %}
+            {% else %}
+
+                <strong>Anonymous</strong>
+
+            {% endif %}
+
+            <p>{{ comment.content }}</p>
+
+            <small>
+                {{ comment.created_at.strftime("%B %d, %Y %I:%M %p") }}
+            </small>
+
+        </div>
+
+        <hr>
+
+    {% else %}
+
+        <small>No comments yet.</small>
+
+    {% endfor %}
+
+    <!-- COMMENT FORM -->
+
+    <form
+        method="POST"
+        action="{{ url_for('community.create_comment_route', post_id=post.post_id) }}"
+    >
+
+        <textarea
+            name="content"
+            placeholder="Write a comment..."
+            required
+        ></textarea>
+
+        <br><br>
+
+        <button type="submit">
+            Comment
+        </button>
+
+    </form>
+
+</div>
+
+<hr>
+
+{% else %}
+
+<p>No posts yet.</p>
+
+{% endfor %}
+
+{% endblock %}

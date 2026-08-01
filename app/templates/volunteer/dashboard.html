@@ -1,0 +1,204 @@
+{% extends "dashboard_base.html" %}
+
+{% block title %}
+Volunteer Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <!-- HEADER -->
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <h2>
+                Welcome,
+                {{ current_user.full_name if current_user.full_name else current_user.username }}
+            </h2>
+
+            <p>
+                Thank you for supporting the MindCare community.
+            </p>
+
+        </div>
+
+        <div class="header-actions">
+
+            <button>
+                Notifications
+            </button>
+
+            <button>
+                Profile
+            </button>
+
+        </div>
+
+    </div>
+
+    <hr>
+
+    <!-- STATISTICS -->
+
+    <div class="dashboard-stats">
+
+        <div class="stat-card">
+
+            <h4>Community Responses</h4>
+
+            <h2>{{ community_response_count }}</h2>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h4>Chats</h4>
+
+            <h2>{{ active_chat_count }}</h2>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h4>Counselor Referrals</h4>
+
+            <h2>{{ referral_count }}</h2>
+
+        </div>
+
+    </div>
+
+    <br>
+
+    <div class="dashboard-main">
+
+        <!-- RECENT CONVERSATIONS -->
+
+        <div class="recent-conversations">
+
+            <h3>Recent Conversations</h3>
+
+            <hr>
+
+            {% for conversation in recent_conversations %}
+
+            <div class="conversation-card">
+
+                <strong>Anonymous User</strong>
+
+                <br>
+
+                <small>
+
+                    {{ conversation.last_message }}
+
+                </small>
+
+                <br><br>
+
+                <span>
+
+                    {% if conversation.is_online %}
+                        🟢 Online
+                    {% else %}
+                        ⚪ Offline
+                    {% endif %}
+
+                </span>
+
+            </div>
+
+            <hr>
+
+            {% else %}
+
+            <p>No recent conversations.</p>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- REFERRALS -->
+
+        <div class="referral-panel">
+
+            <h3>Referred to Counselor</h3>
+
+            <hr>
+
+            {% for referral in referrals %}
+
+            <div class="referral-card">
+
+                <strong>Anonymous User</strong>
+
+                <br>
+
+                <small>
+
+                    {{ referral.referral_status }}
+
+                </small>
+
+            </div>
+
+            <hr>
+
+            {% else %}
+
+            <p>No referrals yet.</p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    <br>
+
+    <!-- RECENT ACTIVITY -->
+
+    <div class="recent-activity">
+
+        <h3>Recent Activity</h3>
+
+        <hr>
+
+        {% for activity in recent_activities %}
+
+        <div class="activity-card">
+
+            <strong>{{ activity.title }}</strong>
+
+            <br>
+
+            <small>
+
+                {{ activity.description }}
+
+            </small>
+
+            <br>
+
+            <small>
+
+                {{ activity.created_at.strftime("%B %d, %Y %I:%M %p") }}
+
+            </small>
+
+        </div>
+
+        {% else %}
+
+        <p>No recent activity.</p>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}
