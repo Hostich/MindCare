@@ -1,0 +1,92 @@
+{% extends "dashboard_base.html" %}
+
+{% block title %}
+Mood Tracker
+{% endblock %}
+
+{% block content %}
+
+<h2>Mood Tracker</h2>
+
+<hr>
+
+<h3>Today's Mood</h3>
+
+{% if latest_mood %}
+
+<p>
+    <strong>{{ latest_mood.mood }}</strong>
+</p>
+
+{% if latest_mood.note %}
+<p>{{ latest_mood.note }}</p>
+{% endif %}
+
+<small>
+    {{ latest_mood.recorded_at.strftime("%B %d, %Y") }}
+</small>
+
+{% else %}
+
+<p>No mood recorded today.</p>
+
+{% endif %}
+
+<hr>
+
+<h3>Recent Mood Entries</h3>
+
+{% for mood in recent_moods %}
+
+<div>
+
+    <strong>{{ mood.mood }}</strong>
+
+    <br>
+
+    {{ mood.recorded_at.strftime("%B %d, %Y") }}
+
+    {% if mood.note %}
+        <p>{{ mood.note }}</p>
+    {% endif %}
+
+</div>
+
+<hr>
+
+{% else %}
+
+<p>No mood history available.</p>
+
+{% endfor %}
+
+<hr>
+
+<h3>Mood Overview</h3>
+
+<p>Graph coming soon...</p>
+
+<hr>
+
+<h3>Mood Distribution</h3>
+
+<p>Chart coming soon...</p>
+
+<hr>
+
+<h3>Available Volunteers</h3>
+
+<p>Coming soon...</p>
+<h3>Mood Statistics</h3>
+
+<p>
+Total Entries:
+{{ statistics.total_entries }}
+</p>
+
+<p>
+Most Frequent Mood:
+{{ statistics.most_common_mood }}
+</p>
+
+{% endblock %}

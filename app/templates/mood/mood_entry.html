@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}
+Mood Check-In
+{% endblock %}
+
+{% block content %}
+
+<h2>Mood Check-In</h2>
+
+<p>
+    How are you feeling today?
+</p>
+
+<form method="POST">
+
+    <label>
+        <input
+            type="radio"
+            name="mood"
+            value="Happy"
+            required
+        >
+        😊 Happy
+    </label>
+
+    <br>
+
+    <label>
+        <input
+            type="radio"
+            name="mood"
+            value="Calm"
+        >
+        😌 Calm
+    </label>
+
+    <br>
+
+    <label>
+        <input
+            type="radio"
+            name="mood"
+            value="Neutral"
+        >
+        😐 Neutral
+    </label>
+
+    <br>
+
+    <label>
+        <input
+            type="radio"
+            name="mood"
+            value="Sad"
+        >
+        😢 Sad
+    </label>
+
+    <br>
+
+    <label>
+        <input
+            type="radio"
+            name="mood"
+            value="Anxious"
+        >
+        😟 Anxious
+    </label>
+
+    <br>
+
+    <label>
+        <input
+            type="radio"
+            name="mood"
+            value="Angry"
+        >
+        😠 Angry
+    </label>
+
+    <br><br>
+
+    <label>
+        Additional Notes (Optional)
+    </label>
+
+    <br>
+
+    <textarea
+        name="note"
+        rows="6"
+        cols="50"
+        placeholder="Share anything you'd like..."
+    ></textarea>
+
+    <br><br>
+
+    <button type="submit">
+        Continue
+    </button>
+
+</form>
+
+{% endblock %}

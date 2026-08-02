@@ -17,7 +17,7 @@ class CommunityPost(db.Model):
     mood_id = db.Column(
         db.Integer,
         db.ForeignKey("mood_assessments.mood_id"),
-        nullable=True
+        nullable= False
     )
 
     content = db.Column(

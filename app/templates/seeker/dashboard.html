@@ -1,0 +1,50 @@
+{% extends "dashboard_base.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<h2>
+    Welcome,
+    {{ current_user.first_name }}
+</h2>
+
+<p>
+    Welcome to MindCare.
+</p>
+
+<hr>
+
+<h3>Today's Mood</h3>
+
+<p>
+    Mood will appear here.
+</p>
+
+<hr>
+
+<h3>Recent Mood Entries</h3>
+
+<p>
+    Mood history will appear here.
+</p>
+
+<hr>
+
+<h3>Mood Overview</h3>
+
+<p>
+    Graph coming soon...
+</p>
+
+<hr>
+
+<h3>Available Volunteers</h3>
+
+<p>
+    Volunteers will appear here.
+</p>
+
+{% endblock %}

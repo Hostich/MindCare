@@ -1,10 +1,11 @@
 from app.extensions import db
 from app.models import CommunityPost
 
-def create_post(user_id, data):
+def create_post(user_id, mood_id, data):
 
     post = CommunityPost(
         user_id = user_id,
+        mood_id = mood_id,
         content=data["content"]
     )
 

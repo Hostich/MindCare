@@ -1,5 +1,5 @@
 from flask import Flask
-from app.models import User, SubscriptionPlan, CommunityPost, MoodAssessment
+from app.models import User
 
 from config import Config
 from app.extensions import db, migrate, login_manager, mail
@@ -9,6 +9,8 @@ from app.routes.profile import profile
 from app.routes.community import community
 from app.routes.chat_request import chat_request
 from app.routes.volunteer import volunteer
+from app.routes.mood import mood
+from app.routes.seeker import seeker
 
 def create_app():
     app = Flask(__name__)
@@ -33,5 +35,7 @@ def create_app():
     app.register_blueprint(community)
     app.register_blueprint(chat_request)
     app.register_blueprint(volunteer)
-    
+    app.register_blueprint(mood)
+    app.register_blueprint(seeker)
+
     return app

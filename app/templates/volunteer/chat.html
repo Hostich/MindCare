@@ -20,6 +20,21 @@ Volunteer Chat
 
     <br>
 
+    <p>
+
+        {% if request.latest_mood %}
+
+            Mood:
+            {{ request.latest_mood.mood }}
+
+        {% else %}
+
+            No mood recorded
+
+        {% endif %}
+
+    </p>
+
     Requested:
     {{ request.requested_at.strftime("%B %d, %Y %I:%M %p") }}
 

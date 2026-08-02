@@ -64,5 +64,9 @@ def get_dashboard_route(role):
         return "volunteer.dashboard"
     elif role == 'Counselor':
         return "counselor.dashboard"
+    elif role == 'Seeker':
+        return "seeker.dashboard"
+    else:
+        return "lpage.home"
         
         

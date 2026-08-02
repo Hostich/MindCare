@@ -3,6 +3,7 @@ from flask_login import login_user
 from app.services.auth.user_services import create_user
 from app.services.auth.auth_services import validate_registration, authenticate_user
 from app.services.auth.verification_services import start_email_verification, verify_registration_code, clear_verification_session
+from app.services.mood.mood_services import has_mood_today
 
 
 auth = Blueprint("auth", __name__, url_prefix = "/auth")
@@ -111,9 +112,11 @@ def login():
             )
 
         elif user.role == "Seeker":
-            return redirect(
-                url_for("seeker.dashboard")
-            )
+            if has_mood_today(user.user_id):
+                return redirect(
+                    url_for("seeker.dashboard")
+                )
+            return redirect(url_for("mood.mood_entry"))
 
         # Fallback
         return redirect(
@@ -123,7 +126,6 @@ def login():
     return render_template(
         "authorize/login.html"
     )
-    
     
     
     
