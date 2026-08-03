@@ -22,10 +22,10 @@ Volunteer Chat
 
     <p>
 
-        {% if request.latest_mood %}
+        {% if request.seeker_mood %}
 
             Mood:
-            {{ request.latest_mood.mood }}
+            {{ request.seeker_mood.mood }}
 
         {% else %}
 
@@ -40,13 +40,13 @@ Volunteer Chat
 
     <br><br>
 
-    <button disabled>
+    <a href="{{ url_for('volunteer.accept_request', request_id=request.request_id) }}">
         Accept
-    </button>
+    </a>
 
-    <button disabled>
-        Reject
-    </button>
+    <a href="{{ url_for('volunteer.reject_request', request_id=request.request_id) }}">
+     Reject
+    </a>
 
 </div>
 

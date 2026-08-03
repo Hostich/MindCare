@@ -37,11 +37,11 @@ class Message(db.Model):
         nullable=False
     )
 
-    conversation = db.Column(
+    conversation = db.relationship(
         "Conversation",
         backref="messages"
     )
 
-    sender_id = db.Column(
+    sender = db.relationship(
         "User"
     )
