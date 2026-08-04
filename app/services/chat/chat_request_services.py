@@ -44,5 +44,12 @@ def reject_chat_request(request_id):
 
     db.session.commit()
 
-    
+def get_latest_request(seeker_id):
+    return(
+        ChatRequest.query
+        .filter_by(seeker_id=seeker_id)
+        .order_by(ChatRequest.requested_at.desc())
+        .first()
+    )
+
 

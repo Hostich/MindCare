@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
 from app.services.chat.chat_request_services import get_peding_requests, accept_chat_request, reject_chat_request
-
+from app.services.chat.conversation_services import get_conversation
+from app.services.chat.message_services import get_messages, send_message
 
 volunteer = Blueprint("volunteer", __name__, url_prefix="/volunteer")
 
@@ -53,3 +54,33 @@ def reject_request(request_id):
     flash("Chat request rejected.", "info")
 
     return redirect(url_for("volunteer.chat"))
+
+
+@volunteer.route("/conversation/<int:conversation_id>", methods=['GET','POST'])
+@login_required
+def conversation(conversation_id):
+    if current_user.role != "Volunteer":
+        flash("Unauthorized access.", "danger")
+        return redirect(url_for("auth.login"))
+
+    conversation = get_conversation(conversation_id)
+
+    #preventing volunteer to connect to other conversation
+    if conversation.supporter_id != current_user.user_id:
+        flash("Unauthorized access", "danger")
+        return redirect(url_for("volunteer.chat"))
+
+    messages = get_messages(conversation_id)
+
+    if request.method == 'POST':
+        content = request.form.get("message")
+
+        if content:
+            send_message(
+                conversation_id,
+                current_user.user_id,
+                content
+            )
+            return redirect(url_for("volunteer.conversation",conversation_id=conversation_id))
+
+    return render_template("volunteer/conversation.html", conversation=conversation, messages = messages)

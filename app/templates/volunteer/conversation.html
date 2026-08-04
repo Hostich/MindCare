@@ -1,0 +1,57 @@
+{% extends "dashboard_base.html" %}
+
+{% block title %}
+Conversation
+{% endblock %}
+
+{% block content %}
+
+<h2>Conversation</h2>
+
+<hr>
+
+{% for message in messages %}
+
+    <div>
+
+        {% if message.sender_id == current_user.user_id %}
+            <strong>You</strong>
+        {% else %}
+            <strong>Anonymous Seeker</strong>
+        {% endif %}
+
+        <p>{{ message.message }}</p>
+
+        <small>
+            {{ message.sent_at.strftime("%B %d, %Y %I:%M %p") }}
+        </small>
+
+    </div>
+
+    <hr>
+
+{% else %}
+
+<p>No messages yet.</p>
+
+{% endfor %}
+<hr>
+
+<form method="POST">
+
+    <textarea
+        name="message"
+        rows="3"
+        placeholder="Type your message..."
+        required
+    ></textarea>
+
+    <br><br>
+
+    <button type="submit">
+        Send
+    </button>
+
+</form>
+
+{% endblock %}

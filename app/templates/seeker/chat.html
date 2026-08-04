@@ -1,0 +1,68 @@
+{% extends "dashboard_base.html" %}
+
+{% block title %}
+Volunteer Chat
+{% endblock %}
+
+{% block content %}
+
+<h2>Volunteer Chat</h2>
+
+<hr>
+
+{% if request %}
+
+    <h3>Current Chat Request</h3>
+
+    <p>
+        <strong>Status:</strong>
+        {{ request.request_status }}
+    </p>
+
+    <p>
+        <strong>Requested At:</strong>
+        {{ chat_request.requested_at.strftime("%B %d, %Y %I:%M %p") }}
+    </p>
+
+    {% if chat_request.request_status == "Pending" %}
+
+        <p>
+            Your request has been sent.
+            Please wait for a volunteer to accept it.
+        </p>
+
+    {% elif chat_request.request_status == "Accepted" %}
+
+        <p>
+            A volunteer has accepted your request.
+        </p>
+
+        <a href="{{ url_for('seeker.conversation', conversation_id=conversation.conversation_id) }}">
+            Enter Conversation
+        </a>
+
+    {% elif chat_request.request_status == "Rejected" %}
+
+        <p>
+            Unfortunately, your request was rejected.
+        </p>
+
+        <a href="{{ url_for('chat_request.request_chat') }}">
+            Request Again
+        </a>
+
+    {% endif %}
+
+{% else %}
+
+    <p>
+        You don't have an active chat request.
+    </p>
+
+    <a href="{{ url_for('chat_request.request_chat') }}">
+        Request Volunteer Support
+    </a>
+
+{% endif %}
+
+{% endblock %}
