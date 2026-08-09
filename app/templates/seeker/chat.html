@@ -6,48 +6,36 @@ Volunteer Chat
 
 {% block content %}
 
-<h2>Volunteer Chat</h2>
+{% if conversation %}
 
-<hr>
+    {% if conversation.conversation_status == "Active" %}
 
-{% if request %}
-
-    <h3>Current Chat Request</h3>
-
-    <p>
-        <strong>Status:</strong>
-        {{ request.request_status }}
-    </p>
-
-    <p>
-        <strong>Requested At:</strong>
-        {{ chat_request.requested_at.strftime("%B %d, %Y %I:%M %p") }}
-    </p>
-
-    {% if chat_request.request_status == "Pending" %}
+        <h3>Current Conversation</h3>
 
         <p>
-            Your request has been sent.
-            Please wait for a volunteer to accept it.
+            <strong>Status:</strong>
+            {{ conversation.conversation_status }}
         </p>
-
-    {% elif chat_request.request_status == "Accepted" %}
 
         <p>
-            A volunteer has accepted your request.
+            <strong>Started At:</strong>
+            {{ conversation.started_at.strftime("%B %d, %Y %I:%M %p") }}
         </p>
 
-        <a href="{{ url_for('seeker.conversation', conversation_id=conversation.conversation_id) }}">
+        <a href="{{ url_for('seeker.conversation',
+                            conversation_id=conversation.conversation_id) }}">
             Enter Conversation
         </a>
 
-    {% elif chat_request.request_status == "Rejected" %}
+    {% elif conversation.conversation_status == "Ended" %}
+
+        <h3>Conversation Ended</h3>
 
         <p>
-            Unfortunately, your request was rejected.
+            Your previous conversation has ended.
         </p>
 
-        <a href="{{ url_for('chat_request.request_chat') }}">
+        <a href="{{ url_for('community.community_feed') }}">
             Request Again
         </a>
 
@@ -55,11 +43,9 @@ Volunteer Chat
 
 {% else %}
 
-    <p>
-        You don't have an active chat request.
-    </p>
+    <p>You don't have any conversation yet.</p>
 
-    <a href="{{ url_for('chat_request.request_chat') }}">
+    <a href="{{ url_for('community.community_feed') }}">
         Request Volunteer Support
     </a>
 

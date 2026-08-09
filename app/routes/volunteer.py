@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
+from app.extensions import socketio
 from app.services.chat.chat_request_services import get_peding_requests, accept_chat_request, reject_chat_request
-from app.services.chat.conversation_services import get_conversation
+from app.services.chat.conversation_services import get_conversation, end_conversation
 from app.services.chat.message_services import get_messages, send_message
 
 volunteer = Blueprint("volunteer", __name__, url_prefix="/volunteer")
@@ -83,4 +84,33 @@ def conversation(conversation_id):
             )
             return redirect(url_for("volunteer.conversation",conversation_id=conversation_id))
 
-    return render_template("volunteer/conversation.html", conversation=conversation, messages = messages)
+    return render_template("volunteer/conversation.html", conversation=conversation, messages = messages, other_user_label = "Anonymous Seeker")
+
+
+@volunteer.route("conversation/<int:conversation_id>/end", methods=['POST'])
+@login_required
+def end_conversation_route(conversation_id):
+
+    if current_user.role != "Volunteer":
+        return redirect(url_for("auth.login"))
+
+    success = end_conversation(conversation_id)
+
+    if success:
+
+        room = f"conversation_{conversation_id}"
+
+        socketio.emit(
+            "conversation_ended",
+            {
+                "conversation_id": conversation_id
+            },
+            to=room
+        )
+        flash("Conversation ended successfully", "success")
+    else:
+        flash("Conversation not found.", "danger")
+    return redirect(url_for("volunteer.chat"))
+
+
+

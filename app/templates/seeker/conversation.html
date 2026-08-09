@@ -6,42 +6,40 @@ Conversation
 
 {% block content %}
 
-<h2>Volunteer Chat</h2>
+<h2>Conversation</h2>
 
 <hr>
 
+<div id="chat-box">
+
 {% for message in messages %}
 
-    <div>
+<div>
 
-        {% if message.sender_id == current_user.user_id %}
-            <strong>You</strong>
-        {% else %}
-            <strong>Volunteer</strong>
-        {% endif %}
+    {% if message.sender_id == current_user.user_id %}
+        <strong>You</strong>
+    {% else %}
+        <strong>{{ other_user_label }}</strong>
+    {% endif %}
 
-        <p>{{ message.message }}</p>
+    <p>{{ message.message }}</p>
 
-        <small>
+    <small>
+        {{ message.sent_at.strftime("%B %d, %Y %I:%M %p") }}
+    </small>
 
-            {{ message.sent_at.strftime("%B %d, %Y %I:%M %p") }}
+</div>
 
-        </small>
-
-    </div>
-
-    <hr>
-
-{% else %}
-
-<p>No messages yet.</p>
+<hr>
 
 {% endfor %}
 
-<form method="POST">
+</div>
+
+<form id="chat-form">
 
     <textarea
-        name="message"
+        id="message-input"
         rows="3"
         required
         placeholder="Type your message..."
@@ -54,5 +52,23 @@ Conversation
     </button>
 
 </form>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+const conversationId = {{ conversation.conversation_id | tojson }};
+const currentUserId = {{ current_user.user_id | tojson }};
+const otherUserLabel = {{ other_user_label | tojson }};
+</script>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+<script>
+    const chatRedirectUrl = {{ url_for("seeker.chat") | tojson }};
+</script>
+
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 
 {% endblock %}
