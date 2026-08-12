@@ -1,6 +1,6 @@
 from datetime import datetime
 from app.extensions import db
-from app.models import ChatRequest
+from app.models import ChatRequest, Conversation
 from app.services.mood.mood_services import get_latest_mood
 from app.services.chat.conversation_services import create_conversation, get_conversation_by_request
 
@@ -90,4 +90,25 @@ def get_seeker_private_chats(seeker_id):
             "conversation": conversation
         })
     return private_chats
+
+def get_volunteer_private_chats(volunteer_id):
+    requests = (
+        ChatRequest.query
+        .filter(
+            ChatRequest.volunteer_id == volunteer_id,
+            ChatRequest.request_status == "Accepted"
+        )
+        .order_by(ChatRequest.responded_at.desc())
+        .all()
+    )
+
+    for chat_requests in requests:
+        chat_requests.conversation = (
+            Conversation.query
+            .filter_by(request_id=chat_requests.request_id)
+            .order_by(Conversation.started_at.desc())
+            .first()
+        )
+
+    return requests
 

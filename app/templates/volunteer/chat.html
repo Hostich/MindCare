@@ -6,56 +6,520 @@ Volunteer Chat
 
 {% block content %}
 
-<h2>Volunteer Chat</h2>
+<div class="chat-container">
 
-<hr>
+    <!-- ================================= -->
+    <!-- LEFT SIDE -->
+    <!-- ================================= -->
 
-<h3>Pending Requests</h3>
+    <div class="chat-sidebar">
 
-{% for request in requests %}
+        <h3>Chat</h3>
 
-<div class="request-card">
+        <!-- CHAT TABS -->
 
-    <strong>Anonymous User</strong>
+        <div class="chat-tabs">
 
-    <br>
+            <button
+                type="button"
+                id="pending-btn"
+                class="chat-tab active"
+            >
+                Requests
+            </button>
 
-    <p>
+            <button
+                type="button"
+                id="private-chat-btn"
+                class="chat-tab"
+            >
+                Private Chat
+            </button>
 
-        {% if request.seeker_mood %}
+        </div>
 
-            Mood:
-            {{ request.seeker_mood.mood }}
+
+        <!-- ================================= -->
+        <!-- PENDING REQUESTS -->
+        <!-- ================================= -->
+
+        <div
+            id="pending-list"
+            class="pending-list"
+        >
+
+            <h4>
+                Chat Requests
+            </h4>
+
+            {% for chat_request in requests %}
+
+                <div class="request-card">
+
+                    <div class="request-info">
+
+                        <strong>
+                            {{ chat_request.seeker.username }}
+                        </strong>
+
+                        <p>
+                            Wants to start a conversation
+                        </p>
+
+                        {% if chat_request.seeker_mood %}
+
+                            <small>
+                                Mood:
+                                {{ chat_request.seeker_mood.mood }}
+                            </small>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- ACCEPT -->
+
+                    <a
+                        href="{{ url_for(
+                            'volunteer.accept_request',
+                            request_id=chat_request.request_id
+                        ) }}"
+                    >
+                        Accept
+                    </a>
+
+
+                    <!-- REJECT -->
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'volunteer.reject_request',
+                            request_id=chat_request.request_id
+                        ) }}"
+                    >
+
+                        <button type="submit">
+                            Reject
+                        </button>
+
+                    </form>
+
+                </div>
+
+            {% else %}
+
+                <p>
+                    No pending chat requests.
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- ================================= -->
+        <!-- PRIVATE CHATS -->
+        <!-- ================================= -->
+
+        <div
+            id="private-chat-list"
+            class="private-chat-list"
+            hidden
+        >
+
+            <h4>
+                Private Chats
+            </h4>
+
+
+            {% for chat_request in private_chats %}
+
+                {% if chat_request.conversation %}
+
+                    <a
+                        class="private-chat-card"
+                        href="{{ url_for(
+                            'volunteer.chat',
+                            conversation_id=chat_request.conversation.conversation_id
+                        ) }}"
+                    >
+
+                        <div class="private-chat-info">
+
+                            <strong>
+                                {{ chat_request.seeker.username }}
+                            </strong>
+
+
+                            {% if
+                                chat_request.conversation.conversation_status
+                                == "Active"
+                            %}
+
+                                <p>
+                                    🟢 Active conversation
+                                </p>
+
+                            {% else %}
+
+                                <p>
+                                    ⚫ Conversation ended
+                                </p>
+
+                            {% endif %}
+
+                        </div>
+
+                    </a>
+
+                {% endif %}
+
+            {% else %}
+
+                <p>
+                    You don't have any private chats yet.
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================= -->
+    <!-- RIGHT SIDE -->
+    <!-- CONVERSATION -->
+    <!-- ================================= -->
+
+    <div class="conversation-panel">
+
+        {% if conversation %}
+
+            <!-- ================================= -->
+            <!-- CONVERSATION HEADER -->
+            <!-- ================================= -->
+
+            <div class="conversation-header">
+
+                <div>
+
+                    <h3>
+                        {{ conversation.request.seeker.username }}
+                    </h3>
+
+                </div>
+
+
+                {% if conversation.conversation_status == "Active" %}
+
+                    <span>
+                        🟢 Active
+                    </span>
+
+                {% else %}
+
+                    <span>
+                        ⚫ Conversation Closed
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+            <hr>
+
+
+            <!-- ================================= -->
+            <!-- NEW CONVERSATION NOTICE -->
+            <!-- ================================= -->
+
+            {% if not messages %}
+
+                <div class="new-conversation-notice">
+
+                    <strong>
+                        🔔 This is a new conversation.
+                    </strong>
+
+                    <p>
+                        You are starting a new private conversation
+                        with this seeker.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- ================================= -->
+            <!-- MESSAGE AREA -->
+            <!-- ================================= -->
+
+            <div
+                id="chat-box"
+                class="chat-box"
+            >
+
+                {% for message in messages %}
+
+                    <div class="message">
+
+                        {% if message.sender_id == current_user.user_id %}
+
+                            <strong>
+                                You
+                            </strong>
+
+                        {% else %}
+
+                            <strong>
+                                {{ conversation.request.seeker.username }}
+                            </strong>
+
+                        {% endif %}
+
+
+                        <p>
+                            {{ message.message }}
+                        </p>
+
+
+                        <small>
+                            {{ message.sent_at.strftime(
+                                "%B %d, %Y %I:%M %p"
+                            ) }}
+                        </small>
+
+                    </div>
+
+                    <hr>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- ================================= -->
+            <!-- ACTIVE CONVERSATION -->
+            <!-- ================================= -->
+
+            {% if conversation.conversation_status == "Active" %}
+
+                <!-- MESSAGE FORM -->
+
+                <form
+                    id="chat-form"
+                    onsubmit="return false;"
+                >
+
+                    <textarea
+                        id="message-input"
+                        rows="3"
+                        placeholder="Type your message..."
+                        required
+                    ></textarea>
+
+                    <button
+                        type="submit"
+                        id="send-button"
+                    >
+                        Send
+                    </button>
+
+                </form>
+
+
+                <!-- END CONVERSATION -->
+
+                <form
+                    action="{{ url_for(
+                        'volunteer.end_conversation_route',
+                        conversation_id=conversation.conversation_id
+                    ) }}"
+                    method="POST"
+                >
+
+                    <button
+                        type="submit"
+                        onclick="return confirm(
+                            'Are you sure you want to end this conversation?'
+                        )"
+                    >
+                        End Conversation
+                    </button>
+
+                </form>
+
+
+            {% else %}
+
+                <!-- ================================= -->
+                <!-- CLOSED CONVERSATION -->
+                <!-- ================================= -->
+
+                <div class="conversation-ended">
+
+                    <p>
+                        This conversation has ended.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
 
         {% else %}
 
-            No mood recorded
+            <!-- ================================= -->
+            <!-- NO CONVERSATION SELECTED -->
+            <!-- ================================= -->
+
+            <div class="no-conversation">
+
+                <h3>
+                    Private Conversation
+                </h3>
+
+                <p>
+                    Select a private conversation from the left
+                    to start chatting.
+                </p>
+
+            </div>
 
         {% endif %}
 
-    </p>
-
-    Requested:
-    {{ request.requested_at.strftime("%B %d, %Y %I:%M %p") }}
-
-    <br><br>
-
-    <a href="{{ url_for('volunteer.accept_request', request_id=request.request_id) }}">
-        Accept
-    </a>
-
-    <a href="{{ url_for('volunteer.reject_request', request_id=request.request_id) }}">
-     Reject
-    </a>
+    </div>
 
 </div>
 
-<hr>
+{% endblock %}
 
-{% else %}
 
-<p>No pending chat requests.</p>
+{% block scripts %}
 
-{% endfor %}
+<!-- ================================= -->
+<!-- SOCKET.IO -->
+<!-- ================================= -->
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+
+<!-- ================================= -->
+<!-- CHAT VARIABLES -->
+<!-- ================================= -->
+
+{% if conversation %}
+
+<script>
+
+    const conversationId =
+        {{ conversation.conversation_id | tojson }};
+
+    const currentUserId =
+        {{ current_user.user_id | tojson }};
+
+    const otherUserLabel =
+        {{ conversation.request.seeker.username | tojson }};
+
+    const chatRedirectUrl =
+        {{ url_for('volunteer.chat') | tojson }};
+
+</script>
+
+{% endif %}
+
+
+<!-- ================================= -->
+<!-- SHARED CHAT JAVASCRIPT -->
+<!-- ================================= -->
+
+<script
+    src="{{ url_for('static', filename='js/chat.js') }}"
+></script>
+
+
+<!-- ================================= -->
+<!-- VOLUNTEER CHAT TABS -->
+<!-- ================================= -->
+
+<script>
+
+    const pendingBtn =
+        document.getElementById("pending-btn");
+
+    const privateChatBtn =
+        document.getElementById("private-chat-btn");
+
+    const pendingList =
+        document.getElementById("pending-list");
+
+    const privateChatList =
+        document.getElementById("private-chat-list");
+
+
+    /*
+        REQUESTS TAB
+    */
+
+    if (
+        pendingBtn &&
+        privateChatBtn &&
+        pendingList &&
+        privateChatList
+    ) {
+
+        pendingBtn.addEventListener(
+            "click",
+            function () {
+
+                pendingList.hidden = false;
+
+                privateChatList.hidden = true;
+
+
+                pendingBtn.classList.add(
+                    "active"
+                );
+
+                privateChatBtn.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+        /*
+            PRIVATE CHAT TAB
+        */
+
+        privateChatBtn.addEventListener(
+            "click",
+            function () {
+
+                pendingList.hidden = true;
+
+                privateChatList.hidden = false;
+
+
+                privateChatBtn.classList.add(
+                    "active"
+                );
+
+                pendingBtn.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+    }
+
+</script>
 
 {% endblock %}

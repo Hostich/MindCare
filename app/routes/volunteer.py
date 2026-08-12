@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
 from app.extensions import socketio
-from app.services.chat.chat_request_services import get_peding_requests, accept_chat_request, reject_chat_request
+from app.services.chat.chat_request_services import get_peding_requests, accept_chat_request, reject_chat_request, get_volunteer_private_chats
 from app.services.chat.conversation_services import get_conversation, end_conversation
 from app.services.chat.message_services import get_messages, send_message
 
@@ -25,7 +25,28 @@ def chat():
 
     requests = get_peding_requests(current_user.user_id)
 
-    return render_template("volunteer/chat.html",requests=requests)
+    private_chats = get_volunteer_private_chats(
+        current_user.user_id
+    )
+
+    conversation = None
+    messages = []
+
+    conversation_id = request.args.get("conversation_id", type=int)
+
+    if conversation_id:
+
+        conversation = get_conversation(
+            conversation_id
+        )
+
+        if conversation:
+
+            messages = get_messages(
+                conversation_id
+            )
+
+    return render_template("volunteer/chat.html",requests=requests, private_chats=private_chats, conversation=conversation, messages=messages)
 
 @volunteer.route("chat/accept/<int:request_id>")
 @login_required
@@ -41,7 +62,7 @@ def accept_request(request_id):
 
     flash("Chat request accepted.", "success")
 
-    return redirect(url_for("volunteer.conversation",conversation_id=conversation.conversation_id))
+    return redirect(url_for("volunteer.chat",conversation_id=conversation.conversation_id))
     
 @volunteer.route("/chat/reject/<int:request_id>")
 @login_required
