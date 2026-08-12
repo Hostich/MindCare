@@ -46,7 +46,7 @@ class Conversation(db.Model):
         backref='conversations'
     )
 
-    suppoerter = db.relationship(
+    supporter = db.relationship(
         'User',
         foreign_keys=[supporter_id]
     )

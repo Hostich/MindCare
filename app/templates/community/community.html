@@ -57,19 +57,21 @@ Community
                     ✔ Verified Volunteer
                 </span>
                 {%if current_user.role == "Seeker"%}
-                <form
-                    method="POST"
-                    action="{{ url_for('chat_request.send_request') }}"
-                >
-
+                <form method="POST" action="{{ url_for('chat_request.send_request') }}">
                     <input
                         type="hidden"
                         name="volunteer_id"
                         value="{{ comment.user.user_id }}"
                     >
 
+                    <input
+                        type="hidden"
+                        name="source"
+                        value="community"
+                    >
+
                     <button type="submit">
-                        Request Private Chat
+                        Request Chat
                     </button>
 
                 </form>

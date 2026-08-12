@@ -1,19 +1,31 @@
-alembic==1.18.5
-blinker==1.9.0
-click==8.4.2
-colorama==0.4.6
-Flask==3.1.3
-Flask-Login==0.6.3
-Flask-Mail==0.10.0
-Flask-Migrate==4.1.0
-Flask-SQLAlchemy==3.1.1
-greenlet==3.5.4
-itsdangerous==2.2.0
-Jinja2==3.1.6
-Mako==1.3.12
-MarkupSafe==3.0.3
-PyMySQL==1.2.0
-python-dotenv==1.2.2
-SQLAlchemy==2.0.51
-typing_extensions==4.16.0
-Werkzeug==3.1.8
+
+--Mao ni pang install inside sa venv---
+python -m pip install
+Flask-Login
+Flask-Migrate
+Flask-Mail
+Flask-SocketIO
+Flask-SQLAlchemy
+PyMysql
+python-dotenv
+Werkzeug
+
+Install MySQL 
+Password: mindcare2026
+CREATE DATABASE: mindcare_db
+
+
+---Mao ni sulod sa .env---
+SECRET_KEY = MindCareProject
+
+DATABASE_URL = mysql+pymysql://root:mindcare2026@localhost/mindcare_db
+
+MAIL_SERVER=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USE_TLS=True
+MAIL_USERNAME=mindcareteam04@gmail.com
+MAIL_PASSWORD=tglx qrxp jzzp xreb
+MAIL_DEFAULT_SENDER=mindcareteam04@gmail.com
+
+
+

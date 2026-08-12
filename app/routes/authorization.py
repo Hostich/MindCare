@@ -125,8 +125,4 @@ def login():
 
     return render_template(
         "authorize/login.html"
-    )
-    
-    
-    
-        
+    )   

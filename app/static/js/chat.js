@@ -1,71 +1,325 @@
+console.log("CHAT.JS LOADED");
+
+
+/* =========================================
+   CREATE SOCKET CONNECTION
+========================================= */
+
 const socket = io();
+
+
+/* =========================================
+   SOCKET CONNECTED
+========================================= */
 
 socket.on("connect", function () {
 
-    console.log("Connected:", socket.id);
+    console.log(
+        "Connected:",
+        socket.id
+    );
 
-    socket.emit("join_room", {
-        conversation_id: conversationId
-    });
 
-});
+    /*
+        Only join a room when a conversation
+        is currently selected.
+    */
 
-const form = document.getElementById("chat-form");
-const messageInput = document.getElementById("message-input");
-const chatBox = document.getElementById("chat-box");
+    if (typeof conversationId !== "undefined") {
 
-form.addEventListener("submit", function (e) {
+        socket.emit("join_room", {
 
-    e.preventDefault();
+            conversation_id:
+                conversationId
 
-    const message = messageInput.value.trim();
+        });
 
-    if (message === "") {
-        return;
+        console.log(
+            "Joined conversation:",
+            conversationId
+        );
+
     }
 
-    socket.emit("send_message", {
-        conversation_id: conversationId,
-        sender_id: currentUserId,
-        message: message
-    });
-
-    messageInput.value = "";
-
 });
 
-socket.on("receive_message", function (data) {
 
-    const div = document.createElement("div");
+/* =========================================
+   GET CHAT ELEMENTS
+========================================= */
 
-    const sender =
-        data.sender_id == currentUserId
-            ? "You"
-            : otherUserLabel;
+const form =
+    document.getElementById("chat-form");
 
-    div.innerHTML = `
-        <strong>${sender}</strong>
-        <p>${data.message}</p>
-        <hr>
-    `;
+const messageInput =
+    document.getElementById("message-input");
 
-    chatBox.appendChild(div);
+const chatBox =
+    document.getElementById("chat-box");
 
-    chatBox.scrollTop = chatBox.scrollHeight;
 
-});
+/* =========================================
+   SEND MESSAGE
+========================================= */
 
-socket.on("conversation_ended", function(data) {
-   
-    alert("The conversation has ended.");
-   
-    window.location.href = chatRedirectUrl;
-});
+if (form) {
 
-window.addEventListener("beforeunload", function () {
+    form.addEventListener(
+        "submit",
+        function (e) {
 
-    socket.emit("leave_room", {
-        conversation_id: conversationId
-    });
+            /*
+                VERY IMPORTANT:
+                Stop the browser from submitting
+                the form normally.
+            */
 
-});
+            e.preventDefault();
+
+
+            const message =
+                messageInput.value.trim();
+
+
+            if (message === "") {
+                return;
+            }
+
+
+            console.log(
+                "Sending message:",
+                message
+            );
+
+
+            socket.emit(
+                "send_message",
+                {
+
+                    conversation_id:
+                        conversationId,
+
+                    sender_id:
+                        currentUserId,
+
+                    message:
+                        message
+
+                }
+            );
+
+
+            /*
+                Clear input after sending.
+            */
+
+            messageInput.value = "";
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   RECEIVE MESSAGE
+========================================= */
+
+socket.on(
+    "receive_message",
+    function (data) {
+
+        /*
+            If there is no chat box,
+            don't try to add anything.
+        */
+
+        if (!chatBox) {
+            return;
+        }
+
+
+        const div =
+            document.createElement("div");
+
+
+        const sender =
+            data.sender_id == currentUserId
+                ? "You"
+                : otherUserLabel;
+
+
+        div.classList.add("message");
+
+
+        div.innerHTML = `
+
+            <strong>
+                ${sender}
+            </strong>
+
+            <p>
+                ${data.message}
+            </p>
+
+            <hr>
+
+        `;
+
+
+        chatBox.appendChild(div);
+
+
+        /*
+            Scroll to newest message.
+        */
+
+        chatBox.scrollTop =
+            chatBox.scrollHeight;
+
+    }
+);
+
+
+/* =========================================
+   CONVERSATION ENDED
+========================================= */
+
+socket.on(
+    "conversation_ended",
+    function (data) {
+
+        console.log(
+            "Conversation ended:",
+            data
+        );
+
+
+        alert(
+            "The conversation has ended."
+        );
+
+
+        /*
+            Return to the chat page.
+            This removes the conversation_id
+            from the URL.
+        */
+
+        if (
+            typeof chatRedirectUrl !==
+            "undefined"
+        ) {
+
+            window.location.href =
+                chatRedirectUrl;
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   LEAVE ROOM
+========================================= */
+
+window.addEventListener(
+    "beforeunload",
+    function () {
+
+        if (
+            typeof conversationId !==
+            "undefined"
+        ) {
+
+            socket.emit(
+                "leave_room",
+                {
+
+                    conversation_id:
+                        conversationId
+
+                }
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   CHAT TABS
+========================================= */
+
+const allVolunteersBtn =
+    document.getElementById("all-volunteers-btn");
+
+const privateChatBtn =
+    document.getElementById("private-chat-btn");
+
+const volunteerList =
+    document.getElementById("volunteer-list");
+
+const privateChatList =
+    document.getElementById("private-chat-list");
+
+
+if (
+    allVolunteersBtn &&
+    privateChatBtn &&
+    volunteerList &&
+    privateChatList
+) {
+
+    /*
+        Show All Volunteers
+    */
+
+    allVolunteersBtn.addEventListener(
+        "click",
+        function () {
+
+            volunteerList.style.display = "block";
+
+            privateChatList.style.display = "none";
+
+
+            allVolunteersBtn.classList.add(
+                "active"
+            );
+
+            privateChatBtn.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    /*
+        Show Private Chats
+    */
+
+    privateChatBtn.addEventListener(
+        "click",
+        function () {
+
+            volunteerList.style.display = "none";
+
+            privateChatList.style.display = "block";
+
+
+            privateChatBtn.classList.add(
+                "active"
+            );
+
+            allVolunteersBtn.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+}

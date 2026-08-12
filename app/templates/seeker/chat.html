@@ -6,49 +6,461 @@ Volunteer Chat
 
 {% block content %}
 
+<div class="chat-container">
+
+    <!-- ================================= -->
+    <!-- LEFT SIDE -->
+    <!-- ================================= -->
+
+    <div class="chat-sidebar">
+
+        <h3>Chat</h3>
+
+        <input
+            type="text"
+            placeholder="Search"
+        >
+
+        <!-- CHAT TABS -->
+
+        <div class="chat-tabs">
+
+            <button
+                type="button"
+                id="all-volunteers-btn"
+                class="chat-tab active"
+            >
+                All Volunteers
+            </button>
+
+            <button
+                type="button"
+                id="private-chat-btn"
+                class="chat-tab"
+            >
+                Private Chat
+            </button>
+
+        </div>
+
+
+        <!-- ================================= -->
+        <!-- ALL VOLUNTEERS -->
+        <!-- ================================= -->
+
+        <div
+            class="volunteer-list"
+            id="volunteer-list"
+        >
+
+            <h4>Volunteers</h4>
+
+            {% for volunteer in volunteers %}
+
+                <div class="volunteer-card">
+
+                    <div class="volunteer-avatar">
+                        ○
+                    </div>
+
+                    <div class="volunteer-info">
+
+                        <strong>
+                            {{ volunteer.username }}
+                        </strong>
+
+                        <p>
+                            Peer Volunteer
+                        </p>
+
+                        <small>
+                            Let's Support Each Other
+                        </small>
+
+                    </div>
+
+                    <div class="volunteer-status">
+
+                        <span>
+                            🟢 Online
+                        </span>
+
+                        <form
+                            method="POST"
+                            action="{{ url_for('chat_request.send_request') }}"
+                        >
+
+                            <input
+                                type="hidden"
+                                name="volunteer_id"
+                                value="{{ volunteer.user_id }}"
+                            >
+
+                            <input
+                                type="hidden"
+                                name="source"
+                                value="chat"
+                            >
+
+                            <button type="submit">
+                                Request Chat
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            {% else %}
+
+                <p>
+                    No volunteers available.
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- ================================= -->
+        <!-- PRIVATE CHATS -->
+        <!-- ================================= -->
+
+        <!-- hidden = PRIVATE CHATS ARE HIDDEN INITIALLY -->
+
+        <div
+            id="private-chat-list"
+            class="private-chat-list"
+            hidden
+        >
+
+            <h4>
+                Private Chats
+            </h4>
+
+
+            {% for chat in private_chats %}
+
+                <div class="private-chat-card">
+
+                    <!-- VOLUNTEER NAME -->
+
+                    <strong>
+                        {{ chat.request.volunteer.username }}
+                    </strong>
+
+
+                    <!-- ========================= -->
+                    <!-- PENDING -->
+                    <!-- ========================= -->
+
+                    {% if chat.request.request_status == "Pending" %}
+
+                        <p>
+                            Waiting for volunteer to accept
+                        </p>
+
+
+                    <!-- ========================= -->
+                    <!-- ACCEPTED -->
+                    <!-- ========================= -->
+
+                    {% elif chat.request.request_status == "Accepted" %}
+
+                        {% if chat.conversation and
+                              chat.conversation.conversation_status == "Active" %}
+
+                            <p>
+                                Active conversation
+                            </p>
+
+                            <a
+                                href="{{ url_for(
+                                    'seeker.chat',
+                                    conversation_id=chat.conversation.conversation_id
+                                ) }}"
+                            >
+                                Enter Conversation
+                            </a>
+
+
+                        {% elif chat.conversation and
+                              chat.conversation.conversation_status == "Closed" %}
+
+                            <p>
+                                Conversation ended
+                            </p>
+
+                            <!-- REQUEST AGAIN -->
+
+                            <form
+                                method="POST"
+                                action="{{ url_for('chat_request.send_request') }}"
+                            >
+
+                                <input
+                                    type="hidden"
+                                    name="volunteer_id"
+                                    value="{{ chat.request.volunteer_id }}"
+                                >
+
+                                <input
+                                    type="hidden"
+                                    name="source"
+                                    value="chat"
+                                >
+
+                                <button type="submit">
+                                    Request Again
+                                </button>
+
+                            </form>
+
+                        {% endif %}
+
+
+                    <!-- ========================= -->
+                    <!-- REJECTED -->
+                    <!-- ========================= -->
+
+                    {% elif chat.request.request_status == "Rejected" %}
+
+                        <p>
+                            Request rejected
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+
+            {% else %}
+
+                <p>
+                    You don't have any private chats yet.
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================= -->
+    <!-- RIGHT SIDE: CONVERSATION -->
+    <!-- ================================= -->
+
+    <div class="conversation-panel">
+
+        {% if conversation %}
+
+            <!-- ========================= -->
+            <!-- CONVERSATION HEADER -->
+            <!-- ========================= -->
+
+            <div class="conversation-header">
+
+                <h3>
+                    {{ conversation.request.volunteer.username }}
+                </h3>
+
+
+                {% if conversation.conversation_status == "Active" %}
+
+                    <span>
+                        🟢 Active
+                    </span>
+
+                {% else %}
+
+                    <span>
+                        ⚫ Conversation Closed
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+            <hr>
+
+
+            <!-- ========================= -->
+            <!-- NEW CONVERSATION NOTICE -->
+            <!-- ========================= -->
+
+            {% if not messages %}
+
+                <div class="new-conversation-notice">
+
+                    <strong>
+                        🔔 This is a new conversation.
+                    </strong>
+
+                    <p>
+                        You are starting a new private conversation
+                        with this volunteer.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- ========================= -->
+            <!-- MESSAGE AREA -->
+            <!-- ========================= -->
+
+            <div
+                id="chat-box"
+                class="chat-box"
+            >
+
+                {% for message in messages %}
+
+                    <div class="message">
+
+                        {% if message.sender_id == current_user.user_id %}
+
+                            <strong>
+                                You
+                            </strong>
+
+                        {% else %}
+
+                            <strong>
+                                {{ conversation.request.volunteer.username }}
+                            </strong>
+
+                        {% endif %}
+
+
+                        <p>
+                            {{ message.message }}
+                        </p>
+
+
+                        <small>
+                            {{ message.sent_at.strftime(
+                                "%B %d, %Y %I:%M %p"
+                            ) }}
+                        </small>
+
+                    </div>
+
+                    <hr>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- MESSAGE INPUT -->
+            <!-- ========================= -->
+
+            {% if conversation.conversation_status == "Active" %}
+
+                <form
+                    id="chat-form"
+                    onsubmit="return false;"
+                >
+
+                    <textarea
+                        id="message-input"
+                        rows="3"
+                        placeholder="Type your message..."
+                        required
+                    ></textarea>
+
+                    <button
+                        type="submit"
+                        id="send-button"
+                    >
+                        Send
+                    </button>
+
+                </form>
+
+            {% else %}
+
+                <div class="conversation-ended">
+
+                    <p>
+                        This conversation has ended.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+
+        {% else %}
+
+            <!-- ========================= -->
+            <!-- NOTHING SELECTED -->
+            <!-- ========================= -->
+
+            <div class="no-conversation">
+
+                <h3>
+                    Private Conversation
+                </h3>
+
+                <p>
+                    Select an active conversation from the left
+                    to start chatting.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<!-- ================================= -->
+<!-- SOCKET.IO -->
+<!-- ================================= -->
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+
+<!-- ================================= -->
+<!-- CHAT VARIABLES -->
+<!-- ================================= -->
+
 {% if conversation %}
 
-    {% if conversation.conversation_status == "Active" %}
+<script>
 
-        <h3>Current Conversation</h3>
+    const conversationId =
+        {{ conversation.conversation_id }};
 
-        <p>
-            <strong>Status:</strong>
-            {{ conversation.conversation_status }}
-        </p>
+    const currentUserId =
+        {{ current_user.user_id }};
 
-        <p>
-            <strong>Started At:</strong>
-            {{ conversation.started_at.strftime("%B %d, %Y %I:%M %p") }}
-        </p>
+    const otherUserLabel =
+        {{ conversation.request.volunteer.username}};
 
-        <a href="{{ url_for('seeker.conversation',
-                            conversation_id=conversation.conversation_id) }}">
-            Enter Conversation
-        </a>
+    const chatRedirectUrl =
+        "{{ url_for('seeker.chat') }}";
 
-    {% elif conversation.conversation_status == "Ended" %}
-
-        <h3>Conversation Ended</h3>
-
-        <p>
-            Your previous conversation has ended.
-        </p>
-
-        <a href="{{ url_for('community.community_feed') }}">
-            Request Again
-        </a>
-
-    {% endif %}
-
-{% else %}
-
-    <p>You don't have any conversation yet.</p>
-
-    <a href="{{ url_for('community.community_feed') }}">
-        Request Volunteer Support
-    </a>
+</script>
 
 {% endif %}
+
+
+<!-- ================================= -->
+<!-- SHARED CHAT JAVASCRIPT -->
+<!-- ================================= -->
+
+<script
+    src="{{ url_for('static', filename='js/chat.js') }}"
+></script>
 
 {% endblock %}

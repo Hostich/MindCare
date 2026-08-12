@@ -10,6 +10,7 @@ chat_request = Blueprint("chat_request", __name__, url_prefix="/chat")
 def send_request():
 
     volunteer_id = request.form.get("volunteer_id")
+    source = request.form.get("source")
 
     if has_pending_request(current_user.user_id, volunteer_id):
         flash("You already have a pending chat request with this volunteer", "warning")
@@ -18,6 +19,8 @@ def send_request():
     create_chat_request(current_user.user_id, volunteer_id)
 
     flash("Chat request sent successfully", "success")
+    if source == "chat":
+        return redirect(url_for("seeker.chat"))
 
     return redirect(url_for("community.community_feed"))
 

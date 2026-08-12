@@ -2,8 +2,9 @@ from flask import Blueprint, render_template, request, redirect, session, flash,
 from flask_login import login_required, current_user
 from app.services.chat.conversation_services import get_conversation
 from app.services.chat.message_services import get_messages, send_message
-from app.services.chat.chat_request_services import get_latest_request
+from app.services.chat.chat_request_services import get_seeker_private_chats
 from app.services.chat.conversation_services import get_conversation_by_request, get_latest_conversation
+from app.services.volunteer.volunteer_services import get_all_volunteers
 
 seeker = Blueprint("seeker", __name__, url_prefix="/seeker")
 
@@ -21,9 +22,27 @@ def chat():
     if current_user.role != "Seeker":
         return redirect(url_for("lpage.home"))
 
-    conversation = get_latest_conversation(current_user.user_id)
+    volunteers  = get_all_volunteers()
 
-    return render_template("seeker/chat.html", conversation = conversation)
+    private_chats = get_seeker_private_chats(
+        current_user.user_id
+    )
+
+    conversation = None
+    messages = []
+
+    conversation_id = request.args.get("conversation_id")
+
+    if conversation_id:
+        conversation =  get_conversation(
+            conversation_id
+        )
+
+        if conversation:
+            messages = get_messages(
+                conversation.conversation_id
+            )
+    return render_template("seeker/chat.html", volunteers = volunteers, private_chats = private_chats, conversation = conversation, messages = messages)
 
 @seeker.route("/conversation/<int:conversation_id>",methods=['GET','POST'])
 @login_required
