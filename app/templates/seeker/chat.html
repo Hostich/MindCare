@@ -421,46 +421,30 @@ Volunteer Chat
     </div>
 
 </div>
+{% endblock %}
 
-
-<!-- ================================= -->
-<!-- SOCKET.IO -->
-<!-- ================================= -->
+{% block scripts %}
 
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-
-
-<!-- ================================= -->
-<!-- CHAT VARIABLES -->
-<!-- ================================= -->
 
 {% if conversation %}
 
 <script>
-
     const conversationId =
-        {{ conversation.conversation_id }};
+        {{ conversation.conversation_id | tojson }};
 
     const currentUserId =
-        {{ current_user.user_id }};
+        {{ current_user.user_id | tojson }};
 
     const otherUserLabel =
-        {{ conversation.request.volunteer.username}};
+        {{ conversation.request.volunteer.username | tojson }};
 
     const chatRedirectUrl =
-        "{{ url_for('seeker.chat') }}";
-
+        {{ url_for("seeker.chat") | tojson }};
 </script>
 
 {% endif %}
 
-
-<!-- ================================= -->
-<!-- SHARED CHAT JAVASCRIPT -->
-<!-- ================================= -->
-
-<script
-    src="{{ url_for('static', filename='js/chat.js') }}"
-></script>
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 
 {% endblock %}

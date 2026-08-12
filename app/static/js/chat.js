@@ -134,6 +134,8 @@ socket.on(
             don't try to add anything.
         */
 
+        const currentChatBox = document.getElementById("chat-box");
+
         if (!chatBox) {
             return;
         }
@@ -162,6 +164,9 @@ socket.on(
                 ${data.message}
             </p>
 
+            <small>
+                Just now
+            </small>
             <hr>
 
         `;

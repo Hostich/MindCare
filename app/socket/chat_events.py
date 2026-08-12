@@ -1,4 +1,4 @@
-from flask_socketio import join_room, leave_room
+from flask_socketio import join_room, leave_room, emit
 from flask import request
 from app.extensions import socketio
 from app.services.chat.message_services import send_message
@@ -18,12 +18,16 @@ def handle_leave_room(data):
 @socketio.on("send_message")
 def handle_send_message(data):
 
+    conversation_id = data["conversation_id"]
+    sender_id = data["sender_id"]
+    message = data["message"]
+
     room = f"conversation_{data['conversation_id']}"
 
     send_message(
-        data["conversation_id"],
-        data["sender_id"],
-        data["message"]
+        conversation_id,
+        sender_id,
+        message
     )
 
     print(data)
@@ -31,8 +35,9 @@ def handle_send_message(data):
     socketio.emit(
         "receive_message",
         {
-            "sender_id": data["sender_id"],
-            "message": data["message"]
+            "conversation": conversation_id,
+            "sender_id": sender_id,
+            "message": message
         },
         to=room
     )
