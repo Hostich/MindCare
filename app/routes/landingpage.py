@@ -2,7 +2,6 @@ from flask import Blueprint, render_template_string, url_for
 
 
 lpage = Blueprint("lpage", __name__)
-@lpage.route("/")
 
 PAGE_HTML = """
 <!DOCTYPE html>
