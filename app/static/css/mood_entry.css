@@ -1,0 +1,183 @@
+/* ===== MOOD PAGE ===== */
+.mood-page {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+    background: radial-gradient(circle at 80% 0%, #e6fffa 0%, #f0fdf9 55%, #ffffff 100%);
+}
+
+/* ===== TITLE CARD ===== */
+.mood-title-card {
+    background-color: #ffffff;
+    border: 1px solid #f0f0f0;
+    border-radius: 18px;
+    padding: 22px 28px;
+    text-align: center;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+    margin-bottom: 24px;
+}
+
+    .mood-title-card h2 {
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: #111827;
+    }
+
+/* ===== MOOD SELECTION CARD ===== */
+.mood-card {
+    background-color: #ffffff;
+    border: 1px solid #f0f0f0;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+    margin-bottom: 24px;
+}
+
+    .mood-card h3 {
+        font-size: 15px;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 22px;
+    }
+
+.mood-options {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+}
+
+.mood-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 10px 4px;
+    border-radius: 14px;
+    transition: background-color 0.2s ease;
+}
+
+    .mood-option:hover {
+        background-color: #f0fdf9;
+    }
+
+    .mood-option input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+.mood-emoji {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 2px solid #e5e7eb;
+    background-color: #fafafa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+}
+
+.mood-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #6b7280;
+    text-align: center;
+}
+
+.mood-option input:checked + .mood-emoji {
+    border-color: #0d9488;
+    background-color: #ccfbf1;
+    box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.12);
+    transform: translateY(-2px);
+}
+
+.mood-option input:checked ~ .mood-label {
+    color: #0d9488;
+    font-weight: 700;
+}
+
+/* ===== NOTE CARD ===== */
+.note-card {
+    background-color: #ffffff;
+    border: 1px solid #f0f0f0;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+    margin-bottom: 24px;
+}
+
+    .note-card h4 {
+        font-size: 15px;
+        font-weight: 600;
+        color: #111827;
+        display: inline;
+    }
+
+.optional-tag {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-left: 6px;
+}
+
+.note-card textarea {
+    width: 100%;
+    margin-top: 14px;
+    padding: 16px 18px;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    font-size: 14px;
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    color: #111827;
+    background-color: #fafafa;
+    resize: vertical;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+    .note-card textarea::placeholder {
+        color: #9ca3af;
+    }
+
+    .note-card textarea:focus {
+        outline: none;
+        border-color: #0d9488;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
+    }
+
+/* ===== CONFIRM BUTTON ===== */
+.confirm-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #0d9488, #0f766e);
+    color: #ffffff;
+    padding: 16px;
+    border: none;
+    border-radius: 16px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    box-shadow: 0 14px 28px rgba(13, 148, 136, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .confirm-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 34px rgba(13, 148, 136, 0.32);
+    }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+    .mood-options {
+        grid-template-columns: repeat(3, 1fr);
+        row-gap: 20px;
+    }
+
+    .mood-card, .note-card, .mood-title-card {
+        padding: 22px 18px;
+    }
+}

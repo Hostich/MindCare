@@ -1,0 +1,177 @@
+/* ===== REGISTER PAGE LAYOUT ===== */
+.register-page {
+    display: flex;
+    min-height: 90vh;
+}
+
+/* ===== LEFT SIDE PANEL ===== */
+.register-side {
+    flex: 0 0 320px;
+    background: linear-gradient(160deg, #0d9488, #0f766e);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 36px;
+}
+
+.side-icon {
+    background-color: rgba(255, 255, 255, 0.15);
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 22px;
+}
+
+.register-side h1 {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin-bottom: 18px;
+}
+
+.register-side p {
+    font-size: 14px;
+    color: #d1fae5;
+    line-height: 1.7;
+    margin-bottom: 30px;
+    max-width: 240px;
+}
+
+.side-badge {
+    background-color: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 14px;
+    padding: 16px 20px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #ecfdf5;
+    line-height: 1.6;
+}
+
+/* ===== RIGHT SIDE FORM AREA ===== */
+.register-form-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 80% 20%, #e6fffa 0%, #f0fdf9 55%, #ffffff 100%);
+    padding: 60px 20px;
+}
+
+    .register-form-wrap h2 {
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: #111827;
+        margin-bottom: 28px;
+    }
+
+.register-card {
+    background-color: #ffffff;
+    border: 1px solid #f0f0f0;
+    border-radius: 20px;
+    padding: 40px 36px;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 24px 48px rgba(15, 23, 42, 0.08);
+}
+
+.input-group {
+    margin-bottom: 16px;
+}
+
+    .input-group input,
+    .input-group select {
+        width: 100%;
+        padding: 14px 18px;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        font-size: 14px;
+        font-family: 'Poppins', Arial, Helvetica, sans-serif;
+        color: #111827;
+        background-color: #fafafa;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        appearance: none;
+    }
+
+    .input-group select {
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1l6 6 6-6' stroke='%236b7280' stroke-width='1.5' fill='none' fill-rule='evenodd'/></svg>");
+        background-repeat: no-repeat;
+        background-position: right 18px center;
+        cursor: pointer;
+    }
+
+    .input-group input::placeholder {
+        color: #9ca3af;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+        outline: none;
+        border-color: #0d9488;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
+    }
+
+.register-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #0d9488, #0f766e);
+    color: #ffffff;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    margin-top: 8px;
+    box-shadow: 0 10px 20px rgba(13, 148, 136, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .register-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 28px rgba(13, 148, 136, 0.32);
+    }
+
+.login-text {
+    text-align: center;
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 22px;
+}
+
+    .login-text a {
+        color: #0d9488;
+        font-weight: 600;
+    }
+
+        .login-text a:hover {
+            text-decoration: underline;
+        }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 800px) {
+    .register-page {
+        flex-direction: column;
+    }
+
+    .register-side {
+        flex: none;
+        padding: 40px 24px;
+    }
+}
+
+@media (max-width: 500px) {
+    .register-card {
+        padding: 32px 24px;
+    }
+}
