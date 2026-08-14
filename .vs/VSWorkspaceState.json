@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\app",
+    "\\app\\routes",
+    "\\app\\static",
+    "\\app\\static\\css",
+    "\\app\\templates",
+    "\\app\\templates\\authorize",
+    "\\venv",
+    "\\__pycache__"
+  ],
+  "SelectedNode": "\\app\\routes\\landingpage.py",
+  "PreviewInSolutionExplorer": false
+}
