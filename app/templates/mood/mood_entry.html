@@ -5,101 +5,71 @@ Mood Check-In
 {% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mood_entry.css') }}">
 
-<h2>Mood Check-In</h2>
+<div class="mood-page">
 
-<p>
-    How are you feeling today?
-</p>
+    <div class="mood-title-card">
+        <h2>MOOD CHECK-IN</h2>
+    </div>
 
-<form method="POST">
+    <form method="POST">
 
-    <label>
-        <input
-            type="radio"
-            name="mood"
-            value="Happy"
-            required
-        >
-        😊 Happy
-    </label>
+        <div class="mood-card">
+            <h3>How are you feeling today?</h3>
 
-    <br>
+            <div class="mood-options">
 
-    <label>
-        <input
-            type="radio"
-            name="mood"
-            value="Calm"
-        >
-        😌 Calm
-    </label>
+                <label class="mood-option">
+                    <input type="radio" name="mood" value="Happy" required>
+                    <span class="mood-emoji">&#128522;</span>
+                    <span class="mood-label">Happy</span>
+                </label>
 
-    <br>
+                <label class="mood-option">
+                    <input type="radio" name="mood" value="Calm">
+                    <span class="mood-emoji">&#128524;</span>
+                    <span class="mood-label">Calm</span>
+                </label>
 
-    <label>
-        <input
-            type="radio"
-            name="mood"
-            value="Neutral"
-        >
-        😐 Neutral
-    </label>
+                <label class="mood-option">
+                    <input type="radio" name="mood" value="Neutral">
+                    <span class="mood-emoji">&#128528;</span>
+                    <span class="mood-label">Neutral</span>
+                </label>
 
-    <br>
+                <label class="mood-option">
+                    <input type="radio" name="mood" value="Sad">
+                    <span class="mood-emoji">&#128546;</span>
+                    <span class="mood-label">Sad</span>
+                </label>
 
-    <label>
-        <input
-            type="radio"
-            name="mood"
-            value="Sad"
-        >
-        😢 Sad
-    </label>
+                <label class="mood-option">
+                    <input type="radio" name="mood" value="Anxious">
+                    <span class="mood-emoji">&#128543;</span>
+                    <span class="mood-label">Anxious</span>
+                </label>
 
-    <br>
+                <label class="mood-option">
+                    <input type="radio" name="mood" value="Angry">
+                    <span class="mood-emoji">&#128544;</span>
+                    <span class="mood-label">Angry</span>
+                </label>
 
-    <label>
-        <input
-            type="radio"
-            name="mood"
-            value="Anxious"
-        >
-        😟 Anxious
-    </label>
+            </div>
+        </div>
 
-    <br>
+        <div class="note-card">
+            <h4>Note</h4>
+            <span class="optional-tag">(Optional)</span>
+            <textarea name="note"
+                      rows="6"
+                      placeholder="How are you feeling? Any thoughts you want to note..."></textarea>
+        </div>
 
-    <label>
-        <input
-            type="radio"
-            name="mood"
-            value="Angry"
-        >
-        😠 Angry
-    </label>
+        <button type="submit" class="confirm-btn">Continue</button>
 
-    <br><br>
+    </form>
 
-    <label>
-        Additional Notes (Optional)
-    </label>
-
-    <br>
-
-    <textarea
-        name="note"
-        rows="6"
-        cols="50"
-        placeholder="Share anything you'd like..."
-    ></textarea>
-
-    <br><br>
-
-    <button type="submit">
-        Continue
-    </button>
-
-</form>
-
+</div>
 {% endblock %}
