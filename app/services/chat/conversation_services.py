@@ -41,3 +41,20 @@ def get_latest_conversation(seeker_id):
         .order_by(Conversation.started_at.desc())
         .first()
     )
+
+def volunteer_is_busy(volunteer_id):
+    active_conversation = (
+        Conversation.query.filter_by(
+            supporter_id = volunteer_id,
+            conversation_status = "Active"
+        )
+        .first()
+    )
+
+    print("Volunteer ID: ", volunteer_id)
+    print("active conversation: ", active_conversation)
+
+    if active_conversation:
+        print("Active Conversation ID: ", active_conversation.conversation_id)
+
+    return active_conversation is not None

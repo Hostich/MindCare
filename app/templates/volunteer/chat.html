@@ -16,7 +16,10 @@ Volunteer Chat
 
         <h3>Chat</h3>
 
+
+        <!-- ================================= -->
         <!-- CHAT TABS -->
+        <!-- ================================= -->
 
         <div class="chat-tabs">
 
@@ -52,19 +55,27 @@ Volunteer Chat
                 Chat Requests
             </h4>
 
+
             {% for chat_request in requests %}
 
                 <div class="request-card">
 
                     <div class="request-info">
 
+                        <!--
+                            DO NOT DISPLAY THE SEEKER'S
+                            REAL USERNAME.
+                        -->
+
                         <strong>
-                            {{ chat_request.seeker.username }}
+                            Anonymous Seeker
                         </strong>
+
 
                         <p>
                             Wants to start a conversation
                         </p>
+
 
                         {% if chat_request.seeker_mood %}
 
@@ -78,7 +89,9 @@ Volunteer Chat
                     </div>
 
 
-                    <!-- ACCEPT -->
+                    <!-- ================================= -->
+                    <!-- ACCEPT REQUEST -->
+                    <!-- ================================= -->
 
                     <a
                         href="{{ url_for(
@@ -90,7 +103,9 @@ Volunteer Chat
                     </a>
 
 
-                    <!-- REJECT -->
+                    <!-- ================================= -->
+                    <!-- REJECT REQUEST -->
+                    <!-- ================================= -->
 
                     <form
                         method="POST"
@@ -108,6 +123,7 @@ Volunteer Chat
 
                 </div>
 
+
             {% else %}
 
                 <p>
@@ -120,7 +136,7 @@ Volunteer Chat
 
 
         <!-- ================================= -->
-        <!-- PRIVATE CHATS -->
+        <!-- PRIVATE CHAT -->
         <!-- ================================= -->
 
         <div
@@ -130,59 +146,52 @@ Volunteer Chat
         >
 
             <h4>
-                Private Chats
+                Private Chat
             </h4>
 
 
-            {% for chat_request in private_chats %}
+            {% if conversation %}
 
-                {% if chat_request.conversation %}
+                <div class="private-chat-card">
 
-                    <a
-                        class="private-chat-card"
-                        href="{{ url_for(
-                            'volunteer.chat',
-                            conversation_id=chat_request.conversation.conversation_id
-                        ) }}"
-                    >
+                    <!--
+                        SEEKER IDENTITY IS HIDDEN
+                    -->
 
-                        <div class="private-chat-info">
-
-                            <strong>
-                                {{ chat_request.seeker.username }}
-                            </strong>
+                    <strong>
+                        Anonymous Seeker
+                    </strong>
 
 
-                            {% if
-                                chat_request.conversation.conversation_status
-                                == "Active"
-                            %}
+                    {% if conversation.conversation_status == "Active" %}
 
-                                <p>
-                                    🟢 Active conversation
-                                </p>
+                        <p>
+                            🟢 Active conversation
+                        </p>
 
-                            {% else %}
+                        <small>
+                            You are currently chatting
+                            with an anonymous seeker.
+                        </small>
 
-                                <p>
-                                    ⚫ Conversation ended
-                                </p>
+                    {% else %}
 
-                            {% endif %}
+                        <p>
+                            ⚫ Conversation ended
+                        </p>
 
-                        </div>
+                    {% endif %}
 
-                    </a>
+                </div>
 
-                {% endif %}
 
             {% else %}
 
                 <p>
-                    You don't have any private chats yet.
+                    You don't have an active private conversation.
                 </p>
 
-            {% endfor %}
+            {% endif %}
 
         </div>
 
@@ -206,8 +215,13 @@ Volunteer Chat
 
                 <div>
 
+                    <!--
+                        NEVER DISPLAY:
+                        conversation.request.seeker.username
+                    -->
+
                     <h3>
-                        {{ conversation.request.seeker.username }}
+                        Anonymous Seeker
                     </h3>
 
                 </div>
@@ -246,8 +260,8 @@ Volunteer Chat
                     </strong>
 
                     <p>
-                        You are starting a new private conversation
-                        with this seeker.
+                        You are starting a new private
+                        conversation with an anonymous seeker.
                     </p>
 
                 </div>
@@ -270,14 +284,18 @@ Volunteer Chat
 
                         {% if message.sender_id == current_user.user_id %}
 
+                            <!-- VOLUNTEER'S OWN MESSAGE -->
+
                             <strong>
                                 You
                             </strong>
 
                         {% else %}
 
+                            <!-- SEEKER MESSAGE -->
+
                             <strong>
-                                {{ conversation.request.seeker.username }}
+                                Anonymous Seeker
                             </strong>
 
                         {% endif %}
@@ -309,7 +327,10 @@ Volunteer Chat
 
             {% if conversation.conversation_status == "Active" %}
 
+
+                <!-- ================================= -->
                 <!-- MESSAGE FORM -->
+                <!-- ================================= -->
 
                 <form
                     id="chat-form"
@@ -323,6 +344,7 @@ Volunteer Chat
                         required
                     ></textarea>
 
+
                     <button
                         type="submit"
                         id="send-button"
@@ -333,7 +355,9 @@ Volunteer Chat
                 </form>
 
 
+                <!-- ================================= -->
                 <!-- END CONVERSATION -->
+                <!-- ================================= -->
 
                 <form
                     action="{{ url_for(
@@ -375,7 +399,7 @@ Volunteer Chat
         {% else %}
 
             <!-- ================================= -->
-            <!-- NO CONVERSATION SELECTED -->
+            <!-- NO CONVERSATION -->
             <!-- ================================= -->
 
             <div class="no-conversation">
@@ -385,8 +409,13 @@ Volunteer Chat
                 </h3>
 
                 <p>
-                    Select a private conversation from the left
-                    to start chatting.
+                    You currently don't have an active
+                    conversation.
+                </p>
+
+                <p>
+                    Accept a chat request to start
+                    a conversation.
                 </p>
 
             </div>
@@ -420,11 +449,24 @@ Volunteer Chat
     const conversationId =
         {{ conversation.conversation_id | tojson }};
 
+
     const currentUserId =
         {{ current_user.user_id | tojson }};
 
+
+    /*
+        IMPORTANT:
+
+        Do NOT use:
+
+        conversation.request.seeker.username
+
+        because the seeker must remain anonymous.
+    */
+
     const otherUserLabel =
-        {{ conversation.request.seeker.username | tojson }};
+        "Anonymous Seeker";
+
 
     const chatRedirectUrl =
         {{ url_for('volunteer.chat') | tojson }};
@@ -452,19 +494,18 @@ Volunteer Chat
     const pendingBtn =
         document.getElementById("pending-btn");
 
+
     const privateChatBtn =
         document.getElementById("private-chat-btn");
+
 
     const pendingList =
         document.getElementById("pending-list");
 
+
     const privateChatList =
         document.getElementById("private-chat-list");
 
-
-    /*
-        REQUESTS TAB
-    */
 
     if (
         pendingBtn &&
@@ -472,6 +513,13 @@ Volunteer Chat
         pendingList &&
         privateChatList
     ) {
+
+
+        /*
+            =================================
+            REQUESTS TAB
+            =================================
+        */
 
         pendingBtn.addEventListener(
             "click",
@@ -495,7 +543,9 @@ Volunteer Chat
 
 
         /*
+            =================================
             PRIVATE CHAT TAB
+            =================================
         */
 
         privateChatBtn.addEventListener(

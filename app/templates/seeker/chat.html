@@ -81,9 +81,19 @@ Volunteer Chat
 
                     <div class="volunteer-status">
 
-                        <span>
-                            🟢 Online
-                        </span>
+                        {% if volunteer.is_busy %}
+
+                            <span>
+                                🔴 Currently assisting another seeker
+                            </span>
+
+                        {% else %}
+
+                            <span>
+                                🟢 Online
+                            </span>
+
+                        {% endif %}
 
                         <form
                             method="POST"
@@ -430,17 +440,13 @@ Volunteer Chat
 {% if conversation %}
 
 <script>
-    const conversationId =
-        {{ conversation.conversation_id | tojson }};
+    const conversationId = {{ conversation.conversation_id | tojson }};
 
-    const currentUserId =
-        {{ current_user.user_id | tojson }};
+    const currentUserId = {{ current_user.user_id | tojson }};
 
-    const otherUserLabel =
-        {{ conversation.request.volunteer.username | tojson }};
+    const otherUserLabel = {{ conversation.request.volunteer.username | tojson }};
 
-    const chatRedirectUrl =
-        {{ url_for("seeker.chat") | tojson }};
+    const chatRedirectUrl = {{ url_for("seeker.chat") | tojson }};
 </script>
 
 {% endif %}

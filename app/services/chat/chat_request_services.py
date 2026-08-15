@@ -22,19 +22,34 @@ def get_peding_requests(volunteer_id):
     return requests
 
 def accept_chat_request(request_id, supporter_id):
-    request = ChatRequest.query.get_or_404(request_id)
+    chat_request = ChatRequest.query.get_or_404(request_id)
 
-    request.request_status = "Accepted"
-    request.responded_at = datetime.utcnow()
+    if chat_request.request_status != "Pending":
+        return None, "This chat request is no longer pending."
+
+    active_conversation = (
+        Conversation.query
+        .filter_by(
+            supporter_id=supporter_id,
+            conversation_status = "Active"
+        ).first()
+    )
+
+    if active_conversation:
+        return None, "You are currently assisting another seeker."
+
+    chat_request.request_status = "Accepted"
+    chat_request.responded_at = datetime.utcnow()
 
     db.session.commit()
 
     conversation = create_conversation(
-        request.request_id,
+        chat_request.request_id,
         supporter_id
     )
 
-    return conversation
+    return conversation, None
+
 
 def reject_chat_request(request_id):
     request = ChatRequest.query.get_or_404(request_id)

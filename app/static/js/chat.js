@@ -136,7 +136,13 @@ socket.on(
 
         const currentChatBox = document.getElementById("chat-box");
 
-        if (!chatBox) {
+        if (!currentChatBox) {
+            return;
+        }
+
+        if (
+            typeof conversationId !== "undefined" && data.conversation != conversationId
+        ){
             return;
         }
 
@@ -179,8 +185,8 @@ socket.on(
             Scroll to newest message.
         */
 
-        chatBox.scrollTop =
-            chatBox.scrollHeight;
+        currentChatBox.scrollTop =
+            currentChatBox.scrollHeight;
 
     }
 );
@@ -218,35 +224,6 @@ socket.on(
 
             window.location.href =
                 chatRedirectUrl;
-
-        }
-
-    }
-);
-
-
-/* =========================================
-   LEAVE ROOM
-========================================= */
-
-window.addEventListener(
-    "beforeunload",
-    function () {
-
-        if (
-            typeof conversationId !==
-            "undefined"
-        ) {
-
-            socket.emit(
-                "leave_room",
-                {
-
-                    conversation_id:
-                        conversationId
-
-                }
-            );
 
         }
 

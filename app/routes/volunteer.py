@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
 from app.extensions import socketio
+from app.models import Conversation
 from app.services.chat.chat_request_services import get_peding_requests, accept_chat_request, reject_chat_request, get_volunteer_private_chats
 from app.services.chat.conversation_services import get_conversation, end_conversation
 from app.services.chat.message_services import get_messages, send_message
@@ -39,6 +40,15 @@ def chat():
         conversation = get_conversation(
             conversation_id
         )
+    else:
+
+        conversation = (
+            Conversation.query
+            .filter_by(
+                supporter_id = current_user.user_id,
+                conversation_status="Active"
+            ).first()
+        )
 
         if conversation:
 
@@ -55,16 +65,20 @@ def accept_request(request_id):
         flash("Unauthorized access.", "danger")
         return redirect(url_for("auth.login"))
 
-    conversation = accept_chat_request(
+    conversation, error = accept_chat_request(
         request_id,
         current_user.user_id
     )
+
+    if error:
+        flash(error, "warning")
+        return redirect(url_for("volunteer.chat"))
 
     flash("Chat request accepted.", "success")
 
     return redirect(url_for("volunteer.chat",conversation_id=conversation.conversation_id))
     
-@volunteer.route("/chat/reject/<int:request_id>")
+@volunteer.route("/chat/reject/<int:request_id>", methods=['POST'])
 @login_required
 def reject_request(request_id):
     if current_user.role != "Volunteer":

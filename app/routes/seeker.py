@@ -1,9 +1,10 @@
-from flask import Blueprint, render_template, request, redirect, session, flash, url_for
+from flask import Blueprint, render_template, request, redirect, flash, url_for
 from flask_login import login_required, current_user
+from app.models import Conversation, ChatRequest
 from app.services.chat.conversation_services import get_conversation
 from app.services.chat.message_services import get_messages, send_message
 from app.services.chat.chat_request_services import get_seeker_private_chats
-from app.services.chat.conversation_services import get_conversation_by_request, get_latest_conversation
+from app.services.chat.conversation_services import volunteer_is_busy
 from app.services.volunteer.volunteer_services import get_all_volunteers
 
 seeker = Blueprint("seeker", __name__, url_prefix="/seeker")
@@ -24,6 +25,11 @@ def chat():
 
     volunteers  = get_all_volunteers()
 
+    for volunteer in volunteers:
+        volunteer.is_busy = volunteer_is_busy(
+            volunteer.user_id
+        )
+
     private_chats = get_seeker_private_chats(
         current_user.user_id
     )
@@ -31,17 +37,30 @@ def chat():
     conversation = None
     messages = []
 
-    conversation_id = request.args.get("conversation_id")
+    conversation_id = request.args.get("conversation_id",type=int)
 
     if conversation_id:
         conversation =  get_conversation(
             conversation_id
         )
 
+    else:
+        conversation = (
+            Conversation.query
+            .join(
+                ChatRequest,
+                Conversation.request_id == ChatRequest.request_id 
+            ).filter(
+                ChatRequest.seeker_id == current_user.user_id,
+                Conversation.conversation_status == "Active"
+            ).first()
+        )
+
         if conversation:
             messages = get_messages(
                 conversation.conversation_id
             )
+
     return render_template("seeker/chat.html", volunteers = volunteers, private_chats = private_chats, conversation = conversation, messages = messages)
 
 @seeker.route("/conversation/<int:conversation_id>",methods=['GET','POST'])

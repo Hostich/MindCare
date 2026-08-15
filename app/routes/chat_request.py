@@ -14,6 +14,8 @@ def send_request():
 
     if has_pending_request(current_user.user_id, volunteer_id):
         flash("You already have a pending chat request with this volunteer", "warning")
+        if source == "chat":
+            return redirect(url_for("seeker.chat"))
         return redirect(url_for("community.community_feed"))
     
     create_chat_request(current_user.user_id, volunteer_id)
@@ -23,4 +25,3 @@ def send_request():
         return redirect(url_for("seeker.chat"))
 
     return redirect(url_for("community.community_feed"))
-
