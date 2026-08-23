@@ -50,11 +50,11 @@ def chat():
             ).first()
         )
 
-        if conversation:
+    if conversation:
 
-            messages = get_messages(
-                conversation.conversation_id
-            )
+        messages = get_messages(
+            conversation.conversation_id
+        )
 
     return render_template("volunteer/chat.html",requests=requests, private_chats=private_chats, conversation=conversation, messages=messages)
 

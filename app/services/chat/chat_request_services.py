@@ -17,6 +17,19 @@ def create_chat_request(seeker_id, volunteer_id):
 def has_pending_request(seeker_id, volunteer_id):
     return ChatRequest.query.filter_by(seeker_id = seeker_id, volunteer_id = volunteer_id, request_status = "Pending").first()
 
+def get_active_conversation(seeker_id, volunteer_id):
+    return(
+        Conversation.query
+        .join(
+            ChatRequest,
+            Conversation.request_id == ChatRequest.request_id
+        ).filter(
+            ChatRequest.seeker_id == seeker_id,
+            ChatRequest.volunteer_id == volunteer_id,
+            Conversation.conversation_status == "Active"
+        ).first()
+    )
+
 def get_peding_requests(volunteer_id):
     requests = ChatRequest.query.filter_by(volunteer_id = volunteer_id, request_status = "Pending").all()
     for request in requests:
