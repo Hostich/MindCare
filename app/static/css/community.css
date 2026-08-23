@@ -1,0 +1,303 @@
+/* ===== COMMUNITY PAGE ===== */
+.community-page {
+    max-width: 720px;
+    margin: 0;
+    padding: 34px 42px 60px;
+}
+
+.community-header h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+}
+
+.community-header p {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 28px;
+}
+
+/* ===== SHARE CARD ===== */
+.share-card {
+    background-color: #ffffff;
+    border: 1px solid #f0f0f0;
+    border-radius: 20px;
+    padding: 24px 26px;
+    box-shadow: 0 16px 32px rgba(15, 23, 42, 0.05);
+    margin-bottom: 28px;
+}
+
+    .share-card h4 {
+        font-size: 15px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 14px;
+    }
+
+.share-textarea {
+    width: 100%;
+    padding: 16px 18px;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    font-size: 14px;
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    background-color: #fafafa;
+    resize: vertical;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+    .share-textarea:focus {
+        outline: none;
+        border-color: #0d9488;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
+    }
+
+.share-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 14px;
+}
+
+.posted-as {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.post-btn {
+    background: linear-gradient(135deg, #0d9488, #0f766e);
+    color: #ffffff;
+    border: none;
+    padding: 11px 26px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(13, 148, 136, 0.25);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+    .post-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 26px rgba(13, 148, 136, 0.32);
+    }
+
+/* ===== FEED HEADING ===== */
+.feed-heading {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 16px;
+}
+
+/* ===== POST CARD ===== */
+.post-card {
+    background-color: #ffffff;
+    border: 1px solid #f0f0f0;
+    border-radius: 20px;
+    padding: 24px 26px;
+    box-shadow: 0 16px 32px rgba(15, 23, 42, 0.05);
+    margin-bottom: 20px;
+}
+
+.post-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.post-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0d9488, #0f766e);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.post-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+    .post-meta strong {
+        font-size: 14px;
+        color: #111827;
+    }
+
+.mood-tag {
+    background-color: #fef2f2;
+    color: #dc2626;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+.post-content {
+    font-size: 14px;
+    color: #374151;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.post-time {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.post-card hr {
+    border: none;
+    border-top: 1px solid #f0f0f0;
+    margin: 16px 0;
+}
+
+/* ===== COMMENTS ===== */
+.comments-section {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.comment {
+    background-color: #f9fafb;
+    border-radius: 14px;
+    padding: 14px 16px;
+}
+
+.comment-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+}
+
+    .comment-head strong {
+        font-size: 13px;
+        color: #111827;
+    }
+
+.verified-badge {
+    background-color: #ecfdf5;
+    color: #0d9488;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 8px;
+}
+
+.comment-content {
+    font-size: 13px;
+    color: #374151;
+    line-height: 1.6;
+    margin-bottom: 6px;
+}
+
+.comment-time {
+    font-size: 11px;
+    color: #9ca3af;
+}
+
+.request-chat-form {
+    margin-top: 10px;
+}
+
+.request-chat-btn {
+    background-color: #ffffff;
+    border: 1.5px solid #0d9488;
+    color: #0d9488;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+    .request-chat-btn:hover {
+        background-color: #0d9488;
+        color: #ffffff;
+    }
+
+.no-comments {
+    font-size: 13px;
+    color: #9ca3af;
+}
+
+/* ===== COMMENT FORM ===== */
+.comment-form {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.comment-textarea {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 13px;
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    background-color: #fafafa;
+    resize: none;
+    min-height: 44px;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+    .comment-textarea:focus {
+        outline: none;
+        border-color: #0d9488;
+        background-color: #ffffff;
+    }
+
+.comment-btn {
+    background: linear-gradient(135deg, #0d9488, #0f766e);
+    color: #ffffff;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 18px rgba(13, 148, 136, 0.22);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    white-space: nowrap;
+}
+
+    .comment-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 22px rgba(13, 148, 136, 0.3);
+    }
+
+/* ===== EMPTY STATE ===== */
+.empty-feed {
+    text-align: center;
+    color: #9ca3af;
+    font-size: 14px;
+    padding: 40px 0;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+    .community-page {
+        padding: 24px 14px 50px;
+    }
+
+    .comment-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

@@ -5,46 +5,69 @@ Dashboard
 {% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 
-<h2>
-    Welcome,
-    {{ current_user.first_name}}
-</h2>
+<div class="dash-page">
 
-<p>
-    Welcome to MindCare.
-</p>
+    <div class="dash-header">
+        <h2>Dashboard</h2>
+        <p>Welcome back, {{ current_user.first_name }}! Here is your wellness overview.</p>
+    </div>
 
-<hr>
+    <div class="dash-banner">
+        <h3>Welcome to MindCare</h3>
+        <p>Your safe space for mental wellness and support.</p>
+    </div>
 
-<h3>Today's Mood</h3>
+    <div class="dash-stats">
+        <div class="stat-card mood-stat">
+            <span class="stat-label">Current Mood</span>
+            <span class="stat-value">Not set</span>
+        </div>
 
-<p>
-    Mood will appear here.
-</p>
+        <div class="stat-card post-stat">
+            <span class="stat-label">Recent Community Post</span>
+            <span class="stat-value">No recent posts</span>
+        </div>
 
-<hr>
+        <div class="stat-card volunteer-stat">
+            <span class="stat-label">Available Volunteers</span>
+            <span class="stat-value">Volunteers will appear here</span>
+        </div>
+    </div>
 
-<h3>Recent Mood Entries</h3>
+    <div class="dash-grid">
 
-<p>
-    Mood history will appear here.
-</p>
+        <div class="dash-panel">
+            <h4>Recent Mood Entries</h4>
+            <p class="placeholder-text">Mood history will appear here.</p>
+        </div>
 
-<hr>
+        <div class="dash-panel quick-access">
+            <h4>Quick Access</h4>
 
-<h3>Mood Overview</h3>
+            <a href="#" class="quick-item talk">
+                <span class="quick-icon">&#128172;</span>
+                Talk to Someone
+            </a>
 
-<p>
-    Graph coming soon...
-</p>
+            <a href="#" class="quick-item tracker">
+                <span class="quick-icon">&#128202;</span>
+                Mood Tracker
+            </a>
 
-<hr>
+            <a href="#" class="quick-item resources">
+                <span class="quick-icon">&#128218;</span>
+                Explore Resources
+            </a>
 
-<h3>Available Volunteers</h3>
+            <a href="#" class="quick-item crisis">
+                <span class="quick-icon">&#128222;</span>
+                Crisis Support
+            </a>
+        </div>
 
-<p>
-    Volunteers will appear here.
-</p>
+    </div>
 
+</div>
 {% endblock %}

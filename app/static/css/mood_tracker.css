@@ -1,0 +1,194 @@
+/* ===== TRACKER PAGE ===== */
+.tracker-page {
+    padding: 34px 42px 60px;
+}
+
+.tracker-header h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+}
+
+.tracker-header p {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 26px;
+}
+
+/* ===== GRID LAYOUT ===== */
+.tracker-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* ===== CARD ===== */
+.tracker-card {
+    background-color: #ffffff;
+    border: 1px solid #f0f0f0;
+    border-radius: 20px;
+    padding: 24px 26px;
+    box-shadow: 0 16px 32px rgba(15, 23, 42, 0.05);
+    transition: box-shadow 0.25s ease;
+}
+
+    .tracker-card:hover {
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.07);
+    }
+
+    .tracker-card.full-width {
+        margin-bottom: 20px;
+    }
+
+    .tracker-card h3 {
+        font-size: 15px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 16px;
+    }
+
+/* ===== TODAY'S MOOD ===== */
+.today-mood {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+    .today-mood strong {
+        font-size: 16px;
+        color: #111827;
+    }
+
+.mood-note {
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.mood-date {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+/* ===== MOOD DOT COLORS ===== */
+.mood-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background-color: #9ca3af;
+}
+
+.mood-dot-happy {
+    background-color: #22c55e;
+}
+
+.mood-dot-calm {
+    background-color: #38bdf8;
+}
+
+.mood-dot-neutral,
+.mood-dot-okay {
+    background-color: #eab308;
+}
+
+.mood-dot-sad {
+    background-color: #3b82f6;
+}
+
+.mood-dot-anxious {
+    background-color: #a855f7;
+}
+
+.mood-dot-angry {
+    background-color: #ef4444;
+}
+
+/* ===== RECENT ENTRIES LIST ===== */
+.entry-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+    .entry-row:last-child {
+        border-bottom: none;
+    }
+
+.entry-info strong {
+    font-size: 14px;
+    color: #111827;
+    display: block;
+}
+
+.entry-date {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.entry-note {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 4px;
+    line-height: 1.5;
+}
+
+/* ===== PLACEHOLDER / COMING SOON ===== */
+.coming-soon,
+.empty-text {
+    font-size: 14px;
+    color: #9ca3af;
+    text-align: center;
+    padding: 30px 0;
+}
+
+/* ===== STATISTICS ===== */
+.stats-row {
+    display: flex;
+    gap: 20px;
+}
+
+.stat-block {
+    flex: 1;
+    background-color: #f7fdfb;
+    border: 1px solid #ecfdf5;
+    border-radius: 14px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 18px;
+    color: #0d9488;
+    font-weight: 700;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+    .tracker-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-row {
+        flex-direction: column;
+    }
+
+    .tracker-page {
+        padding: 24px 20px 50px;
+    }
+}

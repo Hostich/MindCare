@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard_base.css') }}">
 
     <title>
         {% block title %}
@@ -16,125 +17,130 @@
 
     {% if current_user.is_authenticated %}
 
-    <aside>
+    <aside class="sidebar">
 
-        <h2>MindCare</h2>
+        <h2 class="sidebar-logo">MINDCARE</h2>
 
         <!-- ===================== -->
         <!-- SEEKER SIDEBAR -->
         <!-- ===================== -->
-
         {% if current_user.role == "Seeker" %}
 
-            <a href="{{ url_for('seeker.dashboard') }}">Dashboard</a>
-            <a href="{{ url_for('community.community_feed') }}">Community Feed</a>
-            <a href="{{ url_for('mood.mood_tracker') }}">Mood Tracker</a>
-            <a href="{{ url_for('seeker.chat', conversation_id = request.args.get('conversation_id'))}}">Chat</a>
-            <a href="#">Resources</a>
-            <a href="{{ url_for('profile.view_profile') }}">Profile</a>
-            <a href="#">Crisis Support</a>
-            <a href="#">Volunteer Application</a>
+        <nav class="sidebar-nav">
+            <a href="{{ url_for('seeker.dashboard') }}"><span class="nav-icon">&#127968;</span> Dashboard</a>
+            <a href="{{ url_for('community.community_feed') }}"><span class="nav-icon">&#128101;</span> Community Feed</a>
+            <a href="{{ url_for('mood.mood_tracker') }}"><span class="nav-icon">&#128202;</span> Mood Tracker</a>
+            <a href="{{ url_for('seeker.chat', conversation_id = request.args.get('conversation_id'))}}"><span class="nav-icon">&#128172;</span> Chat</a>
+            <a href="#"><span class="nav-icon">&#128218;</span> Resources</a>
+            <a href="{{ url_for('profile.view_profile') }}"><span class="nav-icon">&#128100;</span> Profile</a>
+            <a href="#" class="crisis-link"><span class="nav-icon">&#128222;</span> Crisis Support</a>
+            <a href="#"><span class="nav-icon">&#10084;</span> Volunteer Application</a>
+        </nav>
 
         <!-- ===================== -->
         <!-- VOLUNTEER SIDEBAR -->
         <!-- ===================== -->
-
         {% elif current_user.role == "Volunteer" %}
 
-            <a href="{{ url_for('volunteer.dashboard') }}">Dashboard</a>
-            <a href="{{ url_for('community.community_feed') }}">Community Feed</a>
-            <a href="{{ url_for('volunteer.chat') }}">Chat</a>
-            <a href="#">Counselor Referral</a>
-            <a href="#">Resources</a>
-            <a href="{{ url_for('profile.view_profile') }}">Profile</a>
+        <nav class="sidebar-nav">
+            <a href="{{ url_for('volunteer.dashboard') }}"><span class="nav-icon">&#127968;</span> Dashboard</a>
+            <a href="{{ url_for('community.community_feed') }}"><span class="nav-icon">&#128101;</span> Community Feed</a>
+            <a href="{{ url_for('volunteer.chat') }}"><span class="nav-icon">&#128172;</span> Chat</a>
+            <a href="#"><span class="nav-icon">&#128203;</span> Counselor Referral</a>
+            <a href="#"><span class="nav-icon">&#128218;</span> Resources</a>
+            <a href="{{ url_for('profile.view_profile') }}"><span class="nav-icon">&#128100;</span> Profile</a>
+        </nav>
 
         <!-- ===================== -->
         <!-- COUNSELOR SIDEBAR -->
         <!-- ===================== -->
-
         {% elif current_user.role == "Counselor" %}
 
-            <a href="#">Dashboard</a>
-            <a href="#">Counseling Sessions</a>
-            <a href="#">referrals</a>
-            <a href="#">Resources</a>
-            <a href="{{ url_for('profile.view_profile') }}">Profile</a>
+        <nav class="sidebar-nav">
+            <a href="#"><span class="nav-icon">&#127968;</span> Dashboard</a>
+            <a href="#"><span class="nav-icon">&#128172;</span> Counseling Sessions</a>
+            <a href="#"><span class="nav-icon">&#128260;</span> referrals</a>
+            <a href="#"><span class="nav-icon">&#128218;</span> Resources</a>
+            <a href="{{ url_for('profile.view_profile') }}"><span class="nav-icon">&#128100;</span> Profile</a>
+        </nav>
 
         <!-- ===================== -->
         <!-- ADMIN SIDEBAR -->
         <!-- ===================== -->
-
         {% elif current_user.role == "Admin" %}
 
-            <a href="#">Dashboard</a>
-            <a href="#">Users</a>
-            <a href="#">Community</a>
-            <a href="#">Volunteers</a>
-            <a href="#">Counselors</a>
-            <a href="#">Reports</a>
-            <a href="#">Resources</a>
+        <nav class="sidebar-nav">
+            <a href="#"><span class="nav-icon">&#127968;</span> Dashboard</a>
+            <a href="#"><span class="nav-icon">&#128100;</span> Users</a>
+            <a href="#"><span class="nav-icon">&#128101;</span> Community</a>
+            <a href="#"><span class="nav-icon">&#129309;</span> Volunteers</a>
+            <a href="#"><span class="nav-icon">&#128172;</span> Counselors</a>
+            <a href="#"><span class="nav-icon">&#128202;</span> Reports</a>
+            <a href="#"><span class="nav-icon">&#128218;</span> Resources</a>
+        </nav>
 
         {% endif %}
 
-        <hr>
-
-        <a href="#">Logout</a>
+        <div class="sidebar-footer">
+            <a href="#" class="logout-link"><span class="nav-icon">&#8618;</span> Logout</a>
+        </div>
 
     </aside>
 
     {% endif %}
 
-    <main>
+    <main class="main-content">
         {% if current_user.is_authenticated%}
-            <div class="notification-container">
-                <button type="button" id="notification-button" class="notification-button">🔔
-                    {% if unread_notifications|length > 0%}
-                        <span class="notification-badge">{{unread_notifications|length}}</span>
+        <div class="notification-container">
+            <button type="button" id="notification-button" class="notification-button">
+                🔔
+                {% if unread_notifications|length > 0%}
+                <span class="notification-badge">{{unread_notifications|length}}</span>
+                {%endif%}
+            </button>
+            <div id="notification-dropdown" class="notification-dropdown" hidden>
+                <h3>
+                    Notifications
+                </h3>
+                {% for notification in notifications%}
+                <div class="notification-item" data-notification-id="{{ notification.notification_id }}">
+                    <strong>
+                        {{notification.title}}
+                    </strong>
+                    <p>
+                        {{notification.message}}
+                    </p>
+                    {% if notification.notification_type == "ChatRequestAccepted" and notification.conversation and notification.conversation.conversation_status == "Active"%}
+                    <a href="{{url_for('notification.notification_chat', notification_id=notification.notification_id)}}">
+                        Enter Conversation
+                    </a>
+                    {% elif notification.notification_type == "ChatRequestAccepted" and notification.conversation and notification.conversation.conversation_status == "Closed" %}
+                    <p>
+                        Conversation Ended
+                    </p>
                     {%endif%}
-                </button>
-                <div id="notification-dropdown" class="notification-dropdown" hidden>
-                    <h3>
-                        Notifications
-                    </h3>
-                    {% for notification in notifications%}
-                        <div class="notification-item" data-notification-id = "{{ notification.notification_id }}">
-                            <strong>
-                                {{notification.title}}
-                            </strong>
-                            <p>
-                                {{notification.message}}
-                            </p>
-                            {% if notification.notification_type == "ChatRequestAccepted" and notification.conversation and notification.conversation.conversation_status == "Active"%}
-                            <a href="{{url_for('notification.notification_chat', notification_id=notification.notification_id)}}">
-                                Enter Conversation
-                            </a>
-                            {% elif notification.notification_type == "ChatRequestAccepted" and notification.conversation and notification.conversation.conversation_status == "Closed" %}
-                                <p>
-                                    Conversation Ended
-                                </p>
-                            {%endif%}
-                        </div>
-                    {%else%}
-                        <p>
-                            No Notifications.
-                        </p>
-                    {%endfor%}
                 </div>
+                {%else%}
+                <p>
+                    No Notifications.
+                </p>
+                {%endfor%}
             </div>
+        </div>
         {%endif%}
         {% with messages = get_flashed_messages(with_categories=true) %}
 
-            {% if messages %}
+        {% if messages %}
 
-                {% for category, message in messages %}
+        {% for category, message in messages %}
 
-                    <div class="flash {{ category }}">
-                        {{ message }}
-                    </div>
+        <div class="flash {{ category }}">
+            {{ message }}
+        </div>
 
-                {% endfor %}
+        {% endfor %}
 
-            {% endif %}
+        {% endif %}
 
         {% endwith %}
 
@@ -144,11 +150,11 @@
     </main>
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     {% if current_user.is_authenticated%}
-        <script>
+    <script>
             const currentUserId = {{current_user.user_id | tojson}}
-        </script>
+    </script>
     {% endif %}
-    <script src="{{url_for('static', filename='js/notification.js')}}"></script> 
+    <script src="{{url_for('static', filename='js/notification.js')}}"></script>
     {%block scripts%}
     {%endblock%}
 

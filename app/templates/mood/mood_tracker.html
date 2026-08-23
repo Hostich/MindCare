@@ -5,88 +5,101 @@ Mood Tracker
 {% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mood_tracker.css') }}">
 
-<h2>Mood Tracker</h2>
+<div class="tracker-page">
 
-<hr>
+    <div class="tracker-header">
+        <h2>Mood Tracker</h2>
+        <p>Track and understand your emotional journey over time.</p>
+    </div>
 
-<h3>Today's Mood</h3>
+    <div class="tracker-grid">
 
-{% if latest_mood %}
+        <div class="tracker-card">
+            <h3>Today's Mood</h3>
 
-<p>
-    <strong>{{ latest_mood.mood }}</strong>
-</p>
+            {% if latest_mood %}
 
-{% if latest_mood.note %}
-<p>{{ latest_mood.note }}</p>
-{% endif %}
+            <div class="today-mood">
+                <span class="mood-dot mood-dot-{{ latest_mood.mood|lower }}"></span>
+                <strong>{{ latest_mood.mood }}</strong>
+            </div>
 
-<small>
-    {{ latest_mood.recorded_at.strftime("%B %d, %Y") }}
-</small>
+            {% if latest_mood.note %}
+            <p class="mood-note">{{ latest_mood.note }}</p>
+            {% endif %}
 
-{% else %}
+            <small class="mood-date">
+                {{ latest_mood.recorded_at.strftime("%B %d, %Y") }}
+            </small>
 
-<p>No mood recorded today.</p>
+            {% else %}
 
-{% endif %}
+            <p class="empty-text">No mood recorded today.</p>
 
-<hr>
+            {% endif %}
+        </div>
 
-<h3>Recent Mood Entries</h3>
+        <div class="tracker-card">
+            <h3>Recent Mood Entries</h3>
 
-{% for mood in recent_moods %}
+            {% for mood in recent_moods %}
 
-<div>
+            <div class="entry-row">
+                <div class="entry-info">
+                    <strong>{{ mood.mood }}</strong>
+                    <span class="entry-date">{{ mood.recorded_at.strftime("%B %d, %Y") }}</span>
+                    {% if mood.note %}
+                    <p class="entry-note">{{ mood.note }}</p>
+                    {% endif %}
+                </div>
+                <span class="mood-dot mood-dot-{{ mood.mood|lower }}"></span>
+            </div>
 
-    <strong>{{ mood.mood }}</strong>
+            {% else %}
 
-    <br>
+            <p class="empty-text">No mood history available.</p>
 
-    {{ mood.recorded_at.strftime("%B %d, %Y") }}
+            {% endfor %}
+        </div>
 
-    {% if mood.note %}
-        <p>{{ mood.note }}</p>
-    {% endif %}
+    </div>
+
+    <div class="tracker-grid">
+
+        <div class="tracker-card">
+            <h3>Mood Overview</h3>
+            <p class="coming-soon">Graph coming soon...</p>
+        </div>
+
+        <div class="tracker-card">
+            <h3>Mood Distribution</h3>
+            <p class="coming-soon">Chart coming soon...</p>
+        </div>
+
+    </div>
+
+    <div class="tracker-card full-width">
+        <h3>Available Volunteers</h3>
+        <p class="coming-soon">Coming soon...</p>
+    </div>
+
+    <div class="tracker-card full-width">
+        <h3>Mood Statistics</h3>
+
+        <div class="stats-row">
+            <div class="stat-block">
+                <span class="stat-label">Total Entries</span>
+                <span class="stat-value">{{ statistics.total_entries }}</span>
+            </div>
+
+            <div class="stat-block">
+                <span class="stat-label">Most Frequent Mood</span>
+                <span class="stat-value">{{ statistics.most_common_mood }}</span>
+            </div>
+        </div>
+    </div>
 
 </div>
-
-<hr>
-
-{% else %}
-
-<p>No mood history available.</p>
-
-{% endfor %}
-
-<hr>
-
-<h3>Mood Overview</h3>
-
-<p>Graph coming soon...</p>
-
-<hr>
-
-<h3>Mood Distribution</h3>
-
-<p>Chart coming soon...</p>
-
-<hr>
-
-<h3>Available Volunteers</h3>
-
-<p>Coming soon...</p>
-<h3>Mood Statistics</h3>
-
-<p>
-Total Entries:
-{{ statistics.total_entries }}
-</p>
-
-<p>
-Most Frequent Mood:
-{{ statistics.most_common_mood }}
-</p>
-
 {% endblock %}
