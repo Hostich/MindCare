@@ -229,3 +229,35 @@ socket.on(
 
     }
 );
+
+
+/* =========================================
+   CHAT TABS FOR SEEKER
+========================================= */
+
+const allVolunteersBtn = document.getElementById("all-volunteers-btn");
+const privateChatBtn = document.getElementById("private-chat-btn");
+const volunteerList = document.getElementById("volunteer-list");
+const privateChatList = document.getElementById("private-chat-list");
+
+if(allVolunteersBtn && privateChatBtn && volunteerList && privateChatList){
+    allVolunteersBtn.addEventListener(
+        "click",
+        function(){
+            volunteerList.hidden = false;
+            privateChatList.hidden = true;
+            allVolunteersBtn.classList.add("active");
+            privateChatBtn.classList.remove("active");
+        }
+    );
+
+    privateChatBtn.addEventListener(
+        "click",
+        function(){
+            volunteerList.hidden = true;
+            privateChatList.hidden = false;
+            privateChatBtn.classList.add("active");
+            allVolunteersBtn.classList.remove("active");
+        }
+    );
+}
