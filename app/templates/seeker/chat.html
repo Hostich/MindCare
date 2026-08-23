@@ -15,7 +15,6 @@ Volunteer Chat
     <div class="chat-sidebar">
 
         <h3>Chat</h3>
-
         <input
             type="text"
             placeholder="Search"
@@ -42,7 +41,7 @@ Volunteer Chat
             </button>
 
         </div>
-
+        
 
         <!-- ================================= -->
         <!-- ALL VOLUNTEERS -->
@@ -434,15 +433,10 @@ Volunteer Chat
 {% endblock %}
 
 {% block scripts %}
-
-<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-
 {% if conversation %}
 
 <script>
     const conversationId = {{ conversation.conversation_id | tojson }};
-
-    const currentUserId = {{ current_user.user_id | tojson }};
 
     const otherUserLabel = {{ conversation.request.volunteer.username | tojson }};
 

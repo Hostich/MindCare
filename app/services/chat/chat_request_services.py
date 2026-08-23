@@ -1,8 +1,10 @@
 from datetime import datetime
-from app.extensions import db
+from app.extensions import db, socketio
 from app.models import ChatRequest, Conversation
 from app.services.mood.mood_services import get_latest_mood
 from app.services.chat.conversation_services import create_conversation, get_conversation_by_request
+from app.services.notification.notification_services import create_notification
+
 
 def create_chat_request(seeker_id, volunteer_id):
     request = ChatRequest(seeker_id = seeker_id, volunteer_id = volunteer_id)
@@ -46,6 +48,30 @@ def accept_chat_request(request_id, supporter_id):
     conversation = create_conversation(
         chat_request.request_id,
         supporter_id
+    )
+
+    notification = create_notification(
+        user_id = chat_request.seeker_id,
+        conversation_id=conversation.conversation_id,
+        title = "Chat Request Accepted",
+        message = "Your chat request has been accepted by a volunteer.",
+        notification_type="ChatRequestAccepted"
+    )
+    print(
+        "CREATING ACCEPTED CHAT NOTIFICATION FOR USER:",
+        chat_request.seeker_id
+    )
+    
+    socketio.emit(
+        "new_notification",
+        {
+            "notification_id" : notification.notification_id,
+            "title" : notification.title,
+            "message" : notification.message,
+            "notification_type" : notification.notification_type,
+            "conversation_id" : notification.conversation_id
+        },
+        to = f"user_{chat_request.seeker_id}"
     )
 
     return conversation, None

@@ -53,7 +53,7 @@ def chat():
         if conversation:
 
             messages = get_messages(
-                conversation_id
+                conversation.conversation_id
             )
 
     return render_template("volunteer/chat.html",requests=requests, private_chats=private_chats, conversation=conversation, messages=messages)
@@ -61,6 +61,7 @@ def chat():
 @volunteer.route("chat/accept/<int:request_id>")
 @login_required
 def accept_request(request_id):
+    print("ACCEPT REQUEST ROUTE CALLED:", request_id)
     if current_user.role != "Volunteer":
         flash("Unauthorized access.", "danger")
         return redirect(url_for("auth.login"))

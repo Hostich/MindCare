@@ -29,7 +29,7 @@
             <a href="{{ url_for('seeker.dashboard') }}">Dashboard</a>
             <a href="{{ url_for('community.community_feed') }}">Community Feed</a>
             <a href="{{ url_for('mood.mood_tracker') }}">Mood Tracker</a>
-            <a href="{{ url_for('seeker.chat')}}">Chat</a>
+            <a href="{{ url_for('seeker.chat', conversation_id = request.args.get('conversation_id'))}}">Chat</a>
             <a href="#">Resources</a>
             <a href="{{ url_for('profile.view_profile') }}">Profile</a>
             <a href="#">Crisis Support</a>
@@ -85,7 +85,43 @@
     {% endif %}
 
     <main>
-
+        {% if current_user.is_authenticated%}
+            <div class="notification-container">
+                <button type="button" id="notification-button" class="notification-button">🔔
+                    {% if unread_notifications|length > 0%}
+                        <span class="notification-badge">{{unread_notifications|length}}</span>
+                    {%endif%}
+                </button>
+                <div id="notification-dropdown" class="notification-dropdown" hidden>
+                    <h3>
+                        Notifications
+                    </h3>
+                    {% for notification in notifications%}
+                        <div class="notification-item" data-notification-id = "{{ notification.notification_id }}">
+                            <strong>
+                                {{notification.title}}
+                            </strong>
+                            <p>
+                                {{notification.message}}
+                            </p>
+                            {% if notification.notification_type == "ChatRequestAccepted" and notification.conversation and notification.conversation.conversation_status == "Active"%}
+                            <a href="{{url_for('notification.notification_chat', notification_id=notification.notification_id)}}">
+                                Enter Conversation
+                            </a>
+                            {% elif notification.notification_type == "ChatRequestAccepted" and notification.conversation and notification.conversation.conversation_status == "Closed" %}
+                                <p>
+                                    Conversation Ended
+                                </p>
+                            {%endif%}
+                        </div>
+                    {%else%}
+                        <p>
+                            No Notifications.
+                        </p>
+                    {%endfor%}
+                </div>
+            </div>
+        {%endif%}
         {% with messages = get_flashed_messages(with_categories=true) %}
 
             {% if messages %}
@@ -106,9 +142,14 @@
         {% endblock %}
 
     </main>
-
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    {% if current_user.is_authenticated%}
+        <script>
+            const currentUserId = {{current_user.user_id | tojson}}
+        </script>
+    {% endif %}
+    <script src="{{url_for('static', filename='js/notification.js')}}"></script> 
     {%block scripts%}
-        
     {%endblock%}
 
 </body>

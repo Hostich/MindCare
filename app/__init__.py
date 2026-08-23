@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_login import current_user
 from app.models import User
 
 from config import Config
@@ -11,7 +12,10 @@ from app.routes.chat_request import chat_request
 from app.routes.volunteer import volunteer
 from app.routes.mood import mood
 from app.routes.seeker import seeker
+from app.routes.notification import notification
 from app.socket import chat_events
+from app.socket import notification_events
+from app.services.notification.notification_services import get_user_notification
 
 def create_app():
     app = Flask(__name__)
@@ -30,6 +34,27 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         return db.session.get(User, int(user_id))
+
+    @app.context_processor
+    def inject_notification():
+        if current_user.is_authenticated:
+            notifications = get_user_notification(
+                current_user.user_id
+            )
+
+            unread_notifications = [
+                notification 
+                for notification in notifications
+                if not notification.is_read
+            ]
+
+        else:
+            notifications = []
+            unread_notifications = []
+        return{
+            "notifications": notifications,
+            "unread_notifications": unread_notifications
+        }
     
     app.register_blueprint(lpage)
     app.register_blueprint(auth)
@@ -39,5 +64,9 @@ def create_app():
     app.register_blueprint(volunteer)
     app.register_blueprint(mood)
     app.register_blueprint(seeker)
+    app.register_blueprint(notification)
+
+
+
 
     return app

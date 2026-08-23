@@ -449,21 +449,6 @@ Volunteer Chat
     const conversationId =
         {{ conversation.conversation_id | tojson }};
 
-
-    const currentUserId =
-        {{ current_user.user_id | tojson }};
-
-
-    /*
-        IMPORTANT:
-
-        Do NOT use:
-
-        conversation.request.seeker.username
-
-        because the seeker must remain anonymous.
-    */
-
     const otherUserLabel =
         "Anonymous Seeker";
 

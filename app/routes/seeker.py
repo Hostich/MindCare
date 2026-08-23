@@ -6,6 +6,7 @@ from app.services.chat.message_services import get_messages, send_message
 from app.services.chat.chat_request_services import get_seeker_private_chats
 from app.services.chat.conversation_services import volunteer_is_busy
 from app.services.volunteer.volunteer_services import get_all_volunteers
+from app.services.notification.notification_services import get_user_notification
 
 seeker = Blueprint("seeker", __name__, url_prefix="/seeker")
 
@@ -29,7 +30,9 @@ def chat():
         volunteer.is_busy = volunteer_is_busy(
             volunteer.user_id
         )
-
+    notifications = get_user_notification(
+        current_user.user_id
+    )
     private_chats = get_seeker_private_chats(
         current_user.user_id
     )
@@ -43,25 +46,13 @@ def chat():
         conversation =  get_conversation(
             conversation_id
         )
-
-    else:
-        conversation = (
-            Conversation.query
-            .join(
-                ChatRequest,
-                Conversation.request_id == ChatRequest.request_id 
-            ).filter(
-                ChatRequest.seeker_id == current_user.user_id,
-                Conversation.conversation_status == "Active"
-            ).first()
-        )
-
+        
         if conversation:
             messages = get_messages(
                 conversation.conversation_id
             )
 
-    return render_template("seeker/chat.html", volunteers = volunteers, private_chats = private_chats, conversation = conversation, messages = messages)
+    return render_template("seeker/chat.html", volunteers = volunteers, private_chats = private_chats, conversation = conversation, messages = messages, notifications=notifications)
 
 @seeker.route("/conversation/<int:conversation_id>",methods=['GET','POST'])
 @login_required
