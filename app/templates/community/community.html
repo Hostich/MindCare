@@ -14,16 +14,22 @@ Community
         <p>A safe, anonymous space to share and support each other.</p>
     </div>
 
+    <div class="community-layout">
+
+    <div class="community-main">
+
     <div class="share-card">
         <h4>Share Anonymously</h4>
 
         <form method="POST">
 
-            <textarea name="content"
-                      class="share-textarea"
-                      rows="4"
-                      placeholder="What's on your mind?"
-                      required></textarea>
+            <textarea
+                name="content"
+                class="share-textarea"
+                rows="4"
+                placeholder="What's on your mind?"
+                required
+            ></textarea>
 
             <div class="share-footer">
                 <span class="posted-as">Posted as Anonymous</span>
@@ -52,9 +58,21 @@ Community
 
         <p class="post-content">{{ post.content }}</p>
 
-        <small class="post-time">
-            {{ post.created_at.strftime("%B %d, %Y %I:%M %p") }}
-        </small>
+        <div class="post-footer-row">
+            <small class="post-time">
+                {{ post.created_at.strftime("%B %d, %Y %I:%M %p") }}
+            </small>
+
+            <button
+                type="button"
+                class="comment-toggle-btn"
+                onclick="toggleComments('{{ post.post_id }}')"
+            >
+                &#128172; {{ post.comments|length }} Comment{{ 's' if post.comments|length != 1 else '' }}
+            </button>
+        </div>
+
+        <div class="comments-wrapper" id="comments-{{ post.post_id }}" hidden>
 
         <hr>
 
@@ -62,24 +80,24 @@ Community
 
         <div class="comments-section">
 
-            {% for comment in post.comments %}
+        {% for comment in post.comments %}
 
             <div class="comment">
 
                 <div class="comment-head">
 
-                    {% if comment.user.role == "Volunteer" %}
+                {% if comment.user.role == "Volunteer" %}
 
                     <strong>{{ comment.user.username }}</strong>
                     <span class="verified-badge">
                         ✔ Verified Volunteer
                     </span>
 
-                    {% else %}
+                {% else %}
 
                     <strong>Anonymous</strong>
 
-                    {% endif %}
+                {% endif %}
 
                 </div>
 
@@ -91,13 +109,17 @@ Community
 
                 {% if comment.user.role == "Volunteer" and current_user.role == "Seeker" %}
                 <form method="POST" action="{{ url_for('chat_request.send_request') }}" class="request-chat-form">
-                    <input type="hidden"
-                           name="volunteer_id"
-                           value="{{ comment.user.user_id }}">
+                    <input
+                        type="hidden"
+                        name="volunteer_id"
+                        value="{{ comment.user.user_id }}"
+                    >
 
-                    <input type="hidden"
-                           name="source"
-                           value="community">
+                    <input
+                        type="hidden"
+                        name="source"
+                        value="community"
+                    >
 
                     <button type="submit" class="request-chat-btn">
                         Request Private Chat
@@ -108,30 +130,36 @@ Community
 
             </div>
 
-            {% else %}
+        {% else %}
 
             <small class="no-comments">No comments yet.</small>
 
-            {% endfor %}
+        {% endfor %}
 
         </div>
 
         <!-- COMMENT FORM -->
 
-        <form method="POST"
-              action="{{ url_for('community.create_comment_route', post_id=post.post_id) }}"
-              class="comment-form">
+        <form
+            method="POST"
+            action="{{ url_for('community.create_comment_route', post_id=post.post_id) }}"
+            class="comment-form"
+        >
 
-            <textarea name="content"
-                      class="comment-textarea"
-                      placeholder="Write a supportive comment..."
-                      required></textarea>
+            <textarea
+                name="content"
+                class="comment-textarea"
+                placeholder="Write a supportive comment..."
+                required
+            ></textarea>
 
             <button type="submit" class="comment-btn">
                 Send
             </button>
 
         </form>
+
+        </div>
 
     </div>
 
@@ -141,5 +169,39 @@ Community
 
     {% endfor %}
 
+    </div>
+
+    <div class="community-sidebar">
+
+        <div class="sidebar-card">
+            <h4>Community Guidelines</h4>
+            <ul class="guidelines-list">
+                <li>&#9989; Be kind and supportive</li>
+                <li>&#9989; No personal information</li>
+                <li>&#9989; Respect everyone's journey</li>
+                <li>&#9989; Report harmful content</li>
+            </ul>
+        </div>
+
+        <div class="sidebar-card">
+            <h4>Anonymous Posting</h4>
+            <p class="sidebar-note">All posts are completely anonymous. Your real identity is never revealed to other users.</p>
+        </div>
+
+    </div>
+
+    </div>
+
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function toggleComments(postId) {
+        const el = document.getElementById('comments-' + postId);
+        if (el) {
+            el.hidden = !el.hidden;
+        }
+    }
+</script>
 {% endblock %}

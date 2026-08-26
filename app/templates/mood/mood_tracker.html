@@ -16,27 +16,46 @@ Mood Tracker
 
     <div class="tracker-grid">
 
-        <div class="tracker-card">
+        <div class="tracker-card today-card">
             <h3>Today's Mood</h3>
 
             {% if latest_mood %}
 
-            <div class="today-mood">
-                <span class="mood-dot mood-dot-{{ latest_mood.mood|lower }}"></span>
-                <strong>{{ latest_mood.mood }}</strong>
+            <div class="today-mood-center">
+                <div class="mood-icon-circle mood-icon-{{ latest_mood.mood|lower }}">
+                    {% if latest_mood.mood|lower == "happy" %}
+                    <span class="mood-emoji">&#128522;</span>
+                    {% elif latest_mood.mood|lower == "calm" %}
+                    <span class="mood-emoji">&#128524;</span>
+                    {% elif latest_mood.mood|lower == "neutral" or latest_mood.mood|lower == "okay" %}
+                    <span class="mood-emoji">&#128528;</span>
+                    {% elif latest_mood.mood|lower == "sad" %}
+                    <span class="mood-emoji">&#128546;</span>
+                    {% elif latest_mood.mood|lower == "anxious" %}
+                    <span class="mood-emoji">&#128543;</span>
+                    {% elif latest_mood.mood|lower == "angry" %}
+                    <span class="mood-emoji">&#128544;</span>
+                    {% else %}
+                    <span class="mood-emoji">&#128528;</span>
+                    {% endif %}
+                </div>
+
+                <strong class="today-mood-label">{{ latest_mood.mood }}</strong>
+
+                <small class="mood-date">
+                    {{ latest_mood.recorded_at.strftime("%B %d, %Y") }}
+                </small>
+
+                {% if latest_mood.note %}
+                <p class="mood-note">{{ latest_mood.note }}</p>
+                {% endif %}
             </div>
-
-            {% if latest_mood.note %}
-            <p class="mood-note">{{ latest_mood.note }}</p>
-            {% endif %}
-
-            <small class="mood-date">
-                {{ latest_mood.recorded_at.strftime("%B %d, %Y") }}
-            </small>
 
             {% else %}
 
-            <p class="empty-text">No mood recorded today.</p>
+            <div class="today-mood-center">
+                <p class="empty-text">No mood recorded today.</p>
+            </div>
 
             {% endif %}
         </div>
@@ -47,6 +66,23 @@ Mood Tracker
             {% for mood in recent_moods %}
 
             <div class="entry-row">
+                <div class="entry-icon mood-icon-{{ mood.mood|lower }}">
+                    {% if mood.mood|lower == "happy" %}
+                    <span class="mood-emoji-small">&#128522;</span>
+                    {% elif mood.mood|lower == "calm" %}
+                    <span class="mood-emoji-small">&#128524;</span>
+                    {% elif mood.mood|lower == "neutral" or mood.mood|lower == "okay" %}
+                    <span class="mood-emoji-small">&#128528;</span>
+                    {% elif mood.mood|lower == "sad" %}
+                    <span class="mood-emoji-small">&#128546;</span>
+                    {% elif mood.mood|lower == "anxious" %}
+                    <span class="mood-emoji-small">&#128543;</span>
+                    {% elif mood.mood|lower == "angry" %}
+                    <span class="mood-emoji-small">&#128544;</span>
+                    {% else %}
+                    <span class="mood-emoji-small">&#128528;</span>
+                    {% endif %}
+                </div>
                 <div class="entry-info">
                     <strong>{{ mood.mood }}</strong>
                     <span class="entry-date">{{ mood.recorded_at.strftime("%B %d, %Y") }}</span>
@@ -54,7 +90,6 @@ Mood Tracker
                     <p class="entry-note">{{ mood.note }}</p>
                     {% endif %}
                 </div>
-                <span class="mood-dot mood-dot-{{ mood.mood|lower }}"></span>
             </div>
 
             {% else %}
@@ -68,14 +103,20 @@ Mood Tracker
 
     <div class="tracker-grid">
 
-        <div class="tracker-card">
+        <div class="tracker-card placeholder-card">
             <h3>Mood Overview</h3>
-            <p class="coming-soon">Graph coming soon...</p>
+            <div class="placeholder-box">
+                <span class="placeholder-icon">&#128200;</span>
+                <p class="coming-soon">Graph coming soon...</p>
+            </div>
         </div>
 
-        <div class="tracker-card">
+        <div class="tracker-card placeholder-card">
             <h3>Mood Distribution</h3>
-            <p class="coming-soon">Chart coming soon...</p>
+            <div class="placeholder-box">
+                <span class="placeholder-icon">&#128202;</span>
+                <p class="coming-soon">Chart coming soon...</p>
+            </div>
         </div>
 
     </div>
