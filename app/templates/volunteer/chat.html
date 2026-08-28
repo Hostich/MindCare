@@ -240,11 +240,166 @@ Volunteer Chat
                     </span>
 
                 {% endif %}
-
+                {% if conversation.conversation_status == "Active"%}
+                    <button type="button" id="refer-btn" class="refer-btn">
+                        Refer to counselor
+                    </button>
+                {% endif %}
             </div>
 
 
             <hr>
+            {% if conversation.conversation_status == "Active" %}
+
+                <div id="referral-form-container" class="referral-form-container" hidden>
+
+                    <div class="referral-header">
+
+                        <h3>
+                            Refer Seeker to Counselor
+                        </h3>
+
+                        <button type="button" id="close-referral-btn">
+                            ×
+                        </button>
+
+                    </div>
+
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'volunteer.refer_seeker',
+                            conversation_id=conversation.conversation_id
+                        ) }}"
+                    >
+
+                        <!-- COUNSELOR -->
+
+                        <div class="form-group">
+
+                            <label for="counselor_id">
+                                Counselor
+                            </label>
+
+                            <select
+                                id="counselor_id"
+                                name="counselor_id"
+                                required
+                            >
+
+                                <option value="">
+                                    Select a counselor
+                                </option>
+
+                                {% for counselor in counselors %}
+
+                                    <option value="{{ counselor.user_id }}">
+                                        {{ counselor.username }}
+                                    </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- REFERRAL REASON -->
+
+                        <div class="form-group">
+
+                            <label for="reason">
+                                Reason for Referral
+                            </label>
+
+                            <textarea
+                                id="reason"
+                                name="reason"
+                                rows="4"
+                                placeholder="Explain why you are referring this seeker..."
+                                required
+                            ></textarea>
+
+                        </div>
+
+
+                        <!-- SESSION TYPE -->
+
+                        <div class="form-group">
+
+                            <label for="preferred_session_type">
+                                Preferred Session Type
+                            </label>
+
+                            <select
+                                id="preferred_session_type"
+                                name="preferred_session_type"
+                                required
+                            >
+
+                                <option value="">
+                                    Select session type
+                                </option>
+
+                                <option value="Chat">
+                                    Chat
+                                </option>
+
+                                <option value="Video">
+                                    Video
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- VOLUNTEER NOTE -->
+
+                        <div class="form-group">
+
+                            <label for="volunteer_note">
+                                Additional Note
+                                <span>(Optional)</span>
+                            </label>
+
+                            <textarea
+                                id="volunteer_note"
+                                name="volunteer_note"
+                                rows="3"
+                                placeholder="Add any additional information for the counselor..."
+                            ></textarea>
+
+                        </div>
+
+
+                        <!-- BUTTONS -->
+
+                        <div class="referral-actions">
+
+                            <button
+                                type="submit"
+                                class="submit-referral-btn"
+                            >
+                                Send Referral
+                            </button>
+
+                            <button
+                                type="button"
+                                id="cancel-referral-btn"
+                                class="cancel-referral-btn"
+                            >
+                                Cancel
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            {% endif %}
 
 
             <!-- ================================= -->
@@ -457,7 +612,6 @@ Volunteer Chat
         {{ url_for('volunteer.chat') | tojson }};
 
 </script>
-
 {% endif %}
 
 
@@ -480,7 +634,7 @@ Volunteer Chat
         document.getElementById("pending-btn");
 
 
-    const privateChatBtn =
+    const volunteerprivateChatBtn =
         document.getElementById("private-chat-btn");
 
 
@@ -488,15 +642,15 @@ Volunteer Chat
         document.getElementById("pending-list");
 
 
-    const privateChatList =
+    const volunteerprivateChatList =
         document.getElementById("private-chat-list");
 
 
     if (
         pendingBtn &&
-        privateChatBtn &&
+        volunteerprivateChatBtn &&
         pendingList &&
-        privateChatList
+        volunteerprivateChatList
     ) {
 
 
@@ -512,14 +666,14 @@ Volunteer Chat
 
                 pendingList.hidden = false;
 
-                privateChatList.hidden = true;
+                volunteerprivateChatList.hidden = true;
 
 
                 pendingBtn.classList.add(
                     "active"
                 );
 
-                privateChatBtn.classList.remove(
+                volunteerprivateChatBtn.classList.remove(
                     "active"
                 );
 
@@ -533,22 +687,83 @@ Volunteer Chat
             =================================
         */
 
-        privateChatBtn.addEventListener(
+        volunteerprivateChatBtn.addEventListener(
             "click",
             function () {
 
                 pendingList.hidden = true;
 
-                privateChatList.hidden = false;
+                volunteerprivateChatList.hidden = false;
 
 
-                privateChatBtn.classList.add(
+                volunteerprivateChatBtn.classList.add(
                     "active"
                 );
 
                 pendingBtn.classList.remove(
                     "active"
                 );
+
+            }
+        );
+
+    }
+
+</script>
+<!-- ================================= -->
+<!-- REFERRAL FORM -->
+<!-- ================================= -->
+
+<script>
+
+    const referBtn =
+        document.getElementById("refer-btn");
+
+    const referralFormContainer =
+        document.getElementById("referral-form-container");
+
+    const closeReferralBtn =
+        document.getElementById("close-referral-btn");
+
+    const cancelReferralBtn =
+        document.getElementById("cancel-referral-btn");
+
+
+    if (referBtn && referralFormContainer) {
+
+        referBtn.addEventListener(
+            "click",
+            function () {
+
+                referralFormContainer.hidden = false;
+
+            }
+        );
+
+    }
+
+
+    if (closeReferralBtn && referralFormContainer) {
+
+        closeReferralBtn.addEventListener(
+            "click",
+            function () {
+
+                referralFormContainer.hidden = true;
+
+            }
+        );
+
+    }
+
+
+    if (cancelReferralBtn && referralFormContainer) {
+
+        cancelReferralBtn.addEventListener(
+            "click",
+            function () {
+
+                referralFormContainer.hidden = true;
 
             }
         );

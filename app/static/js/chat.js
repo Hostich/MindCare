@@ -129,20 +129,13 @@ socket.on(
     "receive_message",
     function (data) {
 
-        /*
-            If there is no chat box,
-            don't try to add anything.
-        */
-
         const currentChatBox = document.getElementById("chat-box");
 
         if (!currentChatBox) {
             return;
         }
 
-        if (
-            typeof conversationId !== "undefined" && data.conversation != conversationId
-        ){
+        if (typeof conversationId !== "undefined" && data.conversation != conversationId){
             return;
         }
 
@@ -150,15 +143,23 @@ socket.on(
         const div =
             document.createElement("div");
 
+        
+        const isMine = data.sender_id == currentUserId;
+
+        div.classList.add("message");
+
+        if(isMine){
+            div.classList.add("message-mine");
+        }else{
+            div.classList.add("message-theirs");
+        }
+
+
 
         const sender =
             data.sender_id == currentUserId
                 ? "You"
                 : otherUserLabel;
-
-
-        div.classList.add("message");
-
 
         div.innerHTML = `
 

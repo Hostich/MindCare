@@ -168,14 +168,7 @@ Seeker Chat
                 </p>
 
 
-                class="enter-link"
-                href="{{
- url_for(
-                                    'seeker.chat',
-                                    conversation_id=chat.conversation.conversation_id
-                                )
-                }}"
-                >
+                <a class="enter-link" href="{{url_for( 'seeker.chat', conversation_id=chat.conversation.conversation_id)}}">
                 Enter Conversation
                 </a>
 

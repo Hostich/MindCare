@@ -12,6 +12,7 @@ from app.routes.chat_request import chat_request
 from app.routes.volunteer import volunteer
 from app.routes.mood import mood
 from app.routes.seeker import seeker
+from app.routes.counselor import counselor
 from app.routes.notification import notification
 from app.socket import chat_events
 from app.socket import notification_events
@@ -65,6 +66,7 @@ def create_app():
     app.register_blueprint(mood)
     app.register_blueprint(seeker)
     app.register_blueprint(notification)
+    app.register_blueprint(counselor)
 
 
 

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'dashboard_base.html' %}
 
 {% block title %}
 My Profile
@@ -14,13 +14,6 @@ My Profile
         <div>
             <h1>My Profile</h1>
             <p>Manage your information and view your activity.</p>
-        </div>
-
-        <div class="top-user">
-            <div class="notification">♧</div>
-            <div class="user-circle">
-                {{ user.first_name[0] if user.first_name else user.username[0] | upper }}
-            </div>
         </div>
     </div>
 

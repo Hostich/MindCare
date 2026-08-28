@@ -7,3 +7,4 @@ from app.models.chat_request import ChatRequest
 from app.models.conversation import Conversation
 from app.models.message import Message
 from app.models.notification import Notification
+from app.models.referral import Referral
