@@ -1,0 +1,474 @@
+/* ==========================================================================
+   MindCare — Profile Page
+   Matches templates that extend base.html and render the "profile-page"
+   block. All selectors are scoped under .profile-page so this file can't
+   leak into other pages that also use generic names like .card.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap');
+
+.profile-page {
+  --mc-bg: #eef7f2;
+  --mc-card: #ffffff;
+  --mc-pill: #e7f6ef;
+  --mc-primary: #12b886;
+  --mc-primary-dark: #0a8f66;
+  --mc-primary-darker: #0b3d2e;
+  --mc-text: #17332a;
+  --mc-text-muted: #7c9a90;
+  --mc-text-body: #33534a;
+  --mc-border: #e6f0ea;
+  --mc-link: #3b82f6;
+  --mc-badge-mint-bg: #d8f3e6;
+  --mc-badge-mint-fg: #16966a;
+  --mc-badge-blue-bg: #dde9fb;
+  --mc-badge-blue-fg: #3d72c9;
+  --mc-badge-lavender-bg: #ece2fb;
+  --mc-badge-lavender-fg: #9a5fd0;
+  --mc-radius-lg: 20px;
+  --mc-radius-md: 14px;
+  --mc-radius-sm: 10px;
+  --mc-shadow: 0 6px 20px rgba(11, 61, 46, 0.06);
+  --mc-shadow-hover: 0 10px 26px rgba(11, 61, 46, 0.10);
+
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--mc-bg);
+  color: var(--mc-text-body);
+  padding: 32px 40px 56px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.profile-page *,
+.profile-page *::before,
+.profile-page *::after {
+  box-sizing: inherit;
+}
+
+/* ---------- Page header ---------- */
+
+.profile-page .page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.profile-page .page-header h1 {
+  margin: 0 0 4px;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--mc-text);
+  letter-spacing: -0.01em;
+}
+
+.profile-page .page-header p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--mc-text-muted);
+}
+
+.profile-page .top-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-page .notification {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--mc-card);
+  border-radius: 50%;
+  color: var(--mc-primary-darker);
+  font-size: 16px;
+  box-shadow: var(--mc-shadow);
+  cursor: pointer;
+}
+
+.profile-page .notification::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  right: 9px;
+  width: 8px;
+  height: 8px;
+  background: #ef4444;
+  border: 2px solid var(--mc-card);
+  border-radius: 50%;
+}
+
+.profile-page .user-circle {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2fcf95, #0a8f66);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+/* ---------- Dashboard grid ---------- */
+/* Two columns: left column stacks profile-card + personal-card,
+   right column stacks wellness-card + account-card; support-card and
+   activity-card continue the same left/right stacking below. */
+
+.profile-page .dashboard {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.profile-page .card {
+  background: var(--mc-card);
+  border-radius: var(--mc-radius-lg);
+  padding: 24px;
+  box-shadow: var(--mc-shadow);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.profile-page .card:hover {
+  box-shadow: var(--mc-shadow-hover);
+  transform: translateY(-2px);
+}
+
+.profile-page .card-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--mc-text);
+  margin-bottom: 16px;
+}
+
+/* ---------- Profile card ---------- */
+
+.profile-page .profile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.profile-page .avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #2fcf95, #069169);
+  color: #ffffff;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 20px rgba(10, 143, 102, 0.28);
+}
+
+.profile-page .username {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--mc-pill);
+  border-radius: var(--mc-radius-sm);
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  font-weight: 700;
+  color: var(--mc-text);
+}
+
+.profile-page .username a {
+  color: var(--mc-link);
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.profile-page .username a:hover {
+  text-decoration: underline;
+}
+
+.profile-page .info-pill {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--mc-pill);
+  border-radius: var(--mc-radius-sm);
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  text-align: left;
+}
+
+.profile-page .info-pill:last-child {
+  margin-bottom: 0;
+}
+
+.profile-page .info-label {
+  font-size: 12px;
+  color: var(--mc-text-muted);
+  font-weight: 600;
+}
+
+.profile-page .info-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--mc-text);
+}
+
+/* ---------- Personal information card ---------- */
+
+.profile-page .personal-row {
+  display: flex;
+  align-items: center;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--mc-border);
+  font-size: 14px;
+}
+
+.profile-page .personal-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.profile-page .personal-row strong {
+  flex: 0 0 auto;
+  font-weight: 600;
+  color: var(--mc-text-body);
+}
+
+/* pushes the value (and, when present, the edit link right after it)
+   flush to the right, leaving the label flush left */
+.profile-page .personal-row span {
+  margin-left: auto;
+  margin-right: 12px;
+  color: var(--mc-text);
+  font-weight: 700;
+  text-align: right;
+}
+
+.profile-page .personal-row .edit {
+  flex-shrink: 0;
+  color: var(--mc-link);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.profile-page .personal-row .edit:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Wellness summary card ---------- */
+
+.profile-page .wellness-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--mc-border);
+}
+
+.profile-page .wellness-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.profile-page .wellness-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  background: var(--mc-badge-mint-bg);
+  color: var(--mc-badge-mint-fg);
+}
+
+/* wellness-card children: 1 = .card-title, 2–5 = the four .wellness-item
+   rows — nth-child counts from the card-title, not from the first item */
+.profile-page .wellness-item:nth-child(3) .wellness-icon {
+  background: var(--mc-badge-blue-bg);
+  color: var(--mc-badge-blue-fg);
+}
+
+.profile-page .wellness-item:nth-child(5) .wellness-icon {
+  background: var(--mc-badge-lavender-bg);
+  color: var(--mc-badge-lavender-fg);
+}
+
+.profile-page .wellness-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profile-page .wellness-text strong {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--mc-text);
+}
+
+.profile-page .wellness-text span {
+  font-size: 12.5px;
+  color: var(--mc-text-muted);
+}
+
+/* ---------- Account status card ---------- */
+
+.profile-page .status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--mc-border);
+  font-size: 14px;
+}
+
+.profile-page .status-row span {
+  color: var(--mc-text-muted);
+  font-weight: 600;
+}
+
+.profile-page .status-row strong {
+  color: var(--mc-text);
+  font-weight: 700;
+}
+
+.profile-page .status-row strong.membership {
+  color: var(--mc-primary);
+}
+
+.profile-page .profile-button {
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px 20px;
+  background: transparent;
+  border: 1.5px solid var(--mc-primary);
+  border-radius: 999px;
+  color: var(--mc-primary);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.profile-page .profile-button:hover {
+  background: var(--mc-primary);
+  color: #ffffff;
+}
+
+.profile-page .profile-button:focus-visible {
+  outline: 2px solid var(--mc-primary-dark);
+  outline-offset: 2px;
+}
+
+/* ---------- Support preferences card ---------- */
+
+.profile-page .switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--mc-border);
+}
+
+.profile-page .switch-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.profile-page .switch-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.profile-page .switch-info strong {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--mc-text);
+}
+
+.profile-page .switch-info span {
+  font-size: 12.5px;
+  color: var(--mc-text-muted);
+  line-height: 1.4;
+}
+
+/* Static toggle — renders "on" to match the mockup. Add the .off
+   modifier class in markup for the unchecked state. */
+.profile-page .switch {
+  flex-shrink: 0;
+  position: relative;
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--mc-primary);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.profile-page .switch::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 23px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: left 0.2s ease;
+}
+
+.profile-page .switch.off {
+  background: #d3ddd8;
+}
+
+.profile-page .switch.off::after {
+  left: 3px;
+}
+
+/* ---------- Recent activity card ---------- */
+
+.profile-page .activity {
+  background: var(--mc-pill);
+  border-radius: var(--mc-radius-sm);
+  padding: 13px 16px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--mc-text-body);
+}
+
+.profile-page .activity:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 640px) {
+  .profile-page {
+    padding: 20px 16px 40px;
+  }
+
+  .profile-page .page-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .profile-page .dashboard {
+    grid-template-columns: 1fr;
+  }
+}

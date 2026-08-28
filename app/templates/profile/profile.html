@@ -1,19 +1,252 @@
-{%extends 'base.html'%}
-{%block title%}
-My profile
-{%endblock%}
-{%block content%}
-    <h2>My Profile</h2>
+{% extends 'base.html' %}
 
-        <p><strong>Username:</strong> {{ user.username }}</p>
-        <p><strong>Email:</strong> {{ user.email }}</p>
-        <p><strong>First Name:</strong> {{ user.first_name or "Not set" }}</p>
-        <p><strong>Last Name:</strong> {{ user.last_name or "Not set" }}</p>
-        <p><strong>Phone Number:</strong> {{ user.phone_number or "Not set" }}</p>
-        <p><strong>Occupation:</strong> {{ user.occupation or "Not set" }}</p>
-        <p><strong>Gender:</strong> {{ user.gender or "Not set" }}</p>
+{% block title %}
+My Profile
+{% endblock %}
 
-        <a href="{{ url_for('profile.edit_profile') }}">
-            Edit Profile
-        </a>
-{%endblock%}
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+
+<div class="profile-page">
+
+    <div class="page-header">
+        <div>
+            <h1>My Profile</h1>
+            <p>Manage your information and view your activity.</p>
+        </div>
+
+        <div class="top-user">
+            <div class="notification">♧</div>
+            <div class="user-circle">
+                {{ user.first_name[0] if user.first_name else user.username[0] | upper }}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="dashboard">
+
+        <!-- PROFILE CARD -->
+        <div class="card profile-card">
+
+            <div class="avatar">
+                {{ user.first_name[0] if user.first_name else user.username[0] | upper }}
+            </div>
+
+            <div class="username">
+                <span>{{ user.username }}</span>
+                <a href="{{ url_for('profile.edit_profile') }}">✎</a>
+            </div>
+
+            <div class="info-pill">
+                <span class="info-label">Email Address</span>
+                <span class="info-value">
+                    {{ user.email }}
+                </span>
+            </div>
+
+            <div class="info-pill">
+                <span class="info-label">Phone Number</span>
+                <span class="info-value">
+                    {{ user.phone_number or "Not set" }}
+                </span>
+            </div>
+
+        </div>
+
+
+        <!-- PERSONAL INFORMATION -->
+        <div class="card personal-card">
+
+            <div class="card-title">
+                Personal Information
+            </div>
+
+            <div class="personal-row">
+                <strong>Email Address</strong>
+                <span>{{ user.email }}</span>
+            </div>
+
+            <div class="personal-row">
+                <strong>Phone Number</strong>
+                <span>{{ user.phone_number or "Not set" }}</span>
+            </div>
+
+            <div class="personal-row">
+                <strong>Gender</strong>
+                <span>{{ user.gender or "Not set" }}</span>
+                <a class="edit"
+                   href="{{ url_for('profile.edit_profile') }}">
+                    Edit
+                </a>
+            </div>
+
+            <div class="personal-row">
+                <strong>Occupation</strong>
+                <span>{{ user.occupation or "Not set" }}</span>
+                <a class="edit"
+                   href="{{ url_for('profile.edit_profile') }}">
+                    Edit
+                </a>
+            </div>
+
+            <div class="personal-row">
+                <strong>First Name</strong>
+                <span>{{ user.first_name or "Not set" }}</span>
+            </div>
+
+            <div class="personal-row">
+                <strong>Last Name</strong>
+                <span>{{ user.last_name or "Not set" }}</span>
+            </div>
+
+        </div>
+
+
+        <!-- WELLNESS SUMMARY -->
+        <div class="card wellness-card">
+
+            <div class="card-title">
+                Wellness Summary
+            </div>
+
+            <div class="wellness-item">
+                <div class="wellness-icon">♟</div>
+
+                <div class="wellness-text">
+                    <strong>Mood Entries 10</strong>
+                    <span>Keep tracking your feelings</span>
+                </div>
+            </div>
+
+            <div class="wellness-item">
+                <div class="wellness-icon">D</div>
+
+                <div class="wellness-text">
+                    <strong>Volunteer Hours 5</strong>
+                    <span>Thank you for being there!</span>
+                </div>
+            </div>
+
+            <div class="wellness-item">
+                <div class="wellness-icon">♧</div>
+
+                <div class="wellness-text">
+                    <strong>Community Posts 4</strong>
+                    <span>Posts you have created</span>
+                </div>
+            </div>
+
+            <div class="wellness-item">
+                <div class="wellness-icon">♡</div>
+
+                <div class="wellness-text">
+                    <strong>Private Chats</strong>
+                    <span>Text</span>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- ACCOUNT STATUS -->
+        <div class="card account-card">
+
+            <div class="card-title">
+                Account Status
+            </div>
+
+            <div class="status-row">
+                <span>Membership Plan</span>
+                <strong>Free Plan</strong>
+            </div>
+
+            <div class="status-row">
+                <span>Volunteer Status</span>
+                <strong>Not Applied</strong>
+            </div>
+
+            <div class="status-row">
+                <span>Account Status</span>
+                <strong class="membership">Active</strong>
+            </div>
+
+            <div class="status-row">
+                <span>Username</span>
+                <strong>{{ user.username }}</strong>
+            </div>
+
+            <button class="profile-button">
+                Upgrade Plan
+            </button>
+
+        </div>
+
+
+        <!-- SUPPORT PREFERENCES -->
+        <div class="card support-card">
+
+            <div class="card-title">
+                Support Preferences
+            </div>
+
+            <div class="switch-row">
+
+                <div class="switch-info">
+                    <strong>Anonymous Posting</strong>
+                    <span>
+                        Your posts in the community are anonymous
+                    </span>
+                </div>
+
+                <div class="switch"></div>
+
+            </div>
+
+            <div class="switch-row">
+
+                <div class="switch-info">
+                    <strong>Receive Wellness Reminders</strong>
+                    <span>
+                        Daily reminder to check in with your well-being
+                    </span>
+                </div>
+
+                <div class="switch"></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RECENT ACTIVITY -->
+        <div class="card activity-card">
+
+            <div class="card-title">
+                Recent Activity
+            </div>
+
+            <div class="activity">
+                Logged mood: Happy 😊
+            </div>
+
+            <div class="activity">
+                Liked a community post
+            </div>
+
+            <div class="activity">
+                Chatted with Sarah Chen
+            </div>
+
+            <div class="activity">
+                Read: Understanding Depression
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

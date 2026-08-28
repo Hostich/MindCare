@@ -6,65 +6,71 @@ Edit Profile
 
 {% block content %}
 
-<h2>Edit Profile</h2>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/edit_profile.css') }}">
 
-<form method="POST">
+<div class="edit-profile-page">
 
-    <label>First Name</label>
-    <input
-        type="text"
-        name="first_name"
-        value="{{ user.first_name or '' }}"
-    >
+    <h2>Edit Profile</h2>
 
-    <label>Last Name</label>
-    <input
-        type="text"
-        name="last_name"
-        value="{{ user.last_name or '' }}"
-    >
+    <form method="POST">
 
-    <label>Phone Number</label>
-    <input
-        type="text"
-        name="phone_number"
-        value="{{ user.phone_number or '' }}"
-    >
+        <label>First Name</label>
+        <input
+            type="text"
+            name="first_name"
+            value="{{ user.first_name or '' }}"
+        >
 
-    <label>Occupation</label>
-    <input
-        type="text"
-        name="occupation"
-        value="{{ user.occupation or '' }}"
-    >
+        <label>Last Name</label>
+        <input
+            type="text"
+            name="last_name"
+            value="{{ user.last_name or '' }}"
+        >
 
-    <label>Gender</label>
+        <label>Phone Number</label>
+        <input
+            type="text"
+            name="phone_number"
+            value="{{ user.phone_number or '' }}"
+        >
 
-    <select name="gender">
+        <label>Occupation</label>
+        <input
+            type="text"
+            name="occupation"
+            value="{{ user.occupation or '' }}"
+        >
 
-        <option value="">Select Gender</option>
+        <label>Gender</label>
 
-        <option value="Male"
-        {% if user.gender == "Male" %}selected{% endif %}>
-            Male
-        </option>
+        <select name="gender">
 
-        <option value="Female"
-        {% if user.gender == "Female" %}selected{% endif %}>
-            Female
-        </option>
+            <option value="">Select Gender</option>
 
-        <option value="Prefer not to say"
-        {% if user.gender == "Prefer not to say" %}selected{% endif %}>
-            Prefer not to say
-        </option>
+            <option value="Male"
+            {% if user.gender == "Male" %}selected{% endif %}>
+                Male
+            </option>
 
-    </select>
+            <option value="Female"
+            {% if user.gender == "Female" %}selected{% endif %}>
+                Female
+            </option>
 
-    <button type="submit">
-        Save Changes
-    </button>
+            <option value="Prefer not to say"
+            {% if user.gender == "Prefer not to say" %}selected{% endif %}>
+                Prefer not to say
+            </option>
 
-</form>
+        </select>
+
+        <button type="submit">
+            Save Changes
+        </button>
+
+    </form>
+
+</div>
 
 {% endblock %}
