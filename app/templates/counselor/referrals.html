@@ -1,0 +1,577 @@
+{% extends "dashboard_base.html" %}
+
+{% block title %}
+Counselor Referrals
+{% endblock %}
+
+{% block content %}
+
+<div class="referrals-container">
+
+    <h2>Referrals</h2>
+
+
+    <!-- ================================= -->
+    <!-- REFERRAL LIST -->
+    <!-- ================================= -->
+
+    {% if referrals %}
+
+        {% for referral in referrals %}
+
+            <div class="referral-card">
+
+                <!-- ================================= -->
+                <!-- SEEKER -->
+                <!-- ================================= -->
+
+                <div class="referral-seeker">
+
+                    <strong>
+                        Anonymous Seeker
+                    </strong>
+
+                    <small>
+                        Referred
+                        {{ referral.referred_at.strftime(
+                            "%B %d, %Y %I:%M %p"
+                        ) }}
+                    </small>
+
+                </div>
+
+
+                <!-- ================================= -->
+                <!-- REFERRAL INFORMATION -->
+                <!-- ================================= -->
+
+                <div class="referral-info">
+
+                    <p>
+
+                        <strong>
+                            Session Type:
+                        </strong>
+
+                        {{ referral.preferred_session_type }}
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Reason:
+                        </strong>
+
+                        {{ referral.reason }}
+
+                    </p>
+
+
+                    {% if referral.volunteer_note %}
+
+                        <p>
+
+                            <strong>
+                                Volunteer Note:
+                            </strong>
+
+                            {{ referral.volunteer_note }}
+
+                        </p>
+
+                    {% endif %}
+
+
+                    <p>
+
+                        <strong>
+                            Status:
+                        </strong>
+
+                        {{ referral.referral_status }}
+
+                    </p>
+
+                </div>
+
+
+                <!-- ================================= -->
+                <!-- ACTION -->
+                <!-- ================================= -->
+
+                <div class="referral-actions">
+
+                    {% if referral.referral_status == "Pending" %}
+
+                        <button
+                            type="button"
+                            class="review-referral-btn"
+
+                            data-referral-id="{{ referral.referral_id }}"
+
+                            data-session-type="{{ referral.preferred_session_type }}"
+
+                            data-reason="{{ referral.reason }}"
+
+                            data-volunteer-note="{{ referral.volunteer_note or '' }}"
+                        >
+                            Review
+                        </button>
+
+
+                    {% elif referral.referral_status == "Accepted" %}
+
+                        <span>
+                            Accepted
+                        </span>
+
+
+                    {% elif referral.referral_status == "Rejected" %}
+
+                        <span>
+                            Declined
+                        </span>
+
+
+                    {% elif referral.referral_status == "Completed" %}
+
+                        <span>
+                            Completed
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+
+    {% else %}
+
+        <p>
+            No referrals available.
+        </p>
+
+    {% endif %}
+
+
+
+    <!-- ================================= -->
+    <!-- REFERRAL REVIEW MODAL -->
+    <!-- ================================= -->
+
+    <div
+        id="referral-modal"
+        class="referral-modal"
+        hidden
+    >
+
+        <div class="referral-modal-content">
+
+
+            <!-- ================================= -->
+            <!-- MODAL HEADER -->
+            <!-- ================================= -->
+
+            <div class="referral-modal-header">
+
+                <h3>
+                    Review Referral
+                </h3>
+
+
+                <button
+                    type="button"
+                    id="close-referral-modal"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+
+            <!-- ================================= -->
+            <!-- MODAL BODY -->
+            <!-- ================================= -->
+
+            <div class="referral-modal-body">
+
+
+                <!-- SEEKER -->
+
+                <p>
+
+                    <strong>
+                        Seeker:
+                    </strong>
+
+                    Anonymous Seeker
+
+                </p>
+
+
+                <!-- SESSION TYPE -->
+
+                <p>
+
+                    <strong>
+                        Session Type:
+                    </strong>
+
+                    <span id="modal-session-type">
+                    </span>
+
+                </p>
+
+
+                <!-- REASON -->
+
+                <p>
+
+                    <strong>
+                        Reason:
+                    </strong>
+
+                </p>
+
+                <p id="modal-reason">
+                </p>
+
+
+
+                <!-- VOLUNTEER NOTE -->
+
+                <div
+                    id="modal-volunteer-note-container"
+                >
+
+                    <p>
+
+                        <strong>
+                            Volunteer Note:
+                        </strong>
+
+                    </p>
+
+                    <p id="modal-volunteer-note">
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================================= -->
+            <!-- MODAL ACTIONS -->
+            <!-- ================================= -->
+
+            <div class="referral-modal-actions">
+
+
+                <!-- ACCEPT -->
+
+                <form
+                    id="accept-referral-form"
+                    method="POST"
+                >
+
+                    <button
+                        type="submit"
+                        class="accept-referral-btn"
+                    >
+                        Accept
+                    </button>
+
+                </form>
+
+
+
+                <!-- REJECT -->
+
+                <form
+                    id="reject-referral-form"
+                    method="POST"
+                >
+
+                    <button
+                        type="submit"
+                        class="reject-referral-btn"
+                    >
+                        Reject
+                    </button>
+
+                </form>
+
+
+
+                <!-- CANCEL -->
+
+                <button
+                    type="button"
+                    id="cancel-referral-modal"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+
+{% block scripts %}
+
+<script>
+
+    /* =========================================
+       GET MODAL ELEMENTS
+    ========================================= */
+
+    const referralModal =
+        document.getElementById(
+            "referral-modal"
+        );
+
+
+    const closeReferralModal =
+        document.getElementById(
+            "close-referral-modal"
+        );
+
+
+    const cancelReferralModal =
+        document.getElementById(
+            "cancel-referral-modal"
+        );
+
+
+    const modalSessionType =
+        document.getElementById(
+            "modal-session-type"
+        );
+
+
+    const modalReason =
+        document.getElementById(
+            "modal-reason"
+        );
+
+
+    const modalVolunteerNote =
+        document.getElementById(
+            "modal-volunteer-note"
+        );
+
+
+    const modalVolunteerNoteContainer =
+        document.getElementById(
+            "modal-volunteer-note-container"
+        );
+
+
+    const acceptReferralForm =
+        document.getElementById(
+            "accept-referral-form"
+        );
+
+
+    const rejectReferralForm =
+        document.getElementById(
+            "reject-referral-form"
+        );
+
+
+    /* =========================================
+       GET REVIEW BUTTONS
+    ========================================= */
+
+    const reviewButtons =
+        document.querySelectorAll(
+            ".review-referral-btn"
+        );
+
+
+
+    /* =========================================
+       OPEN MODAL
+    ========================================= */
+
+    reviewButtons.forEach(
+        function(button) {
+
+            button.addEventListener(
+                "click",
+                function() {
+
+
+                    /* -------------------------
+                       GET REFERRAL DATA
+                    ------------------------- */
+
+                    const referralId =
+                        this.dataset.referralId;
+
+
+                    const sessionType =
+                        this.dataset.sessionType;
+
+
+                    const reason =
+                        this.dataset.reason;
+
+
+                    const volunteerNote =
+                        this.dataset.volunteerNote;
+
+
+
+                    /* -------------------------
+                       PUT DATA INTO MODAL
+                    ------------------------- */
+
+                    modalSessionType.textContent =
+                        sessionType;
+
+
+                    modalReason.textContent =
+                        reason;
+
+
+
+                    /* -------------------------
+                       VOLUNTEER NOTE
+                    ------------------------- */
+
+                    if (volunteerNote) {
+
+                        modalVolunteerNote.textContent =
+                            volunteerNote;
+
+                        modalVolunteerNoteContainer.hidden =
+                            false;
+
+                    }
+                    else {
+
+                        modalVolunteerNoteContainer.hidden =
+                            true;
+
+                    }
+
+
+
+                    /* -------------------------
+                       SET ACCEPT URL
+                    ------------------------- */
+
+                    acceptReferralForm.action =
+                        `/counselor/referral/${referralId}/accept`;
+
+
+
+                    /* -------------------------
+                       SET REJECT URL
+                    ------------------------- */
+
+                    rejectReferralForm.action =
+                        `/counselor/referral/${referralId}/reject`;
+
+
+
+                    /* -------------------------
+                       SHOW MODAL
+                    ------------------------- */
+
+                    referralModal.hidden =
+                        false;
+
+                }
+            );
+
+        }
+    );
+
+
+
+    /* =========================================
+       CLOSE MODAL FUNCTION
+    ========================================= */
+
+    function closeReferralModalFunction() {
+
+        referralModal.hidden =
+            true;
+
+    }
+
+
+
+    /* =========================================
+       CLOSE BUTTON
+    ========================================= */
+
+    if (closeReferralModal) {
+
+        closeReferralModal.addEventListener(
+            "click",
+            closeReferralModalFunction
+        );
+
+    }
+
+
+
+    /* =========================================
+       CANCEL BUTTON
+    ========================================= */
+
+    if (cancelReferralModal) {
+
+        cancelReferralModal.addEventListener(
+            "click",
+            closeReferralModalFunction
+        );
+
+    }
+
+
+
+    /* =========================================
+       CLICK OUTSIDE MODAL
+    ========================================= */
+
+    if (referralModal) {
+
+        referralModal.addEventListener(
+            "click",
+            function(event) {
+
+                if (
+                    event.target ===
+                    referralModal
+                ) {
+
+                    closeReferralModalFunction();
+
+                }
+
+            }
+        );
+
+    }
+
+</script>
+
+{% endblock %}
