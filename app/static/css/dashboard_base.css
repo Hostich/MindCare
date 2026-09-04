@@ -270,3 +270,384 @@ body {
         margin: 20px 20px 0;
     }
 }
+
+/* =========================================
+   VOLUNTEER PROFILE
+   ========================================= */
+
+.profile-page {
+    width: 100%;
+    box-sizing: border-box;
+    /* Gidugangan og padding (top right bottom left) para dili sikit sa margins */
+    padding: 0 24px 40px 24px; 
+}
+
+/* HEADER */
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.profile-header h2 {
+    margin: 0;
+    color: #17324d;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+
+/* PROFILE LAYOUT */
+
+.profile-layout {
+    display: grid;
+    /* Gigamay ang left card width (320px) para mas dako og allowance */
+    grid-template-columns: 320px minmax(0, 1fr);
+    /* Gidugangan ang gap gikan 18px -> 24px para layo-layo ang cards sa usag-usa */
+    gap: 24px;
+    width: 100%;
+}
+
+.profile-left {
+    display: flex;
+    flex-direction: column;
+    gap: 24px; /* Gihimo ring 24px ang gap sa mga cards sa wala */
+}
+
+
+/* GENERAL CARD */
+
+.profile-card {
+    background: #ffffff;
+    border: 1px solid #e1e8e5;
+    border-radius: 16px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   VOLUNTEER SUMMARY
+   ========================================= */
+
+.volunteer-summary {
+    padding: 20px 16px 12px;
+    min-height: auto; /* Gi-auto para mo-fit ug mas slim tan-awon */
+}
+
+.avatar-large {
+    width: 82px;
+    height: 82px;
+
+    margin: 0 auto 14px;
+
+    border-radius: 50%;
+
+    background: #08b58a;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.volunteer-summary h3 {
+    margin: 0;
+
+    text-align: center;
+
+    color: #172f46;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.volunteer-summary .role {
+    margin: 6px 0 22px;
+
+    text-align: center;
+
+    color: #08a980;
+    font-size: 14px;
+}
+
+
+/* SUMMARY ROWS */
+
+.summary-list {
+    width: 100%;
+}
+
+.summary-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 10px 0;
+
+    border-bottom: 1px solid #e7eeeb;
+
+    font-size: 14px;
+}
+
+.summary-row:last-child {
+    border-bottom: none;
+}
+
+.summary-row span {
+    color: #6e8792;
+}
+
+.summary-row strong {
+    color: #263746;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   ABOUT ME
+   ========================================= */
+
+.about-card {
+    padding: 24px 20px;
+
+    min-height: 145px;
+}
+
+.card-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+}
+
+.card-heading h3 {
+    margin: 0;
+
+    color: #17324d;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.card-heading a {
+    color: #009d7c;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.card-heading a:hover {
+    text-decoration: underline;
+}
+
+.about-card p {
+    margin: 0;
+
+    color: #718792;
+
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+/* =========================================
+   PERSONAL INFORMATION
+   ========================================= */
+
+.personal-card {
+    min-height: auto; /* Ginagmay nga adjustment para mopahiuyong ang habog sa card */
+    padding: 25px 24px;
+}
+
+.personal-card .card-heading {
+    margin-bottom: 20px;
+}
+
+.personal-card .card-heading h3 {
+    font-size: 16px;
+}
+
+.personal-info {
+    width: 100%;
+}
+
+.info-row {
+    display: grid;
+    grid-template-columns: 145px minmax(0, 1fr);
+
+    align-items: center;
+
+    min-height: 48px;
+
+    border-bottom: 1px solid #e7eeeb;
+
+    font-size: 14px;
+}
+
+.info-row span {
+    color: #718792;
+}
+
+.info-row strong {
+    color: #263746;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 1000px) {
+
+    .profile-layout {
+        grid-template-columns: 280px minmax(0, 1fr);
+    }
+
+}
+
+@media (max-width: 800px) {
+
+    .profile-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .personal-card {
+        min-height: auto;
+    }
+
+}
+
+@media (max-width: 500px) {
+
+    .profile-page {
+        padding: 0 12px 30px 12px;
+    }
+
+    .profile-header h2 {
+        font-size: 25px;
+    }
+
+    .info-row {
+        grid-template-columns: 110px minmax(0, 1fr);
+        font-size: 13px;
+    }
+
+}
+
+/* =========================
+   NOTIFICATION BELL
+   ========================= */
+
+.notification-container {
+    position: fixed;
+    top: 20px;
+    right: 25px;
+    z-index: 1000;
+}
+
+.notification-button {
+    position: relative;
+    width: 42px;
+    height: 42px;
+
+    border: 1px solid #e2e8e5;
+    border-radius: 50%;
+
+    background: #ffffff;
+    cursor: pointer;
+
+    font-size: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.notification-button:hover {
+    background: #f5faf8;
+}
+
+.notification-badge {
+    position: absolute;
+
+    top: -3px;
+    right: -3px;
+
+    min-width: 18px;
+    height: 18px;
+
+    padding: 0 4px;
+
+    border-radius: 50%;
+
+    background: #e74c3c;
+    color: white;
+
+    font-size: 10px;
+    font-weight: bold;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* Notification dropdown */
+
+.notification-dropdown {
+    position: absolute;
+
+    top: 50px;
+    right: 0;
+
+    width: 320px;
+    max-height: 400px;
+
+    overflow-y: auto;
+
+    background: white;
+
+    border: 1px solid #e2e8e5;
+    border-radius: 12px;
+
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+
+    padding: 15px;
+}
+
+.notification-dropdown h3 {
+    margin: 0 0 12px;
+
+    font-size: 15px;
+}
+
+.notification-item {
+    padding: 10px 0;
+
+    border-bottom: 1px solid #edf1ef;
+}
+
+.notification-item strong {
+    font-size: 13px;
+}
+
+.notification-item p {
+    margin: 5px 0;
+
+    font-size: 12px;
+    color: #6f7d78;
+}
+
+.notification-item a {
+    font-size: 12px;
+    color: #079c7b;
+    text-decoration: none;
+}
