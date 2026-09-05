@@ -1,0 +1,336 @@
+{% extends "dashboard_base.html" %}
+
+{% block title %}
+Counseling Session
+{% endblock %}
+
+{% block content %}
+
+<div class="counseling-session-container">
+
+    <div class="session-left">
+
+        <div class="session-info">
+
+            <h3>
+                Counseling Session
+            </h3>
+
+            <p>
+                <strong>Session ID:</strong>
+                {{ session.session_id }}
+            </p>
+
+            <p>
+                <strong>Counselor:</strong>
+                Your Counselor
+            </p>
+
+            <p>
+                <strong>Session Type:</strong>
+                {{ session.session_type }}
+            </p>
+
+            <p>
+                <strong>Started:</strong>
+
+                {% if session.started_at %}
+
+                    {{ session.started_at.strftime(
+                        "%B %d, %Y %I:%M %p"
+                    ) }}
+
+                {% else %}
+
+                    Not started
+
+                {% endif %}
+
+            </p>
+
+            <p>
+                <strong>Ended:</strong>
+
+                {% if session.ended_at %}
+
+                    {{ session.ended_at.strftime(
+                        "%B %d, %Y %I:%M %p"
+                    ) }}
+
+                {% else %}
+
+                    Not ended
+
+                {% endif %}
+
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+
+                {% if session.session_status == "Pending" %}
+
+                    🟡 Pending
+
+                {% elif session.session_status == "Active" %}
+
+                    🟢 Active
+
+                {% elif session.session_status == "Completed" %}
+
+                    ✅ Completed
+
+                {% elif session.session_status == "Cancelled" %}
+
+                    ❌ Cancelled
+
+                {% endif %}
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="session-right">
+
+        {% if session.session_status == "Pending" %}
+
+            <div class="session-waiting">
+
+                <h3>
+                    Counseling Session
+                </h3>
+
+                <p>
+                    Your counseling referral has been accepted.
+                </p>
+
+                <p>
+                    The counseling session has not started yet.
+                </p>
+
+                <p>
+                    Please wait for the counselor to start the session.
+                </p>
+
+            </div>
+
+
+        {% elif session.session_status == "Active" %}
+
+            {% if session.conversation %}
+
+                <div class="counseling-chat">
+
+                    <div class="conversation-header">
+
+                        <div>
+
+                            <h3>
+                                Counselor
+                            </h3>
+
+                            <p>
+                                Counseling Session
+                            </p>
+
+                        </div>
+
+                        <span>
+                            🟢 Active
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        id="chat-box"
+                        class="chat-box"
+                    >
+
+                        {% for message in messages %}
+
+                            <div class="message">
+
+                                {% if message.sender_id == current_user.user_id %}
+
+                                    <strong>
+                                        You
+                                    </strong>
+
+                                {% else %}
+
+                                    <strong>
+                                        Counselor
+                                    </strong>
+
+                                {% endif %}
+
+                                <p>
+                                    {{ message.message }}
+                                </p>
+
+                                <small>
+
+                                    {{ message.sent_at.strftime(
+                                        "%B %d, %Y %I:%M %p"
+                                    ) }}
+
+                                </small>
+
+                            </div>
+
+                            <hr>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <form
+                        id="chat-form"
+                        onsubmit="return false;"
+                        class="chat-form"
+                    >
+
+                        <textarea
+                            id="message-input"
+                            rows="2"
+                            placeholder="Send message"
+                            required
+                        ></textarea>
+
+                        <button
+                            type="submit"
+                            id="send-button"
+                        >
+                            Send
+                        </button>
+
+                    </form>
+
+                </div>
+
+            {% else %}
+
+                <div class="no-conversation">
+
+                    <h3>
+                        Counseling Chat
+                    </h3>
+
+                    <p>
+                        The counseling session is active,
+                        but no conversation was found.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+
+        {% elif session.session_status == "Completed" %}
+
+            <div class="session-summary">
+
+                <h3>
+                    Session Summary
+                </h3>
+
+                {% if session.summary %}
+
+                    <p>
+                        <strong>
+                            Outcome:
+                        </strong>
+                    </p>
+
+                    <p>
+                        {{ session.summary.outcome }}
+                    </p>
+
+                    {% if session.summary.counselor_note %}
+
+                        <p>
+                            <strong>
+                                Counselor Note:
+                            </strong>
+                        </p>
+
+                        <p>
+                            {{ session.summary.counselor_note }}
+                        </p>
+
+                    {% endif %}
+
+                    <p>
+
+                        <strong>
+                            Completed:
+                        </strong>
+
+                        {{ session.summary.completed_at.strftime(
+                            "%B %d, %Y %I:%M %p"
+                        ) }}
+
+                    </p>
+
+                {% else %}
+
+                    <p>
+                        No session summary found.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+        {% elif session.session_status == "Cancelled" %}
+
+            <div class="session-cancelled">
+
+                <h3>
+                    Counseling Session Cancelled
+                </h3>
+
+                <p>
+                    This counseling session has been cancelled.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+{% if session.conversation %}
+
+<script>
+
+    const conversationId =
+        {{ session.conversation.conversation_id | tojson }};
+
+    const otherUserLabel =
+        "Counselor";
+
+</script>
+
+{% endif %}
+
+<script
+    src="{{ url_for('static', filename='js/chat.js') }}"
+></script>
+
+{% endblock %}

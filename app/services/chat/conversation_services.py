@@ -58,3 +58,14 @@ def volunteer_is_busy(volunteer_id):
         print("Active Conversation ID: ", active_conversation.conversation_id)
 
     return active_conversation is not None
+
+def create_counseling_conversation(session_id):
+    conversation = Conversation(
+        session_id = session_id,
+        conversation_status = "Active"
+    )
+
+    db.session.add(conversation)
+    db.session.commit()
+
+    return conversation
