@@ -27,14 +27,14 @@
         {% if current_user.role == "Seeker" %}
 
         <nav class="sidebar-nav">
-            <a href="{{ url_for('seeker.dashboard') }}"><span class="nav-icon">&#127968;</span> Dashboard</a>
-            <a href="{{ url_for('community.community_feed') }}"><span class="nav-icon">&#128101;</span> Community Feed</a>
-            <a href="{{ url_for('mood.mood_tracker') }}"><span class="nav-icon">&#128202;</span> Mood Tracker</a>
-            <a href="{{ url_for('seeker.chat', conversation_id = request.args.get('conversation_id'))}}"><span class="nav-icon">&#128172;</span> Chat</a>
-            <a href="#"><span class="nav-icon">&#128218;</span> Resources</a>
-            <a href="{{ url_for('profile.view_profile') }}"><span class="nav-icon">&#128100;</span> Profile</a>
-            <a href="#" class="crisis-link"><span class="nav-icon">&#128222;</span> Crisis Support</a>
-            <a href="#"><span class="nav-icon">&#10084;</span> Volunteer Application</a>
+            <a href="{{ url_for('seeker.dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('community.community_feed') }}">Community Feed</a>
+            <a href="{{ url_for('mood.mood_tracker') }}">Mood Tracker</a>
+            <a href="{{ url_for('seeker.chat', conversation_id = request.args.get('conversation_id'))}}">Chat</a>
+            <a href="#">Resources</a>
+            <a href="{{ url_for('profile.view_profile') }}">Profile</a>
+            <a href="#" class="crisis-link">Crisis Support</a>
+            <a href="#">Volunteer Application</a>
         </nav>
 
         <!-- ===================== -->
@@ -43,25 +43,25 @@
         {% elif current_user.role == "Volunteer" %}
 
         <nav class="sidebar-nav">
-            <a href="{{ url_for('volunteer.dashboard') }}"><span class="nav-icon">&#127968;</span> Dashboard</a>
-            <a href="{{ url_for('community.community_feed') }}"><span class="nav-icon">&#128101;</span> Community Feed</a>
-            <a href="{{ url_for('volunteer.chat') }}"><span class="nav-icon">&#128172;</span> Chat</a>
-            <a href="#"><span class="nav-icon">&#128203;</span> Counselor Referral</a>
-            <a href="#"><span class="nav-icon">&#128218;</span> Resources</a>
-            <a href="{{ url_for('profile.volunteer_profile') }}"><span class="nav-icon">&#128100;</span> Profile</a>
+            <a href="{{ url_for('volunteer.dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('community.community_feed') }}">Community Feed</a>
+            <a href="{{ url_for('volunteer.chat') }}">Chat</a>
+            <a href="#">Counselor Referral</a>
+            <a href="#">Resources</a>
+            <a href="{{ url_for('profile.view_profile') }}">Profile</a>
         </nav>
 
         <!-- ===================== -->
-        <!-- COUNSELOR SIDEBAR  {url_for('counselor.counseling_sessions')}} -->
+        <!-- COUNSELOR SIDEBAR -->
         <!-- ===================== -->
         {% elif current_user.role == "Counselor" %}
 
         <nav class="sidebar-nav">
-            <a href="#"><span class="nav-icon">&#127968;</span> Dashboard</a>
-            <a href="#"><span class="nav-icon">&#128172;</span> Counseling Sessions</a>
-            <a href="#"><span class="nav-icon">&#128260;</span> referrals</a>
-            <a href="#"><span class="nav-icon">&#128218;</span> Resources</a>
-            <a href="{{ url_for('profile.view_profile') }}"><span class="nav-icon">&#128100;</span> Profile</a>
+            <a href="#">Dashboard</a>
+            <a href="#">Counseling Sessions</a>
+            <a href="#">referrals</a>
+            <a href="#">Resources</a>
+            <a href="{{ url_for('profile.view_profile') }}">Profile</a>
         </nav>
 
         <!-- ===================== -->
@@ -70,13 +70,13 @@
         {% elif current_user.role == "Admin" %}
 
         <nav class="sidebar-nav">
-            <a href="#"><span class="nav-icon">&#127968;</span> Dashboard</a>
-            <a href="#"><span class="nav-icon">&#128100;</span> Users</a>
-            <a href="#"><span class="nav-icon">&#128101;</span> Community</a>
-            <a href="#"><span class="nav-icon">&#129309;</span> Volunteers</a>
-            <a href="#"><span class="nav-icon">&#128172;</span> Counselors</a>
-            <a href="#"><span class="nav-icon">&#128202;</span> Reports</a>
-            <a href="#"><span class="nav-icon">&#128218;</span> Resources</a>
+            <a href="#">Dashboard</a>
+            <a href="#">Users</a>
+            <a href="#">Community</a>
+            <a href="#">Volunteers</a>
+            <a href="#">Counselors</a>
+            <a href="#">Reports</a>
+            <a href="#">Resources</a>
         </nav>
 
         {% endif %}
@@ -145,14 +145,14 @@
                         </div>
                         <hr>
                         <a href="{{ url_for('profile.view_profile') }}" class="profile-dropdown-item">
-                            <span class="nav-icon">&#128100;</span> View Profile
+                            View Profile
                         </a>
                         <a href="#" class="profile-dropdown-item">
-                            <span class="nav-icon">&#9881;</span> Settings
+                            Settings
                         </a>
                         <hr>
                         <a href="#" class="profile-dropdown-item logout-item">
-                            <span class="nav-icon">&#8618;</span> Logout
+                            Logout
                         </a>
                     </div>
                 </div>

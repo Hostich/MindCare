@@ -3,7 +3,7 @@
     max-width: 640px;
     margin: 0 auto;
     padding: 40px 20px 80px;
-    background: radial-gradient(circle at 80% 0%, #e6fffa 0%, #f0fdf9 55%, #ffffff 100%);
+    background: radial-gradient(circle at 80% 0%, #EFEAFB 0%, #F8F7FE 55%, #ffffff 100%);
 }
 
 /* ===== TITLE CARD ===== */
@@ -59,7 +59,7 @@
 }
 
     .mood-option:hover {
-        background-color: #f0fdf9;
+        background-color: #F8F7FE;
     }
 
     .mood-option input {
@@ -90,14 +90,14 @@
 }
 
 .mood-option input:checked + .mood-emoji {
-    border-color: #0d9488;
-    background-color: #ccfbf1;
-    box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.12);
+    border-color: #7C6FDB;
+    background-color: #EDE9FE;
+    box-shadow: 0 0 0 4px rgba(124, 111, 219, 0.15);
     transform: translateY(-2px);
 }
 
 .mood-option input:checked ~ .mood-label {
-    color: #0d9488;
+    color: #7C6FDB;
     font-weight: 700;
 }
 
@@ -144,15 +144,15 @@
 
     .note-card textarea:focus {
         outline: none;
-        border-color: #0d9488;
+        border-color: #7C6FDB;
         background-color: #ffffff;
-        box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
+        box-shadow: 0 0 0 3px rgba(124, 111, 219, 0.15);
     }
 
 /* ===== CONFIRM BUTTON ===== */
 .confirm-btn {
     width: 100%;
-    background: linear-gradient(135deg, #0d9488, #0f766e);
+    background: linear-gradient(135deg, #FF8C69, #F2704A);
     color: #ffffff;
     padding: 16px;
     border: none;
@@ -161,13 +161,13 @@
     font-weight: 700;
     letter-spacing: 0.5px;
     cursor: pointer;
-    box-shadow: 0 14px 28px rgba(13, 148, 136, 0.25);
+    box-shadow: 0 14px 28px rgba(255, 140, 105, 0.32);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
     .confirm-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 18px 34px rgba(13, 148, 136, 0.32);
+        box-shadow: 0 18px 34px rgba(255, 140, 105, 0.4);
     }
 
 /* ===== RESPONSIVE ===== */

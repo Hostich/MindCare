@@ -1,7 +1,7 @@
 /* ===== DASHBOARD PAGE ===== */
 .dash-page {
     padding: 34px 42px 60px;
-    background-color: #f7fdfb;
+    background-color: #FAF9FE;
     min-height: 100vh;
 }
 
@@ -22,12 +22,12 @@
 
 /* ===== GRADIENT BANNER ===== */
 .dash-banner {
-    background: linear-gradient(120deg, #0d9488, #10b981);
+    background: linear-gradient(120deg, #7C6FDB, #FF8C69);
     color: #ffffff;
     border-radius: 20px;
     padding: 30px 34px;
     margin-bottom: 26px;
-    box-shadow: 0 20px 40px rgba(13, 148, 136, 0.25);
+    box-shadow: 0 20px 40px rgba(124, 111, 219, 0.28);
     position: relative;
     overflow: hidden;
 }
@@ -52,7 +52,7 @@
 
     .dash-banner p {
         font-size: 14px;
-        color: #d1fae5;
+        color: #FFF1EC;
         position: relative;
     }
 
@@ -92,8 +92,8 @@
 }
 
 .mood-stat {
-    background-color: #ecfdf5;
-    border-color: #d1fae5;
+    background-color: #F5F3FF;
+    border-color: #E0DBFA;
 }
 
 .post-stat {
@@ -102,8 +102,8 @@
 }
 
 .volunteer-stat {
-    background-color: #faf5ff;
-    border-color: #f3e8ff;
+    background-color: #FFF1EC;
+    border-color: #FFDCC9;
 }
 
 /* ===== MAIN GRID ===== */
@@ -168,12 +168,12 @@
 }
 
 .quick-item.talk {
-    background-color: #ecfdf5;
-    color: #0d9488;
+    background-color: #F5F3FF;
+    color: #7C6FDB;
 }
 
     .quick-item.talk:hover {
-        background-color: #d1fae5;
+        background-color: #E0DBFA;
     }
 
 .quick-item.tracker {
@@ -186,12 +186,12 @@
     }
 
 .quick-item.resources {
-    background-color: #ecfdf5;
-    color: #0d9488;
+    background-color: #FFF1EC;
+    color: #F2704A;
 }
 
     .quick-item.resources:hover {
-        background-color: #d1fae5;
+        background-color: #FFDCC9;
     }
 
 .quick-item.crisis {

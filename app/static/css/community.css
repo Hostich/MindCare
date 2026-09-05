@@ -1,28 +1,60 @@
 /* ===== COMMUNITY PAGE ===== */
 .community-page {
-    max-width: 1100px;
     margin: 0;
     padding: 34px 42px 60px;
 }
 
+.community-header-banner {
+    background: linear-gradient(120deg, #7C6FDB, #FF8C69);
+    border-radius: 20px;
+    padding: 28px 34px;
+    margin-bottom: 28px;
+    box-shadow: 0 20px 40px rgba(124, 111, 219, 0.28);
+    position: relative;
+    overflow: hidden;
+}
+
+    .community-header-banner::after {
+        content: "";
+        position: absolute;
+        top: -50px;
+        right: -30px;
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .community-header-banner::before {
+        content: "";
+        position: absolute;
+        bottom: -60px;
+        left: 20%;
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.08);
+    }
+
 .community-header h2 {
     font-size: 26px;
     font-weight: 700;
-    color: #111827;
+    color: #ffffff;
     margin-bottom: 6px;
     letter-spacing: -0.3px;
+    position: relative;
 }
 
 .community-header p {
     font-size: 14px;
-    color: #6b7280;
-    margin-bottom: 28px;
+    color: #F5F3FF;
+    position: relative;
 }
 
 /* ===== TWO COLUMN LAYOUT ===== */
 .community-layout {
     display: grid;
-    grid-template-columns: 1fr 300px;
+    grid-template-columns: 1fr 340px;
     gap: 24px;
     align-items: start;
 }
@@ -62,9 +94,9 @@
 
     .share-textarea:focus {
         outline: none;
-        border-color: #0d9488;
+        border-color: #7C6FDB;
         background-color: #ffffff;
-        box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
+        box-shadow: 0 0 0 3px rgba(124, 111, 219, 0.12);
     }
 
 .share-footer {
@@ -80,7 +112,7 @@
 }
 
 .post-btn {
-    background: linear-gradient(135deg, #0d9488, #0f766e);
+    background: linear-gradient(135deg, #FF8C69, #F2704A);
     color: #ffffff;
     border: none;
     padding: 11px 26px;
@@ -88,13 +120,13 @@
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 10px 20px rgba(13, 148, 136, 0.25);
+    box-shadow: 0 10px 20px rgba(255, 140, 105, 0.32);
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
     .post-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 14px 26px rgba(13, 148, 136, 0.32);
+        box-shadow: 0 14px 26px rgba(255, 140, 105, 0.4);
     }
 
 /* ===== FEED HEADING ===== */
@@ -126,7 +158,7 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #0d9488, #0f766e);
+    background: linear-gradient(135deg, #7C6FDB, #6355C7);
     color: #ffffff;
     display: flex;
     align-items: center;
@@ -175,18 +207,6 @@
     color: #9ca3af;
 }
 
-.comment-count {
-    font-size: 12px;
-    color: #9ca3af;
-    font-weight: 500;
-}
-
-.post-card hr {
-    border: none;
-    border-top: 1px solid #f0f0f0;
-    margin: 16px 0;
-}
-
 .comment-toggle-btn {
     background: none;
     border: none;
@@ -200,13 +220,94 @@
 }
 
     .comment-toggle-btn:hover {
-        background-color: #ecfdf5;
-        color: #0d9488;
+        background-color: #F5F3FF;
+        color: #7C6FDB;
     }
 
 .comments-wrapper {
     margin-top: 4px;
 }
+
+.post-card hr {
+    border: none;
+    border-top: 1px solid #f0f0f0;
+    margin: 16px 0;
+}
+
+/* ===== COMMENTS ===== */
+.comments-section {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.comment {
+    background-color: #f9fafb;
+    border-radius: 14px;
+    padding: 14px 16px;
+}
+
+.comment-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+}
+
+    .comment-head strong {
+        font-size: 13px;
+        color: #111827;
+    }
+
+.verified-badge {
+    background-color: #F5F3FF;
+    color: #7C6FDB;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 8px;
+}
+
+.comment-content {
+    font-size: 13px;
+    color: #374151;
+    line-height: 1.6;
+    margin-bottom: 6px;
+}
+
+.comment-time {
+    font-size: 11px;
+    color: #9ca3af;
+}
+
+.request-chat-form {
+    margin-top: 10px;
+}
+
+.request-chat-btn {
+    background-color: #ffffff;
+    border: 1.5px solid #7C6FDB;
+    color: #7C6FDB;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+    .request-chat-btn:hover {
+        background-color: #7C6FDB;
+        color: #ffffff;
+    }
+
+.no-comments {
+    font-size: 13px;
+    color: #9ca3af;
+}
+
 /* ===== COMMENT FORM ===== */
 .comment-form {
     display: flex;
@@ -229,12 +330,12 @@
 
     .comment-textarea:focus {
         outline: none;
-        border-color: #0d9488;
+        border-color: #7C6FDB;
         background-color: #ffffff;
     }
 
 .comment-btn {
-    background: linear-gradient(135deg, #0d9488, #0f766e);
+    background: linear-gradient(135deg, #7C6FDB, #6355C7);
     color: #ffffff;
     border: none;
     padding: 12px 22px;
@@ -242,14 +343,14 @@
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 8px 18px rgba(13, 148, 136, 0.22);
+    box-shadow: 0 8px 18px rgba(124, 111, 219, 0.22);
     transition: transform 0.15s ease, box-shadow 0.15s ease;
     white-space: nowrap;
 }
 
     .comment-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 12px 22px rgba(13, 148, 136, 0.3);
+        box-shadow: 0 12px 22px rgba(124, 111, 219, 0.3);
     }
 
 /* ===== EMPTY STATE ===== */

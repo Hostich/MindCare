@@ -10,7 +10,7 @@ body {
     margin: 0;
     font-family: 'Poppins', Arial, Helvetica, sans-serif;
     color: #1f2937;
-    background-color: #f7fdfb;
+    background-color: #FAF9FE;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -18,7 +18,7 @@ body {
 .sidebar {
     width: 250px;
     height: 100vh;
-    background: linear-gradient(180deg, #0f766e 0%, #0d9488 60%, #0f766e 100%);
+    background: linear-gradient(180deg, #6355C7 0%, #7C6FDB 60%, #6355C7 100%);
     color: #ffffff;
     display: flex;
     flex-direction: column;
@@ -27,7 +27,7 @@ body {
     top: 0;
     left: 0;
     overflow-y: auto;
-    box-shadow: 4px 0 24px rgba(15, 118, 110, 0.15);
+    box-shadow: 4px 0 24px rgba(99, 85, 199, 0.2);
     z-index: 40;
 }
 
@@ -47,8 +47,8 @@ body {
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background-color: #6ee7b7;
-        box-shadow: 0 0 0 4px rgba(110, 231, 183, 0.25);
+        background-color: #FF8C69;
+        box-shadow: 0 0 0 4px rgba(255, 140, 105, 0.28);
     }
 
 .sidebar-nav {
@@ -63,7 +63,7 @@ body {
         gap: 13px;
         padding: 12px 14px;
         border-radius: 12px;
-        color: #d1fae5;
+        color: #E0DBFA;
         text-decoration: none;
         font-size: 14px;
         font-weight: 500;
@@ -128,6 +128,7 @@ body {
     min-height: 100vh;
     margin-left: 250px;
     position: relative;
+    background: linear-gradient(160deg, #F8F7FE 0%, #FAF9FE 40%, #FFF9F6 100%);
 }
 
 /* ===== TOP BAR ===== */
@@ -142,7 +143,32 @@ body {
     top: 0;
     z-index: 45;
     box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
+    overflow: hidden;
 }
+
+    .topbar::before {
+        content: "";
+        position: absolute;
+        top: -60px;
+        left: 40%;
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(124, 111, 219, 0.06) 0%, rgba(124, 111, 219, 0) 70%);
+        pointer-events: none;
+    }
+
+    .topbar::after {
+        content: "";
+        position: absolute;
+        top: -50px;
+        right: 15%;
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255, 140, 105, 0.08) 0%, rgba(255, 140, 105, 0) 70%);
+        pointer-events: none;
+    }
 
 .topbar-spacer {
     flex: 1;
@@ -155,46 +181,102 @@ body {
     margin-left: auto;
 }
 
-/* ===== PROFILE AVATAR ===== */
+/* ===== PROFILE MENU ===== */
+.profile-menu {
+    position: relative;
+}
+
 .profile-avatar-link {
     display: flex;
     align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    padding: 6px 14px 6px 6px;
-    border-radius: 50px;
-    border: 1px solid #eef2f1;
-    background-color: #ffffff;
-    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
 }
 
-    .profile-avatar-link:hover {
-        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.09);
-        transform: translateY(-1px);
-    }
-
 .profile-avatar {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #0d9488, #0f766e);
+    background: linear-gradient(135deg, #7C6FDB, #6355C7);
     color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
     flex-shrink: 0;
-    box-shadow: 0 6px 14px rgba(13, 148, 136, 0.3);
+    box-shadow: 0 6px 14px rgba(124, 111, 219, 0.35);
+    transition: transform 0.2s ease;
 }
 
-.profile-name {
+.profile-avatar-link:hover .profile-avatar {
+    transform: scale(1.05);
+}
+
+.profile-dropdown {
+    position: absolute;
+    top: 54px;
+    right: 0;
+    width: 240px;
+    background-color: #ffffff;
+    border: 1px solid #f0f0f0;
+    border-radius: 16px;
+    box-shadow: 0 24px 48px rgba(15, 23, 42, 0.14);
+    padding: 10px;
+    z-index: 60;
+}
+
+.profile-dropdown-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 8px;
+}
+
+    .profile-dropdown-header .profile-avatar {
+        width: 34px;
+        height: 34px;
+        font-size: 13px;
+    }
+
+.profile-dropdown-name {
     font-size: 13px;
     font-weight: 600;
     color: #111827;
-    white-space: nowrap;
 }
+
+.profile-dropdown hr {
+    border: none;
+    border-top: 1px solid #f0f0f0;
+    margin: 6px 0;
+}
+
+.profile-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 8px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+}
+
+    .profile-dropdown-item:hover {
+        background-color: #f3f4f6;
+    }
+
+    .profile-dropdown-item.logout-item {
+        color: #dc2626;
+    }
+
+        .profile-dropdown-item.logout-item:hover {
+            background-color: #fef2f2;
+        }
 
 /* ===== NOTIFICATION BELL ===== */
 .notification-container {
@@ -280,7 +362,7 @@ body {
     }
 
     .notification-item a {
-        color: #0d9488;
+        color: #7C6FDB;
         font-weight: 600;
         font-size: 12px;
     }
@@ -296,9 +378,9 @@ body {
 }
 
     .flash.success {
-        background-color: #ecfdf5;
-        color: #0d9488;
-        border: 1px solid #d1fae5;
+        background-color: #F5F3FF;
+        color: #7C6FDB;
+        border: 1px solid #E0DBFA;
     }
 
     .flash.danger {
@@ -317,7 +399,7 @@ body {
         width: 100%;
         height: auto;
         position: relative;
-        box-shadow: 0 4px 24px rgba(15, 118, 110, 0.15);
+        box-shadow: 0 4px 24px rgba(99, 85, 199, 0.2);
     }
 
     .main-content {
@@ -340,8 +422,7 @@ body {
 .profile-page {
     width: 100%;
     box-sizing: border-box;
-    /* Gidugangan og padding (top right bottom left) para dili sikit sa margins */
-    padding: 0 24px 40px 24px; 
+    padding: 0 24px 40px 24px;
 }
 
 /* HEADER */
@@ -353,21 +434,19 @@ body {
     margin-bottom: 30px;
 }
 
-.profile-header h2 {
-    margin: 0;
-    color: #17324d;
-    font-size: 32px;
-    font-weight: 700;
-}
+    .profile-header h2 {
+        margin: 0;
+        color: #17324d;
+        font-size: 32px;
+        font-weight: 700;
+    }
 
 
 /* PROFILE LAYOUT */
 
 .profile-layout {
     display: grid;
-    /* Gigamay ang left card width (320px) para mas dako og allowance */
     grid-template-columns: 320px minmax(0, 1fr);
-    /* Gidugangan ang gap gikan 18px -> 24px para layo-layo ang cards sa usag-usa */
     gap: 24px;
     width: 100%;
 }
@@ -375,7 +454,7 @@ body {
 .profile-left {
     display: flex;
     flex-direction: column;
-    gap: 24px; /* Gihimo ring 24px ang gap sa mga cards sa wala */
+    gap: 24px;
 }
 
 
@@ -396,33 +475,26 @@ body {
 
 .volunteer-summary {
     padding: 20px 16px 12px;
-    min-height: auto; /* Gi-auto para mo-fit ug mas slim tan-awon */
+    min-height: auto;
 }
 
 .avatar-large {
     width: 82px;
     height: 82px;
-
     margin: 0 auto 14px;
-
     border-radius: 50%;
-
-    background: #08b58a;
+    background: linear-gradient(135deg, #7C6FDB, #6355C7);
     color: white;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     font-size: 30px;
     font-weight: 700;
 }
 
 .volunteer-summary h3 {
     margin: 0;
-
     text-align: center;
-
     color: #172f46;
     font-size: 21px;
     font-weight: 700;
@@ -430,10 +502,8 @@ body {
 
 .volunteer-summary .role {
     margin: 6px 0 22px;
-
     text-align: center;
-
-    color: #08a980;
+    color: #7C6FDB;
     font-size: 14px;
 }
 
@@ -448,26 +518,23 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     padding: 10px 0;
-
     border-bottom: 1px solid #e7eeeb;
-
     font-size: 14px;
 }
 
-.summary-row:last-child {
-    border-bottom: none;
-}
+    .summary-row:last-child {
+        border-bottom: none;
+    }
 
-.summary-row span {
-    color: #6e8792;
-}
+    .summary-row span {
+        color: #6e8792;
+    }
 
-.summary-row strong {
-    color: #263746;
-    font-weight: 600;
-}
+    .summary-row strong {
+        color: #263746;
+        font-weight: 600;
+    }
 
 
 /* =========================================
@@ -476,7 +543,6 @@ body {
 
 .about-card {
     padding: 24px 20px;
-
     min-height: 145px;
 }
 
@@ -484,34 +550,30 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     margin-bottom: 18px;
 }
 
-.card-heading h3 {
-    margin: 0;
+    .card-heading h3 {
+        margin: 0;
+        color: #17324d;
+        font-size: 16px;
+        font-weight: 700;
+    }
 
-    color: #17324d;
-    font-size: 16px;
-    font-weight: 700;
-}
+    .card-heading a {
+        color: #7C6FDB;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+    }
 
-.card-heading a {
-    color: #009d7c;
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.card-heading a:hover {
-    text-decoration: underline;
-}
+        .card-heading a:hover {
+            text-decoration: underline;
+        }
 
 .about-card p {
     margin: 0;
-
     color: #718792;
-
     font-size: 13px;
     line-height: 1.6;
 }
@@ -522,17 +584,17 @@ body {
    ========================================= */
 
 .personal-card {
-    min-height: auto; /* Ginagmay nga adjustment para mopahiuyong ang habog sa card */
+    min-height: auto;
     padding: 25px 24px;
 }
 
-.personal-card .card-heading {
-    margin-bottom: 20px;
-}
+    .personal-card .card-heading {
+        margin-bottom: 20px;
+    }
 
-.personal-card .card-heading h3 {
-    font-size: 16px;
-}
+        .personal-card .card-heading h3 {
+            font-size: 16px;
+        }
 
 .personal-info {
     width: 100%;
@@ -541,28 +603,24 @@ body {
 .info-row {
     display: grid;
     grid-template-columns: 145px minmax(0, 1fr);
-
     align-items: center;
-
     min-height: 48px;
-
     border-bottom: 1px solid #e7eeeb;
-
     font-size: 14px;
 }
 
-.info-row span {
-    color: #718792;
-}
+    .info-row span {
+        color: #718792;
+    }
 
-.info-row strong {
-    color: #263746;
-    font-weight: 600;
-}
+    .info-row strong {
+        color: #263746;
+        font-weight: 600;
+    }
 
 
 /* =========================================
-   RESPONSIVE
+   VOLUNTEER PROFILE RESPONSIVE
    ========================================= */
 
 @media (max-width: 1000px) {
@@ -570,7 +628,6 @@ body {
     .profile-layout {
         grid-template-columns: 280px minmax(0, 1fr);
     }
-
 }
 
 @media (max-width: 800px) {
@@ -582,7 +639,6 @@ body {
     .personal-card {
         min-height: auto;
     }
-
 }
 
 @media (max-width: 500px) {
@@ -599,117 +655,4 @@ body {
         grid-template-columns: 110px minmax(0, 1fr);
         font-size: 13px;
     }
-
-}
-
-/* =========================
-   NOTIFICATION BELL
-   ========================= */
-
-.notification-container {
-    position: fixed;
-    top: 20px;
-    right: 25px;
-    z-index: 1000;
-}
-
-.notification-button {
-    position: relative;
-    width: 42px;
-    height: 42px;
-
-    border: 1px solid #e2e8e5;
-    border-radius: 50%;
-
-    background: #ffffff;
-    cursor: pointer;
-
-    font-size: 18px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.notification-button:hover {
-    background: #f5faf8;
-}
-
-.notification-badge {
-    position: absolute;
-
-    top: -3px;
-    right: -3px;
-
-    min-width: 18px;
-    height: 18px;
-
-    padding: 0 4px;
-
-    border-radius: 50%;
-
-    background: #e74c3c;
-    color: white;
-
-    font-size: 10px;
-    font-weight: bold;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-
-/* Notification dropdown */
-
-.notification-dropdown {
-    position: absolute;
-
-    top: 50px;
-    right: 0;
-
-    width: 320px;
-    max-height: 400px;
-
-    overflow-y: auto;
-
-    background: white;
-
-    border: 1px solid #e2e8e5;
-    border-radius: 12px;
-
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
-
-    padding: 15px;
-}
-
-.notification-dropdown h3 {
-    margin: 0 0 12px;
-
-    font-size: 15px;
-}
-
-.notification-item {
-    padding: 10px 0;
-
-    border-bottom: 1px solid #edf1ef;
-}
-
-.notification-item strong {
-    font-size: 13px;
-}
-
-.notification-item p {
-    margin: 5px 0;
-
-    font-size: 12px;
-    color: #6f7d78;
-}
-
-.notification-item a {
-    font-size: 12px;
-    color: #079c7b;
-    text-decoration: none;
 }
