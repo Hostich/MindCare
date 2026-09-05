@@ -1,0 +1,132 @@
+{% extends "dashboard_base.html" %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block content %}
+
+<div class="profile-page">
+
+    <!-- Page Header -->
+    <div class="profile-header">
+        <h2>Volunteer Profile</h2>
+    </div>
+
+
+    <div class="profile-layout">
+
+        <!-- LEFT COLUMN -->
+        <div class="profile-left">
+
+            <!-- Volunteer Summary Card -->
+            <div class="profile-card volunteer-summary">
+
+                <div class="avatar-large">
+                    {{ user.first_name[0] if user.first_name else 'V' }}
+                </div>
+
+                <h3>
+                    {{ user.first_name or 'Volunteer' }}
+                    {{ user.last_name or '' }}
+                </h3>
+
+                <p class="role">Peer Volunteer</p>
+
+                <div class="summary-list">
+
+                    <div class="summary-row">
+                        <span>Status</span>
+                        <strong>Active</strong>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Users Supported</span>
+                        <strong>22</strong>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Chats</span>
+                        <strong>18</strong>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Referrals Made</span>
+                        <strong>5</strong>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Joined</span>
+                        <strong>January 2025</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- About Me -->
+            <div class="profile-card about-card">
+
+                <div class="card-heading">
+                    <h3>About me</h3>
+                    <a href="#">Edit</a>
+                </div>
+
+                <p>
+                    I am a peer volunteer passionate about mental health
+                    awareness. I believe every person deserves to be heard
+                    and supported without judgment.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT COLUMN -->
+        <div class="profile-card personal-card">
+
+            <div class="card-heading">
+                <h3>Personal Information</h3>
+                <a href="{{ url_for('profile.edit_profile') }}">Edit</a>
+            </div>
+
+            <div class="personal-info">
+
+                <div class="info-row">
+                    <span>Full Name</span>
+                    <strong>
+                        {{ user.first_name or '' }}
+                        {{ user.last_name or '' }}
+                    </strong>
+                </div>
+
+                <div class="info-row">
+                    <span>Email</span>
+                    <strong>{{ user.email }}</strong>
+                </div>
+
+                <div class="info-row">
+                    <span>Phone Number</span>
+                    <strong>
+                        {{ user.phone_number or 'Not provided' }}
+                    </strong>
+                </div>
+
+                <div class="info-row">
+                    <span>Gender</span>
+                    <strong>
+                        {{ user.gender or 'Not provided' }}
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

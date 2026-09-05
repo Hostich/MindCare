@@ -4,12 +4,29 @@ from app.services.profile.profile_services import update_profile
 
 profile = Blueprint("profile", __name__, url_prefix="/profile")
 
+
+# =========================
+# Regular User Profile
+# =========================
 @profile.route("/")
 @login_required
 def view_profile():
     return render_template("profile/profile.html", user=current_user)
 
-@profile.route("/edit", methods=['GET','POST'])
+
+# =========================
+# Volunteer Profile
+# =========================
+@profile.route("/volunteer")
+@login_required
+def volunteer_profile():
+    return render_template("volunteer/profile.html", user=current_user)
+
+
+# =========================
+# Edit Profile
+# =========================
+@profile.route("/edit", methods=['GET', 'POST'])
 @login_required
 def edit_profile():
     if request.method == 'POST':
@@ -25,6 +42,8 @@ def edit_profile():
         flash("Profile updated successfully.", "success")
 
         return redirect(url_for("profile.view_profile"))
-    
-    return render_template("profile/edit_profile.html", user=current_user)
 
+    return render_template(
+        "profile/edit_profile.html",
+        user=current_user
+    )

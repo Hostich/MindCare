@@ -1,0 +1,564 @@
+{% extends "dashboard_base.html" %}
+
+{% block title %}
+Counseling Session
+{% endblock %}
+
+
+{% block content %}
+
+<div class="counseling-session-container">
+
+    <!-- ========================================= -->
+    <!-- LEFT COLUMN -->
+    <!-- ========================================= -->
+
+    <div class="session-left">
+
+        <!-- SESSION INFORMATION -->
+
+        <div class="session-info">
+
+            <h3>
+                Session Information
+            </h3>
+
+            <p>
+                <strong>
+                    Session ID:
+                </strong>
+                {{ session.session_id }}
+            </p>
+
+            <p>
+                <strong>
+                    Seeker:
+                </strong>
+                Anonymous Seeker
+            </p>
+
+            <p>
+                <strong>
+                    Session Type:
+                </strong>
+                {{ session.session_type }}
+            </p>
+
+            <p>
+                <strong>
+                    Started:
+                </strong>
+
+                {% if session.started_at %}
+
+                    {{ session.started_at.strftime(
+                        "%B %d, %Y %I:%M %p"
+                    ) }}
+
+                {% else %}
+
+                    Not started
+
+                {% endif %}
+            </p>
+
+            <p>
+                <strong>
+                    Ended:
+                </strong>
+
+                {% if session.ended_at %}
+
+                    {{ session.ended_at.strftime(
+                        "%B %d, %Y %I:%M %p"
+                    ) }}
+
+                {% else %}
+
+                    Not ended
+
+                {% endif %}
+            </p>
+
+            <p>
+                <strong>
+                    Status:
+                </strong>
+
+                {% if session.session_status == "Pending" %}
+
+                    🟡 Pending
+
+                {% elif session.session_status == "Active" %}
+
+                    🟢 Active
+
+                {% elif session.session_status == "Completed" %}
+
+                    ✅ Completed
+
+                {% elif session.session_status == "Cancelled" %}
+
+                    ❌ Cancelled
+
+                {% endif %}
+
+            </p>
+
+        </div>
+
+
+        <!-- ========================================= -->
+        <!-- PENDING SESSION -->
+        <!-- ========================================= -->
+
+        {% if session.session_status == "Pending" %}
+
+            <form
+                method="POST"
+                action="{{ url_for(
+                    'counselor.start_session',
+                    session_id=session.session_id
+                ) }}"
+                class="session-action-form"
+            >
+
+                <button
+                    type="submit"
+                    class="start-session-btn"
+                >
+                    Start Session
+                </button>
+
+            </form>
+
+
+        <!-- ========================================= -->
+        <!-- ACTIVE SESSION CONTROLS -->
+        <!-- ========================================= -->
+
+        {% elif session.session_status == "Active" %}
+
+            <div class="session-actions">
+
+                <!-- COMPLETE SESSION -->
+
+                <details class="complete-session-details">
+
+                    <summary>
+                        Complete Session
+                    </summary>
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'counselor.complete_session',
+                            session_id=session.session_id
+                        ) }}"
+                    >
+
+                        <label for="outcome">
+                            Session Outcome
+                        </label>
+
+                        <textarea
+                            id="outcome"
+                            name="outcome"
+                            rows="4"
+                            placeholder="Enter the session outcome..."
+                            required
+                        ></textarea>
+
+
+                        <label for="counselor_note">
+                            Counselor Note
+                        </label>
+
+                        <textarea
+                            id="counselor_note"
+                            name="counselor_note"
+                            rows="4"
+                            placeholder="Add an optional counselor note..."
+                        ></textarea>
+
+
+                        <button
+                            type="submit"
+                            onclick="return confirm(
+                                'Are you sure you want to complete this counseling session?'
+                            )"
+                        >
+                            Confirm Completion
+                        </button>
+
+                    </form>
+
+                </details>
+
+
+                <!-- CANCEL SESSION -->
+
+                <form
+                    method="POST"
+                    action="{{ url_for(
+                        'counselor.cancel_session',
+                        session_id=session.session_id
+                    ) }}"
+                >
+
+                    <button
+                        type="submit"
+                        class="cancel-session-btn"
+                        onclick="return confirm(
+                            'Are you sure you want to cancel this counseling session?'
+                        )"
+                    >
+                        Cancel Session
+                    </button>
+
+                </form>
+
+            </div>
+
+
+        <!-- ========================================= -->
+        <!-- COMPLETED SESSION -->
+        <!-- ========================================= -->
+
+        {% elif session.session_status == "Completed" %}
+
+            <div class="session-completed-label">
+
+                <strong>
+                    ✅ Session Completed
+                </strong>
+
+            </div>
+
+
+        <!-- ========================================= -->
+        <!-- CANCELLED SESSION -->
+        <!-- ========================================= -->
+
+        {% elif session.session_status == "Cancelled" %}
+
+            <div class="session-cancelled-label">
+
+                <strong>
+                    ❌ Session Cancelled
+                </strong>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+
+    <!-- ========================================= -->
+    <!-- RIGHT COLUMN -->
+    <!-- ========================================= -->
+
+    <div class="session-right">
+
+        <!-- ========================================= -->
+        <!-- ACTIVE COUNSELING CHAT -->
+        <!-- ========================================= -->
+
+        {% if session.session_status == "Active" %}
+
+            {% if session.conversation %}
+
+                 <div class="session-actions">
+
+                    <button
+                        type="button"
+                        id="end-session-btn"
+                        class="end-session-btn"
+                    >
+                        End Session
+                    </button>
+
+                </div>
+
+                <div
+                    id="session-completion-form"
+                    class="session-completion-form"
+                    hidden
+                >
+
+                    <h3>
+                        End Counseling Session
+                    </h3>
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'counselor.complete_session',
+                            session_id=session.session_id
+                        ) }}"
+                    >
+
+                        <label for="outcome">
+                            Session Outcome
+                        </label>
+
+                        <textarea
+                            id="outcome"
+                            name="outcome"
+                            rows="4"
+                            placeholder="Enter the session outcome..."
+                            required
+                        ></textarea>
+
+
+                        <label for="counselor_note">
+                            Counselor Note
+                        </label>
+
+                        <textarea
+                            id="counselor_note"
+                            name="counselor_note"
+                            rows="4"
+                            placeholder="Add an optional counselor note..."
+                        ></textarea>
+
+
+                        <button type="submit">
+                            Complete Session
+                        </button>
+
+                        <button
+                            type="button"
+                            id="cancel-end-session-btn"
+                        >
+                            Cancel
+                        </button>
+
+                    </form>
+
+                </div>
+
+            {% else %}
+
+                <div class="no-conversation">
+
+                    <h3>
+                        Counseling Chat
+                    </h3>
+
+                    <p>
+                        No counseling conversation was found.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+
+
+        <!-- ========================================= -->
+        <!-- PENDING -->
+        <!-- ========================================= -->
+
+        {% elif session.session_status == "Pending" %}
+
+            <div class="session-waiting">
+
+                <h3>
+                    Counseling Session
+                </h3>
+
+                <p>
+                    This counseling session is ready to be started.
+                </p>
+
+                <p>
+                    Click <strong>Start Session</strong> to begin
+                    the counseling conversation.
+                </p>
+
+            </div>
+
+
+
+        <!-- ========================================= -->
+        <!-- COMPLETED -->
+        <!-- ========================================= -->
+
+        {% elif session.session_status == "Completed" %}
+
+            <div class="session-summary">
+
+                <h3>
+                    Session Summary
+                </h3>
+
+                {% if session.summary %}
+
+                    <p>
+                        <strong>
+                            Outcome:
+                        </strong>
+                    </p>
+
+                    <p>
+                        {{ session.summary.outcome }}
+                    </p>
+
+
+                    {% if session.summary.counselor_note %}
+
+                        <p>
+                            <strong>
+                                Counselor Note:
+                            </strong>
+                        </p>
+
+                        <p>
+                            {{ session.summary.counselor_note }}
+                        </p>
+
+                    {% endif %}
+
+
+                    <p>
+                        <strong>
+                            Completed:
+                        </strong>
+
+                        {{ session.summary.completed_at.strftime(
+                            "%B %d, %Y %I:%M %p"
+                        ) }}
+                    </p>
+
+                {% else %}
+
+                    <p>
+                        No session summary found.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+
+        <!-- ========================================= -->
+        <!-- CANCELLED -->
+        <!-- ========================================= -->
+
+        {% elif session.session_status == "Cancelled" %}
+
+            <div class="session-cancelled">
+
+                <h3>
+                    Counseling Session Cancelled
+                </h3>
+
+                <p>
+                    This counseling session has been cancelled.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+{% endblock %}
+
+
+
+{% block scripts %}
+
+<!-- ========================================= -->
+<!-- SOCKET.IO -->
+<!-- ========================================= -->
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+
+{% if session.conversation %}
+
+<script>
+
+    const conversationId =
+        {{ session.conversation.conversation_id | tojson }};
+
+    const otherUserLabel =
+        "Anonymous Seeker";
+
+    const chatRedirectUrl =
+        {{ url_for(
+            'counselor.view_session',
+            session_id=session.session_id
+        ) | tojson }};
+
+</script>
+
+{% endif %}
+<script>
+
+    const endSessionBtn =
+        document.getElementById("end-session-btn");
+
+    const sessionCompletionForm =
+        document.getElementById("session-completion-form");
+
+    const cancelEndSessionBtn =
+        document.getElementById("cancel-end-session-btn");
+
+
+    if (
+        endSessionBtn &&
+        sessionCompletionForm
+    ) {
+
+        endSessionBtn.addEventListener(
+            "click",
+            function () {
+
+                sessionCompletionForm.hidden = false;
+
+                endSessionBtn.hidden = true;
+
+            }
+        );
+
+    }
+
+
+    if (
+        cancelEndSessionBtn &&
+        sessionCompletionForm &&
+        endSessionBtn
+    ) {
+
+        cancelEndSessionBtn.addEventListener(
+            "click",
+            function () {
+
+                sessionCompletionForm.hidden = true;
+
+                endSessionBtn.hidden = false;
+
+            }
+        );
+
+    }
+
+</script>
+<!-- ========================================= -->
+<!-- SHARED CHAT JAVASCRIPT -->
+<!-- ========================================= -->
+
+<script
+    src="{{ url_for('static', filename='js/chat.js') }}"
+></script>
+
+{% endblock %}

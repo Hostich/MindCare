@@ -1,7 +1,11 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash, request
 from datetime import datetime
 from flask_login import login_required, current_user
 from app.models.referral import Referral
+from app.models.counseling_session import CounselingSession
+from app.models.session_summaries import SessionSummary
+from app.services.chat.conversation_services import create_counseling_conversation
+from app.services.chat.message_services import get_messages
 from app.extensions import db
 
 counselor = Blueprint("counselor", __name__, url_prefix="/counselor")
@@ -65,7 +69,7 @@ def accept_referral(referral_id):
         return redirect(url_for("lpage.home"))
 
     referral = (
-        Referral.query
+        Referral.query 
         .filter_by(
             referral_id = referral_id,
             counselor_id = current_user.user_id
@@ -85,11 +89,20 @@ def accept_referral(referral_id):
     referral.referral_status = "Accepted"
     referral.responded_at = datetime.utcnow()
 
+    session = CounselingSession(
+        referral_id = referral.referral_id,
+        seeker_id = referral.seeker_id,
+        counselor_id = referral.counselor_id,
+        session_type = referral.preferred_session_type,
+        session_status = "Pending"
+    )
+
+    db.session.add(session)
     db.session.commit()
 
-    flash("Referral accepted successfully.", "success")
+    flash("Referral accepted successfully and counseling session is created.", "success")
 
-    return redirect(url_for("counselor.referrals"))
+    return redirect(url_for("counselor.view_session", session_id = session.session_id))
 
 
 @counselor.route("/referral/<int:referral_id>/reject",methods=['POST'])
@@ -124,3 +137,155 @@ def reject_referral(referral_id):
     flash("Referral rejected", "info")
     
     return redirect(url_for("counselor.referrals"))
+
+
+@counselor.route("/session/<int:session_id>")
+@login_required
+def view_session(session_id):
+    if current_user.role != "Counselor":
+        flash("Unauthorize Access.", "danger")
+        return redirect(url_for("lpage.home"))
+
+    session = (
+        CounselingSession.query
+        .filter_by(
+            session_id = session_id,
+            counselor_id = current_user.user_id
+        ).first()
+    )
+
+    if not session:
+        flash("Counseling session not found.", "warning")
+        return redirect(url_for("counselor.referrals"))
+
+    messages = []
+
+    if session.conversation:
+        message = get_messages(
+            session.conversation.conversation_id
+        )
+
+    return render_template("counselor/session.html", session = session, messages = messages)
+
+
+@counselor.route("/session/<int:session_id>/start", methods=['POST'])
+@login_required
+def start_session(session_id):
+
+    if current_user.role != "Counselor":
+        flash("Unauthorized Access.", "danger")
+        return redirect(url_for("lpage.home"))
+
+    session = (
+        CounselingSession.query
+        .filter_by(
+            session_id = session_id,
+            counselor_id = current_user.user_id
+        ).first()
+    )
+
+    if not session:
+        flash("Counseling session not found.","warning")
+        return redirect(url_for("counselor.referrals"))
+
+    if session.session_status != "Pending":
+        flash("This counseling sesion connot be started.", "warning")
+        return redirect(url_for("counselor.view_session", session_id = session_id))
+
+    session.session_status = "Active"
+    session.started_at = datetime.utcnow()
+
+    conversation = create_counseling_conversation(
+        session.session_id
+    )
+
+    db.session.commit()
+
+    flash("Counseling session is now starting")
+
+    return redirect(url_for("counselor.view_session", session_id = session_id))
+
+
+@counselor.route("/session/<int:session_id>/complete", methods=['POST'])
+@login_required
+def complete_session(session_id):
+    if current_user.role != "Counselor":
+        flash("Unauthorize Access.", "danger")
+        return redirect(url_for("lpage.home"))
+
+    session = (
+        CounselingSession.query
+        .filter_by(
+            session_id = session_id,
+            counselor_id = current_user.user_id
+        ).first()
+    )
+
+    if not session:
+        flash("Counseling session not found!.", "warning")
+        return redirect(url_for("counselor.counseling_sessions"))
+
+    if session.session_status != "Active":
+        flash("This counseling session has already been processd.", "warning")
+        return redirect(url_for("counselor.view_session", session_id = session_id))
+
+    outcome = request.form.get("outcome")
+    counselor_note = request.form.get("counselor_note")
+
+    if not outcome:
+        flash("Session outcome is required.", "warning")
+        return redirect(url_for("counselor.view_session", session_id = session_id))
+
+    summary = SessionSummary(
+        session_id = session.session_id,
+        outcome = outcome,
+        counselor_note = counselor_note or None,
+        completed_at = datetime.utcnow()
+    )
+
+    session.session_status = "Completed"
+    session.ended_at = datetime.utcnow()
+
+    db.session.add(summary)
+    db.session.commit()
+
+    flash("Counseling session completed successfully.","success")
+
+    return redirect(url_for("counselor.view_session", session_id = session_id))
+
+
+@counselor.route("/session/<int:session_id>/cancel", methods = ['POST'])
+@login_required
+def cancel_session(session_id):
+    if current_user.role != "Counselor":
+        flash("Unauthorized Access.", "danger")
+        return redirect(url_for("lpage.home"))
+
+    session = (
+        CounselingSession.query
+        .filter_by(
+            session_id = session_id,
+            counselor_id = current_user.user_id
+        ).first()
+    )
+
+    if not session:
+        flash("Counseling session not found.", "warning")
+        return redirect(url_for("counselor.counseling_sessions"))
+
+    if session.session_status != "Active":
+        flash("This counseling session has already been processed.", "warning")
+        return redirect(url_for("counselor.view_session", session_id = session_id))
+
+    session.session_status = "Cancelled"
+    session.ended_at = datetime.utcnow()
+
+    db.session.commit()
+
+    flash("Counseling session has been cancelled", "success")
+
+    return redirect(url_for("counselor.view_session", session_id = session_id))
+
+
+
+                        

@@ -11,13 +11,19 @@ class Conversation(db.Model):
     request_id = db.Column(
         db.Integer,
         db.ForeignKey('chat_requests.request_id'),
-        nullable=False
+        nullable=True
+    )
+
+    session_id = db.Column(
+        db.Integer,
+        db.ForeignKey('counseling_sessions.session_id'),
+        nullable = True
     )
 
     supporter_id = db.Column(
         db.Integer,
         db.ForeignKey('users.user_id'),
-        nullable=False
+        nullable=  True
     )
 
     conversation_status = db.Column(
@@ -44,6 +50,11 @@ class Conversation(db.Model):
     request = db.relationship(
         'ChatRequest',
         backref='conversations'
+    )
+
+    session = db.relationship(
+        "CounselingSession",
+        back_populates = 'conversation',
     )
 
     supporter = db.relationship(

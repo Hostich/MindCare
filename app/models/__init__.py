@@ -8,3 +8,5 @@ from app.models.conversation import Conversation
 from app.models.message import Message
 from app.models.notification import Notification
 from app.models.referral import Referral
+from app.models.counseling_session import CounselingSession
+from app.models.session_summaries import SessionSummary
