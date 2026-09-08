@@ -7,6 +7,7 @@ from app.services.chat.chat_request_services import get_seeker_private_chats
 from app.services.chat.conversation_services import volunteer_is_busy
 from app.services.volunteer.volunteer_services import get_all_volunteers
 from app.services.notification.notification_services import get_user_notification
+from app.models.counseling_session import CounselingSession
 
 seeker = Blueprint("seeker", __name__, url_prefix="/seeker")
 
@@ -82,3 +83,37 @@ def conversation(conversation_id):
     messages = get_messages(conversation_id)
 
     return render_template("seeker/conversation.html", conversation=conversation, messages = messages, other_user_label = "Volunteer")
+
+@seeker.route("/counseling-session/<int:session_id>")
+@login_required
+def counseling_session(session_id):
+    print("CURRENT USER:", current_user.user_id)
+    print("CURRENT ROLE:", current_user.role)
+    print("SESSION ID FROM URL:", session_id)
+
+    if current_user.role != "Seeker":
+        flash("Unauthorize Access.", "danger")
+        return redirect(url_for("lpage.home"))
+
+    session = (
+        CounselingSession.query
+        .filter_by(
+            session_id = session_id,
+            seeker_id = current_user.user_id
+        ).first() 
+    )
+
+    print("SESSION FOUND:", session)
+
+    if not session:
+        flash("Counseling session not found.", "warning")
+        return redirect(url_for("seeker.chat"))
+
+    messages = []
+
+    if session.conversation:
+        messages = get_messages(
+            session.conversation.conversation_id
+        )
+
+    return render_template("seeker/counseling_session.html", session = session, messages = messages)

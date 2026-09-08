@@ -134,86 +134,83 @@ Counseling Session
 
 
         <!-- ========================================= -->
-        <!-- ACTIVE SESSION CONTROLS -->
+        <!-- ACTIVE SESSION -->
         <!-- ========================================= -->
 
         {% elif session.session_status == "Active" %}
 
             <div class="session-actions">
 
-                <!-- COMPLETE SESSION -->
+                <button
+                    type="button"
+                    id="end-session-btn"
+                    class="end-session-btn"
+                >
+                    End Session
+                </button>
 
-                <details class="complete-session-details">
-
-                    <summary>
-                        Complete Session
-                    </summary>
-
-                    <form
-                        method="POST"
-                        action="{{ url_for(
-                            'counselor.complete_session',
-                            session_id=session.session_id
-                        ) }}"
-                    >
-
-                        <label for="outcome">
-                            Session Outcome
-                        </label>
-
-                        <textarea
-                            id="outcome"
-                            name="outcome"
-                            rows="4"
-                            placeholder="Enter the session outcome..."
-                            required
-                        ></textarea>
+            </div>
 
 
-                        <label for="counselor_note">
-                            Counselor Note
-                        </label>
+            <!-- ========================================= -->
+            <!-- SESSION COMPLETION FORM -->
+            <!-- ========================================= -->
 
-                        <textarea
-                            id="counselor_note"
-                            name="counselor_note"
-                            rows="4"
-                            placeholder="Add an optional counselor note..."
-                        ></textarea>
+            <div
+                id="session-completion-form"
+                class="session-completion-form"
+                hidden
+            >
 
-
-                        <button
-                            type="submit"
-                            onclick="return confirm(
-                                'Are you sure you want to complete this counseling session?'
-                            )"
-                        >
-                            Confirm Completion
-                        </button>
-
-                    </form>
-
-                </details>
-
-
-                <!-- CANCEL SESSION -->
+                <h3>
+                    End Counseling Session
+                </h3>
 
                 <form
                     method="POST"
                     action="{{ url_for(
-                        'counselor.cancel_session',
+                        'counselor.complete_session',
                         session_id=session.session_id
                     ) }}"
                 >
 
+                    <label for="outcome">
+                        Session Outcome
+                    </label>
+
+                    <textarea
+                        id="outcome"
+                        name="outcome"
+                        rows="4"
+                        placeholder="Enter the session outcome..."
+                        required
+                    ></textarea>
+
+
+                    <label for="counselor_note">
+                        Counselor Note
+                    </label>
+
+                    <textarea
+                        id="counselor_note"
+                        name="counselor_note"
+                        rows="4"
+                        placeholder="Add an optional counselor note..."
+                    ></textarea>
+
+
                     <button
                         type="submit"
-                        class="cancel-session-btn"
-                        onclick="return confirm(
-                            'Are you sure you want to cancel this counseling session?'
-                        )"
                     >
-                        Cancel Session
+                        Complete Session
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="cancel-end-session-btn"
+                    >
+                        Cancel
                     </button>
 
                 </form>
@@ -255,7 +252,6 @@ Counseling Session
     </div>
 
 
-
     <!-- ========================================= -->
     <!-- RIGHT COLUMN -->
     <!-- ========================================= -->
@@ -270,75 +266,102 @@ Counseling Session
 
             {% if session.conversation %}
 
-                 <div class="session-actions">
+                <div class="counseling-chat">
 
-                    <button
-                        type="button"
-                        id="end-session-btn"
-                        class="end-session-btn"
+                    <div class="conversation-header">
+
+                        <div>
+
+                            <h3>
+                                Anonymous Seeker
+                            </h3>
+
+                            <p>
+                                Counseling Session
+                            </p>
+
+                        </div>
+
+                        <span>
+                            🟢 Active
+                        </span>
+
+                    </div>
+
+
+                    <!-- CHAT MESSAGES -->
+
+                    <div
+                        id="chat-box"
+                        class="chat-box"
                     >
-                        End Session
-                    </button>
 
-                </div>
+                        {% for message in messages %}
 
-                <div
-                    id="session-completion-form"
-                    class="session-completion-form"
-                    hidden
-                >
+                            <div class="message">
 
-                    <h3>
-                        End Counseling Session
-                    </h3>
+                                {% if message.sender_id == current_user.user_id %}
+
+                                    <strong>
+                                        You
+                                    </strong>
+
+                                {% else %}
+
+                                    <strong>
+                                        Anonymous Seeker
+                                    </strong>
+
+                                {% endif %}
+
+
+                                <p>
+                                    {{ message.message }}
+                                </p>
+
+
+                                <small>
+                                    {{ message.sent_at.strftime(
+                                        "%B %d, %Y %I:%M %p"
+                                    ) }}
+                                </small>
+
+                            </div>
+
+                            <hr>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- CHAT FORM -->
 
                     <form
-                        method="POST"
-                        action="{{ url_for(
-                            'counselor.complete_session',
-                            session_id=session.session_id
-                        ) }}"
+                        id="chat-form"
+                        onsubmit="return false;"
+                        class="chat-form"
                     >
 
-                        <label for="outcome">
-                            Session Outcome
-                        </label>
-
                         <textarea
-                            id="outcome"
-                            name="outcome"
-                            rows="4"
-                            placeholder="Enter the session outcome..."
+                            id="message-input"
+                            rows="2"
+                            placeholder="Send message"
                             required
                         ></textarea>
 
 
-                        <label for="counselor_note">
-                            Counselor Note
-                        </label>
-
-                        <textarea
-                            id="counselor_note"
-                            name="counselor_note"
-                            rows="4"
-                            placeholder="Add an optional counselor note..."
-                        ></textarea>
-
-
-                        <button type="submit">
-                            Complete Session
-                        </button>
-
                         <button
-                            type="button"
-                            id="cancel-end-session-btn"
+                            type="submit"
+                            id="send-button"
                         >
-                            Cancel
+                            Send
                         </button>
 
                     </form>
 
                 </div>
+
 
             {% else %}
 
@@ -355,7 +378,6 @@ Counseling Session
                 </div>
 
             {% endif %}
-
 
 
         <!-- ========================================= -->
@@ -382,7 +404,6 @@ Counseling Session
             </div>
 
 
-
         <!-- ========================================= -->
         <!-- COMPLETED -->
         <!-- ========================================= -->
@@ -394,6 +415,7 @@ Counseling Session
                 <h3>
                     Session Summary
                 </h3>
+
 
                 {% if session.summary %}
 
@@ -424,6 +446,7 @@ Counseling Session
 
 
                     <p>
+
                         <strong>
                             Completed:
                         </strong>
@@ -431,7 +454,9 @@ Counseling Session
                         {{ session.summary.completed_at.strftime(
                             "%B %d, %Y %I:%M %p"
                         ) }}
+
                     </p>
+
 
                 {% else %}
 
@@ -442,7 +467,6 @@ Counseling Session
                 {% endif %}
 
             </div>
-
 
 
         <!-- ========================================= -->
@@ -469,9 +493,7 @@ Counseling Session
 
 </div>
 
-
 {% endblock %}
-
 
 
 {% block scripts %}
@@ -502,6 +524,12 @@ Counseling Session
 </script>
 
 {% endif %}
+
+
+<!-- ========================================= -->
+<!-- END SESSION CONTROLS -->
+<!-- ========================================= -->
+
 <script>
 
     const endSessionBtn =
@@ -553,6 +581,8 @@ Counseling Session
     }
 
 </script>
+
+
 <!-- ========================================= -->
 <!-- SHARED CHAT JAVASCRIPT -->
 <!-- ========================================= -->

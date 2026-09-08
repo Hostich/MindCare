@@ -78,8 +78,45 @@ notificationSocket.on(
             conversationLink.textContent = "Enter Conversation";
 
             notificationItem.appendChild(conversationLink);
-        }
 
+        }else if(data.notification_type == "CounselingSessionCreated"){
+
+            const counselingLink = document.createElement("a");
+
+            counselingLink.href =
+                "/notification/counseling/" + data.notification_id;
+
+            counselingLink.textContent =
+                "View Counseling Session";
+
+            counselingLink.addEventListener(
+                "click",
+                function(){
+
+                    if(notificationBadge){
+
+                        let count =
+                            parseInt(notificationBadge.textContent) || 0;
+
+                        count--;
+
+                        if(count <= 0){
+                            notificationBadge.remove();
+                            notificationBadge = null;
+                        }
+                        else{
+                            notificationBadge.textContent = count;
+                        }
+
+                    }
+
+                }
+            );
+
+            notificationItem.appendChild(
+                counselingLink
+            );
+        }
         const heading = notificationDropdown.querySelector("h3");
 
         if(heading){
@@ -109,8 +146,138 @@ notificationSocket.on(
         }
     }    
 );
+notificationSocket.on(
+    "conversation_ended",
+    function(data){
 
+        console.log(
+            "Conversation ended notification:",
+            data
+        );
 
+        if(!notificationDropdown){
+            return;
+        }
+
+        const notificationItems =
+            notificationDropdown.querySelectorAll(
+                ".notification-item"
+            );
+
+        notificationItems.forEach(
+            function(notificationItem){
+
+                const notificationLink =
+                    notificationItem.querySelector("a");
+
+                if(!notificationLink){
+                    return;
+                }
+
+                // Check if this notification belongs
+                // to the ended conversation
+                if(
+                    notificationLink.href.includes(
+                        "/notification/chat/"
+                    )
+                ){
+
+                    notificationItem.innerHTML = `
+                        <strong>
+                            Chat Request Accepted
+                        </strong>
+
+                        <p>
+                            The volunteer has ended the conversation.
+                        </p>
+
+                        <p>
+                            Conversation Ended
+                        </p>
+                    `;
+
+                    // Remove one unread notification
+                    if(notificationBadge){
+
+                        let count =
+                            parseInt(
+                                notificationBadge.textContent
+                            ) || 0;
+
+                        count--;
+
+                        if(count <= 0){
+
+                            notificationBadge.remove();
+
+                            notificationBadge = null;
+
+                        }
+                        else{
+
+                            notificationBadge.textContent =
+                                count;
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+);
+//counseling session started
+notificationSocket.on(
+    "counseling_session_started",
+    function(data){
+
+        console.log(
+            "Counseling session started:",
+            data
+        );
+
+        if(
+            typeof counselingSessionId !== "undefined" &&
+            data.session_id == counselingSessionId
+        ){
+
+            console.log(
+                "Refreshing counseling session page..."
+            );
+
+            window.location.reload();
+
+        }
+
+    }
+);
+notificationSocket.on(
+    "counseling_session_completed",
+    function(data){
+
+        console.log(
+            "Counseling session completed:",
+            data
+        );
+
+        if(
+            typeof counselingSessionId !== "undefined" &&
+            data.session_id == counselingSessionId
+        ){
+
+            console.log(
+                "Refreshing counseling session page..."
+            );
+
+            window.location.reload();
+
+        }
+
+    }
+);
 if (notificationButton && notificationDropdown){
     notificationButton.addEventListener(
         "click",

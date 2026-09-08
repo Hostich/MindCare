@@ -6,7 +6,8 @@ from app.models.counseling_session import CounselingSession
 from app.models.session_summaries import SessionSummary
 from app.services.chat.conversation_services import create_counseling_conversation
 from app.services.chat.message_services import get_messages
-from app.extensions import db
+from app.services.notification.notification_services import create_notification
+from app.extensions import db, socketio
 
 counselor = Blueprint("counselor", __name__, url_prefix="/counselor")
 
@@ -58,7 +59,7 @@ def review_referrals(referral_id):
     if not referral:
         return redirect(url_for("counselor.referrals"))
 
-    return render_template("cousnelor/review_referral.html", referral = referral)
+    return render_template("counselor/review_referral.html", referral = referral)
 
 @counselor.route("/referral/<int:referral_id>/accept", methods=['POST'])
 @login_required
@@ -100,7 +101,27 @@ def accept_referral(referral_id):
     db.session.add(session)
     db.session.commit()
 
+    create_notification(
+        user_id=referral.seeker_id,
+        session_id= session.session_id,
+        title="Counseling Session is Created",
+        message="A counselor has accepted your request for counseling session",
+        notification_type="CounselingSessionCreated"
+    )
+
     flash("Referral accepted successfully and counseling session is created.", "success")
+
+    print("COUNSELING SESSION CREATED:")
+    print("SESSION ID:", session.session_id)
+    print("SESSION STATUS:", session.session_status)
+
+    print(
+        "REDIRECT URL:",
+        url_for(
+            "counselor.view_session",
+            session_id=session.session_id
+        )
+    )
 
     return redirect(url_for("counselor.view_session", session_id = session.session_id))
 
@@ -161,7 +182,7 @@ def view_session(session_id):
     messages = []
 
     if session.conversation:
-        message = get_messages(
+        messages = get_messages(
             session.conversation.conversation_id
         )
 
@@ -201,6 +222,14 @@ def start_session(session_id):
 
     db.session.commit()
 
+    socketio.emit(
+        "counseling_session_started",
+        {
+            "session_id" : session.session_id
+        },
+        to=f"user_{session.seeker_id}"
+    )
+
     flash("Counseling session is now starting")
 
     return redirect(url_for("counselor.view_session", session_id = session_id))
@@ -223,7 +252,7 @@ def complete_session(session_id):
 
     if not session:
         flash("Counseling session not found!.", "warning")
-        return redirect(url_for("counselor.counseling_sessions"))
+        return redirect(url_for("counselor.referrals"))
 
     if session.session_status != "Active":
         flash("This counseling session has already been processd.", "warning")
@@ -236,6 +265,8 @@ def complete_session(session_id):
         flash("Session outcome is required.", "warning")
         return redirect(url_for("counselor.view_session", session_id = session_id))
 
+    ended_at = datetime.utcnow()
+
     summary = SessionSummary(
         session_id = session.session_id,
         outcome = outcome,
@@ -246,8 +277,20 @@ def complete_session(session_id):
     session.session_status = "Completed"
     session.ended_at = datetime.utcnow()
 
+    if session.conversation:
+        session.conversation.conversation_status = "Closed"
+        session.conversation.ended_at = ended_at
+
     db.session.add(summary)
     db.session.commit()
+
+    socketio.emit(
+        "counseling_session_completed",
+        {
+            "session_id" : session_id
+        },
+        to=f"user_{session.seeker_id}"
+    )
 
     flash("Counseling session completed successfully.","success")
 
@@ -284,8 +327,4 @@ def cancel_session(session_id):
 
     flash("Counseling session has been cancelled", "success")
 
-    return redirect(url_for("counselor.view_session", session_id = session_id))
-
-
-
-                        
+    return redirect(url_for("counselor.view_session", session_id = session_id))                       

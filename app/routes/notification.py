@@ -46,3 +46,31 @@ def notification_chat(notification_id):
     )
 
     return redirect(url_for("seeker.chat",conversation_id = notification.conversation_id))
+
+
+@notification.route("/counseling/<int:notification_id>")
+@login_required
+def notification_counseling(notification_id):
+    notification = (
+        Notification.query
+        .filter_by(
+            notification_id = notification_id,
+            user_id = current_user.user_id
+        ).first()
+    )
+
+    if not notification:
+        return "Notification not found!", 404
+
+    if notification.notification_type != "CounselingSessionCreated":
+        return "Invalid notification type", 404
+
+    if not notification.session_id:
+        return "Counseling session not found", 404
+
+    mark_notification_as_read(
+        notification.notification_id,
+        current_user.user_id
+    )
+
+    return redirect(url_for("seeker.counseling_session", session_id = notification.session_id))

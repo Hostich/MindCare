@@ -230,7 +230,33 @@ socket.on(
 
     }
 );
+/* =========================================
+   COUNSELING SESSION STARTED
+========================================= */
+socket.on(
+    "counseling_session_started",
+    function (data) {
 
+        console.log(
+            "Counseling session started:",
+            data
+        );
+
+        if (
+            typeof counselingSessionId !== "undefined" &&
+            data.session_id == counselingSessionId
+        ) {
+
+            console.log(
+                "This counseling session has started."
+            );
+
+            window.location.reload();
+
+        }
+
+    }
+);
 
 /* =========================================
    CHAT TABS FOR SEEKER

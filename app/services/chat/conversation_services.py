@@ -1,6 +1,6 @@
 from datetime import datetime
 from app.extensions import db
-from app.models import Conversation, ChatRequest
+from app.models import Conversation, ChatRequest, Notification
 
 def create_conversation(request_id, supporter_id):
     conversation = Conversation(
@@ -25,10 +25,22 @@ def end_conversation(conversation_id):
 
     if not conversation:
         return False
-
+    
     conversation.conversation_status = "Closed"
     conversation.ended_at = datetime.utcnow()
 
+    notifications = (
+        Notification.query
+        .filter_by(
+            conversation_id = conversation_id,
+            notification_type = "ChatRequestAccepted",
+            is_read = False
+        )
+    )
+
+    for notification in notifications:
+        notification.is_read = True
+        
     db.session.commit()
 
     return True

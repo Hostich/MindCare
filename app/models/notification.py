@@ -20,6 +20,12 @@ class Notification(db.Model):
         nullable = True
     )
 
+    session_id = db.Column(
+        db.Integer,
+        db.ForeignKey("counseling_sessions.session_id"),
+        nullable = True
+    )
+
     title = db.Column(
         db.String(150),
         nullable = False
@@ -33,6 +39,7 @@ class Notification(db.Model):
     notification_type = db.Column(
         db.Enum(
             "ChatRequestAccepted",
+            "CounselingSessionCreated",
             name = "notification_type_enum"
         ),
         nullable = False
@@ -58,4 +65,9 @@ class Notification(db.Model):
     conversation = db.relationship(
         "Conversation",
         foreign_keys = [conversation_id]
+    )
+
+    session = db.relationship(
+        "CounselingSession",
+        foreign_keys = [session_id]
     )

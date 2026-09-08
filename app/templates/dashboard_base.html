@@ -107,15 +107,28 @@
                     <p>
                         {{notification.message}}
                     </p>
-                    {% if notification.notification_type == "ChatRequestAccepted" and notification.conversation and notification.conversation.conversation_status == "Active"%}
-                    <a href="{{url_for('notification.notification_chat', notification_id=notification.notification_id)}}">
+                    {% if notification.notification_type == "ChatRequestAccepted" and notification.conversation and notification.conversation.conversation_status == "Active" %}
+
+                    <a href="{{ url_for('notification.notification_chat', notification_id=notification.notification_id) }}">
                         Enter Conversation
                     </a>
+
                     {% elif notification.notification_type == "ChatRequestAccepted" and notification.conversation and notification.conversation.conversation_status == "Closed" %}
+
                     <p>
                         Conversation Ended
                     </p>
-                    {%endif%}
+
+                    {% elif notification.notification_type == "CounselingSessionCreated" and notification.session %}
+
+                    <a href="{{ url_for('notification.notification_counseling', notification_id=notification.notification_id) }}">
+                        View Counseling Session
+                    </a>
+                    {% elif notification.notification_type == "CounselingSessionCreated" and notification.session and notification.session.session_status == "Completed"%}
+                    <p>
+                        Session Completed
+                    </p>
+                    {% endif %}
                 </div>
                 {%else%}
                 <p>

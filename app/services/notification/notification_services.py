@@ -5,14 +5,16 @@ from app.models.notification import Notification
 
 def create_notification(
     user_id,
-    conversation_id,
-    title,
-    message,
-    notification_type
+    conversation_id = None,
+    session_id = None,
+    title = None,
+    message = None,
+    notification_type = None
 ):
     notification = Notification(
         user_id = user_id,
         conversation_id = conversation_id,
+        session_id = session_id,
         title = title,
         message = message,
         notification_type = notification_type
@@ -31,7 +33,8 @@ def create_notification(
             "title" : notification.title,
             "message" : notification.message,
             "notification_type" : notification.notification_type,
-            "conversation_id" : notification.conversation_id
+            "conversation_id" : notification.conversation_id,
+            "session_id": notification.session_id
         },
         to = f"user_{user_id}"
     )

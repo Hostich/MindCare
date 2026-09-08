@@ -143,6 +143,9 @@ def end_conversation_route(conversation_id):
     if current_user.role != "Volunteer":
         return redirect(url_for("auth.login"))
 
+    conversation = get_conversation(conversation_id)
+    
+    seeker_id = conversation.request.seeker_id
     success = end_conversation(conversation_id)
 
     if success:
@@ -155,6 +158,13 @@ def end_conversation_route(conversation_id):
                 "conversation_id": conversation_id
             },
             to=room
+        )
+        socketio.emit(
+            "conversation_ended",
+            {
+                "conversation_id" : conversation_id
+            },
+            to=f"user_{seeker_id}"
         )
         flash("Conversation ended successfully", "success")
     else:
