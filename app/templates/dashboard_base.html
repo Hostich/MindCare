@@ -57,9 +57,9 @@
         {% elif current_user.role == "Counselor" %}
 
         <nav class="sidebar-nav">
-            <a href="#">Dashboard</a>
+            <a href="{{ url_for('counselor.dashboard') }}">Dashboard</a>
             <a href="#">Counseling Sessions</a>
-            <a href="#">referrals</a>
+            <a href="{{ url_for('counselor.referrals') }}">referrals</a>
             <a href="#">Resources</a>
             <a href="{{ url_for('profile.view_profile') }}">Profile</a>
         </nav>
