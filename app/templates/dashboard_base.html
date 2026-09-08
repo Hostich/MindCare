@@ -30,7 +30,9 @@
             <a href="{{ url_for('seeker.dashboard') }}">Dashboard</a>
             <a href="{{ url_for('community.community_feed') }}">Community Feed</a>
             <a href="{{ url_for('mood.mood_tracker') }}">Mood Tracker</a>
-            <a href="{{ url_for('seeker.chat', conversation_id = request.args.get('conversation_id'))}}">Chat</a>
+            <a href="{{ url_for('seeker.chat', conversation_id=request.args.get('conversation_id')) }}">
+                Chat
+            </a>
             <a href="#">Resources</a>
             <a href="{{ url_for('profile.view_profile') }}">Profile</a>
             <a href="#" class="crisis-link">Crisis Support</a>
@@ -85,9 +87,10 @@
 
     {% endif %}
 
+
     <main class="main-content">
 
-        {% if current_user.is_authenticated%}
+        {% if current_user.is_authenticated %}
 
         <!-- ===================== -->
         <!-- TOP BAR -->
@@ -98,70 +101,223 @@
             <div class="topbar-right">
 
                 <div class="notification-container">
-                    <button type="button" id="notification-button" class="notification-button">
+
+                    <button
+                        type="button"
+                        id="notification-button"
+                        class="notification-button"
+                    >
                         🔔
-                        {% if unread_notifications|length > 0%}
-                        <span class="notification-badge">{{unread_notifications|length}}</span>
-                        {%endif%}
+
+                        {% if unread_notifications|length > 0 %}
+
+                        <span class="notification-badge">
+                            {{ unread_notifications|length }}
+                        </span>
+
+                        {% endif %}
+
                     </button>
-                    <div id="notification-dropdown" class="notification-dropdown" hidden>
+
+
+                    <div
+                        id="notification-dropdown"
+                        class="notification-dropdown"
+                        hidden
+                    >
+
                         <h3>
                             Notifications
                         </h3>
-                        {% for notification in notifications%}
-                        <div class="notification-item" data-notification-id="{{ notification.notification_id }}">
+
+
+                        {% for notification in notifications %}
+
+                        <div
+                            class="notification-item"
+                            data-notification-id="{{ notification.notification_id }}"
+                        >
+
                             <strong>
-                                {{notification.title}}
+                                {{ notification.title }}
                             </strong>
+
                             <p>
-                                {{notification.message}}
+                                {{ notification.message }}
                             </p>
-                            {% if notification.notification_type == "ChatRequestAccepted" and notification.conversation and notification.conversation.conversation_status == "Active"%}
-                            <a href="{{url_for('notification.notification_chat', notification_id=notification.notification_id)}}">
+
+
+                            <!-- ===================== -->
+                            <!-- NEW CHAT REQUEST -->
+                            <!-- ===================== -->
+
+                            {% if notification.notification_type == "ChatRequestCreated"
+                                and notification.request_id
+                                and notification.request
+                                and notification.request.request_status == "Pending" %}
+
+                            <a
+                                href="{{ url_for(
+                                    'volunteer.accept_request',
+                                    request_id=notification.request_id
+                                ) }}"
+                            >
+                                Accept
+                            </a>
+                            <br>
+                            <form
+                                method="POST"
+                                action="{{ url_for(
+                                    'volunteer.reject_request',
+                                    request_id=notification.request_id
+                                ) }}"
+                            >
+                                <button type="submit">
+                                    Reject
+                                </button>
+                            </form>
+
+                            {% elif notification.notification_type == "ChatRequestCreated"
+                                and notification.request
+                                and notification.request.request_status == "Accepted" %}
+
+                            <p>
+                                Request Accepted
+                            </p>
+
+                            {% elif notification.notification_type == "ChatRequestCreated"
+                                and notification.request
+                                and notification.request.request_status == "Rejected" %}
+
+                            <p>
+                                Request Rejected
+                            </p>
+
+                            <!-- ===================== -->
+                            <!-- CHAT REQUEST ACCEPTED -->
+                            <!-- ===================== -->
+
+                            {% elif notification.notification_type == "ChatRequestAccepted"
+                                  and notification.conversation
+                                  and notification.conversation.conversation_status == "Active" %}
+
+                            <a
+                                href="{{ url_for(
+                                    'notification.notification_chat',
+                                    notification_id=notification.notification_id
+                                ) }}"
+                            >
                                 Enter Conversation
                             </a>
-                            {% elif notification.notification_type == "ChatRequestAccepted" and notification.conversation and notification.conversation.conversation_status == "Closed" %}
+
+
+                            <!-- ===================== -->
+                            <!-- CHAT REQUEST ACCEPTED -->
+                            <!-- CONVERSATION CLOSED -->
+                            <!-- ===================== -->
+
+                            {% elif notification.notification_type == "ChatRequestAccepted"
+                                  and notification.conversation
+                                  and notification.conversation.conversation_status == "Closed" %}
+
                             <p>
                                 Conversation Ended
                             </p>
-                            {%endif%}
+
+                            {% endif %}
+
                         </div>
-                        {%else%}
+
+
+                        {% else %}
+
                         <p>
                             No Notifications.
                         </p>
-                        {%endfor%}
+
+                        {% endfor %}
+
                     </div>
+
                 </div>
 
+
+                <!-- ===================== -->
+                <!-- PROFILE MENU -->
+                <!-- ===================== -->
+
                 <div class="profile-menu">
-                    <button type="button" id="profile-button" class="profile-avatar-link">
-                        <span class="profile-avatar">{{ current_user.username[0]|upper }}</span>
+
+                    <button
+                        type="button"
+                        id="profile-button"
+                        class="profile-avatar-link"
+                    >
+
+                        <span class="profile-avatar">
+                            {{ current_user.username[0]|upper }}
+                        </span>
+
                     </button>
-                    <div id="profile-dropdown" class="profile-dropdown" hidden>
+
+
+                    <div
+                        id="profile-dropdown"
+                        class="profile-dropdown"
+                        hidden
+                    >
+
                         <div class="profile-dropdown-header">
-                            <span class="profile-avatar">{{ current_user.username[0]|upper }}</span>
-                            <span class="profile-dropdown-name">{{ current_user.username }}</span>
+
+                            <span class="profile-avatar">
+                                {{ current_user.username[0]|upper }}
+                            </span>
+
+                            <span class="profile-dropdown-name">
+                                {{ current_user.username }}
+                            </span>
+
                         </div>
+
                         <hr>
-                        <a href="{{ url_for('profile.view_profile') }}" class="profile-dropdown-item">
+
+                        <a
+                            href="{{ url_for('profile.view_profile') }}"
+                            class="profile-dropdown-item"
+                        >
                             View Profile
                         </a>
-                        <a href="#" class="profile-dropdown-item">
+
+                        <a
+                            href="#"
+                            class="profile-dropdown-item"
+                        >
                             Settings
                         </a>
+
                         <hr>
-                        <a href="#" class="profile-dropdown-item logout-item">
+
+                        <a
+                            href="#"
+                            class="profile-dropdown-item logout-item"
+                        >
                             Logout
                         </a>
+
                     </div>
+
                 </div>
 
             </div>
 
         </header>
 
-        {%endif%}
+        {% endif %}
+
+
+        <!-- ===================== -->
+        <!-- PAGE BODY -->
+        <!-- ===================== -->
 
         <div class="page-body">
 
@@ -181,40 +337,117 @@
 
             {% endwith %}
 
+
             {% block content %}
             {% endblock %}
 
         </div>
 
     </main>
+
+
+    <!-- ===================== -->
+    <!-- SOCKET.IO -->
+    <!-- ===================== -->
+
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-    {% if current_user.is_authenticated%}
+
+
+    {% if current_user.is_authenticated %}
+
     <script>
-            const currentUserId = {{current_user.user_id | tojson}}
+
+        const currentUserId =
+            {{ current_user.user_id | tojson }};
+
+
+        const acceptRequestUrl =
+            {{ url_for(
+                'volunteer.accept_request',
+                request_id=0
+            ) | tojson }};
+
+
+        const rejectRequestUrl =
+            {{ url_for(
+                'volunteer.reject_request',
+                request_id=0
+            ) | tojson }};
+
     </script>
+
     {% endif %}
-    <script src="{{url_for('static', filename='js/notification.js')}}"></script>
+
+
+    <!-- ===================== -->
+    <!-- NOTIFICATION JAVASCRIPT -->
+    <!-- ===================== -->
+
+    <script src="{{ url_for('static', filename='js/notification.js') }}"></script>
+
+
+    <!-- ===================== -->
+    <!-- PROFILE DROPDOWN -->
+    <!-- ===================== -->
+
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const profileButton = document.getElementById('profile-button');
-            const profileDropdown = document.getElementById('profile-dropdown');
 
-            if (profileButton && profileDropdown) {
-                profileButton.addEventListener('click', function (e) {
-                    e.stopPropagation();
-                    profileDropdown.hidden = !profileDropdown.hidden;
-                });
+        document.addEventListener(
+            'DOMContentLoaded',
+            function () {
 
-                document.addEventListener('click', function (e) {
-                    if (!profileDropdown.hidden && !profileDropdown.contains(e.target) && e.target !== profileButton) {
-                        profileDropdown.hidden = true;
-                    }
-                });
+                const profileButton =
+                    document.getElementById('profile-button');
+
+                const profileDropdown =
+                    document.getElementById('profile-dropdown');
+
+
+                if (
+                    profileButton &&
+                    profileDropdown
+                ) {
+
+                    profileButton.addEventListener(
+                        'click',
+                        function (e) {
+
+                            e.stopPropagation();
+
+                            profileDropdown.hidden =
+                                !profileDropdown.hidden;
+
+                        }
+                    );
+
+
+                    document.addEventListener(
+                        'click',
+                        function (e) {
+
+                            if (
+                                !profileDropdown.hidden &&
+                                !profileDropdown.contains(e.target) &&
+                                e.target !== profileButton
+                            ) {
+
+                                profileDropdown.hidden = true;
+
+                            }
+
+                        }
+                    );
+
+                }
+
             }
-        });
+        );
+
     </script>
-    {%block scripts%}
-    {%endblock%}
+
+
+    {% block scripts %}
+    {% endblock %}
 
 </body>
 

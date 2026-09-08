@@ -601,20 +601,15 @@ Volunteer Chat
 
 <script>
 
-    const conversationId =
-        {{ conversation.conversation_id | tojson }};
+    const conversationId = {{ conversation.conversation_id | tojson }};
 
-    const otherUserLabel =
-        "Anonymous Seeker";
+    const otherUserLabel = "Anonymous Seeker";
 
 
-    const chatRedirectUrl =
-        {{ url_for('volunteer.chat') | tojson }};
+    const chatRedirectUrl = {{ url_for('volunteer.chat') | tojson }};
 
 </script>
 {% endif %}
-
-
 <!-- ================================= -->
 <!-- SHARED CHAT JAVASCRIPT -->
 <!-- ================================= -->

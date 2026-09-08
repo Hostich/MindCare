@@ -14,6 +14,11 @@ class Notification(db.Model):
         nullable = False
     )
 
+    request_id = db.Column(
+        db.Integer,
+        db.ForeignKey("chat_requests.request_id"),
+        nullable=True
+    )
     conversation_id = db.Column(
         db.Integer,
         db.ForeignKey("conversations.conversation_id"),
@@ -38,6 +43,7 @@ class Notification(db.Model):
 
     notification_type = db.Column(
         db.Enum(
+            "ChatRequestCreated",
             "ChatRequestAccepted",
             "CounselingSessionCreated",
             name = "notification_type_enum"
@@ -70,4 +76,8 @@ class Notification(db.Model):
     session = db.relationship(
         "CounselingSession",
         foreign_keys = [session_id]
+    )
+    request = db.relationship(
+        "ChatRequest",
+        foreign_keys=[request_id]
     )

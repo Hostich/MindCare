@@ -47,7 +47,7 @@ notificationSocket.on(
 
         const existingNotification = notificationDropdown.querySelector(
             `[data-notification-id = "${data.notification_id}"]`
-        )
+        );
 
         if (existingNotification){
             return;
@@ -57,7 +57,8 @@ notificationSocket.on(
 
         notificationItem.classList.add("notification-item");
         
-        notificationItem.dataset.notificationId = data.notification_id;
+        notificationItem.dataset.notificationId =
+            data.notification_id;
 
         const title = document.createElement("strong");
 
@@ -70,21 +71,84 @@ notificationSocket.on(
         notificationItem.appendChild(title);
         notificationItem.appendChild(message);
 
-        if(data.notification_type == "ChatRequestAccepted"){
-            const conversationLink = document.createElement("a");
 
-            conversationLink.href = "/notification/chat/" + data.notification_id;
+        // NEW CHAT REQUEST
+        if(data.notification_type == "ChatRequestCreated"){
 
-            conversationLink.textContent = "Enter Conversation";
+            // Accept button
+            const acceptButton =
+                document.createElement("a");
 
-            notificationItem.appendChild(conversationLink);
+            acceptButton.href =
+                acceptRequestUrl.replace(
+                    /0$/,
+                    data.request_id
+                );
 
-        }else if(data.notification_type == "CounselingSessionCreated"){
+            acceptButton.textContent =
+                "Accept";
 
-            const counselingLink = document.createElement("a");
+            // Reject button
+            const rejectForm =
+                document.createElement("form");
+
+            rejectForm.method = "POST";
+
+            rejectForm.action =
+                rejectRequestUrl.replace(
+                    /0$/,
+                    data.request_id
+                );
+
+            const rejectButton =
+                document.createElement("button");
+
+            rejectButton.type = "submit";
+
+            rejectButton.textContent =
+                "Reject";
+
+            rejectForm.appendChild(
+                rejectButton
+            );
+
+            notificationItem.appendChild(
+                acceptButton
+            );
+
+            notificationItem.appendChild(
+                rejectForm
+            );
+        }
+
+        // CHAT REQUEST ACCEPTED
+        else if(data.notification_type == "ChatRequestAccepted"){
+
+            const conversationLink =
+                document.createElement("a");
+
+            conversationLink.href =
+                "/notification/chat/" +
+                data.notification_id;
+
+            conversationLink.textContent =
+                "Enter Conversation";
+
+            notificationItem.appendChild(
+                conversationLink
+            );
+
+        }
+
+        // COUNSELING SESSION CREATED
+        else if(data.notification_type == "CounselingSessionCreated"){
+
+            const counselingLink =
+                document.createElement("a");
 
             counselingLink.href =
-                "/notification/counseling/" + data.notification_id;
+                "/notification/counseling/" +
+                data.notification_id;
 
             counselingLink.textContent =
                 "View Counseling Session";
@@ -96,16 +160,24 @@ notificationSocket.on(
                     if(notificationBadge){
 
                         let count =
-                            parseInt(notificationBadge.textContent) || 0;
+                            parseInt(
+                                notificationBadge.textContent
+                            ) || 0;
 
                         count--;
 
                         if(count <= 0){
+
                             notificationBadge.remove();
+
                             notificationBadge = null;
+
                         }
                         else{
-                            notificationBadge.textContent = count;
+
+                            notificationBadge.textContent =
+                                count;
+
                         }
 
                     }
@@ -117,35 +189,64 @@ notificationSocket.on(
                 counselingLink
             );
         }
-        const heading = notificationDropdown.querySelector("h3");
+
+
+        const heading =
+            notificationDropdown.querySelector("h3");
 
         if(heading){
+
             heading.insertAdjacentElement(
                 "afterend",
                 notificationItem
             );
-        }else{
-            notificationDropdown.prepend(notificationItem);
+
+        }
+        else{
+
+            notificationDropdown.prepend(
+                notificationItem
+            );
+
         }
 
+
+        // UPDATE NOTIFICATION BADGE
         if(notificationBadge){
-            let count = parseInt(notificationBadge.textContent) || 0;
+
+            let count =
+                parseInt(
+                    notificationBadge.textContent
+                ) || 0;
 
             count++;
 
-            notificationBadge.textContent = count;
+            notificationBadge.textContent =
+                count;
+
         }
         else {
-            notificationBadge = document.createElement("span");
 
-            notificationBadge.classList.add("notification-badge");
+            notificationBadge =
+                document.createElement("span");
 
-            notificationBadge.textContent = "1";
+            notificationBadge.classList.add(
+                "notification-badge"
+            );
 
-            notificationButton.appendChild(notificationBadge);
+            notificationBadge.textContent =
+                "1";
+
+            notificationButton.appendChild(
+                notificationBadge
+            );
+
         }
     }    
 );
+
+
+// CONVERSATION ENDED
 notificationSocket.on(
     "conversation_ended",
     function(data){
@@ -229,7 +330,9 @@ notificationSocket.on(
 
     }
 );
-//counseling session started
+
+
+// COUNSELING SESSION STARTED
 notificationSocket.on(
     "counseling_session_started",
     function(data){
@@ -254,6 +357,9 @@ notificationSocket.on(
 
     }
 );
+
+
+// COUNSELING SESSION COMPLETED
 notificationSocket.on(
     "counseling_session_completed",
     function(data){
@@ -278,11 +384,22 @@ notificationSocket.on(
 
     }
 );
-if (notificationButton && notificationDropdown){
+
+
+// NOTIFICATION DROPDOWN
+if (
+    notificationButton &&
+    notificationDropdown
+){
+
     notificationButton.addEventListener(
         "click",
         function(){
-            notificationDropdown.hidden = !notificationDropdown.hidden;
+
+            notificationDropdown.hidden =
+                !notificationDropdown.hidden;
+
         }
-    )
+    );
+
 }

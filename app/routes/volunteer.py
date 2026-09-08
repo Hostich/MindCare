@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
 from app.extensions import socketio
-from app.models import Conversation, User
+from app.models import Conversation, User, Notification
 from app.services.chat.chat_request_services import get_peding_requests, accept_chat_request, reject_chat_request, get_volunteer_private_chats
 from app.services.chat.conversation_services import get_conversation, end_conversation
 from app.services.chat.message_services import get_messages, send_message
@@ -93,7 +93,7 @@ def reject_request(request_id):
         flash("Unauthorized access.", "danger")
         return redirect(url_for("auth.login"))
 
-    reject_chat_request(request_id)
+    reject_chat_request(request_id, current_user.user_id)
 
     flash("Chat request rejected.", "info")
 

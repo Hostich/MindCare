@@ -1,6 +1,6 @@
 from datetime import datetime
 from app.extensions import db, socketio
-from app.models import ChatRequest, Conversation
+from app.models import ChatRequest, Conversation, Notification
 from app.services.mood.mood_services import get_latest_mood
 from app.services.chat.conversation_services import create_conversation, get_conversation_by_request
 from app.services.notification.notification_services import create_notification
@@ -11,6 +11,14 @@ def create_chat_request(seeker_id, volunteer_id):
 
     db.session.add(request)
     db.session.commit()
+
+    create_notification(
+        user_id = volunteer_id,
+        title = "New Chat Request",
+        message = "A Seeker is requesting a chat with you",
+        notification_type = "ChatRequestCreated",
+        request_id = request.request_id
+    )
 
     return request
 
@@ -58,45 +66,63 @@ def accept_chat_request(request_id, supporter_id):
 
     db.session.commit()
 
-    conversation = create_conversation(
-        chat_request.request_id,
-        supporter_id
+    notification = (
+        Notification.query
+        .filter_by(
+            user_id=supporter_id,
+            request_id=chat_request.request_id,
+            notification_type="ChatRequestCreated",
+            is_read=False
+        )
+        .first()
     )
+    
+    if notification:
+        notification.is_read = True
+        db.session.commit()
 
-    notification = create_notification(
-        user_id = chat_request.seeker_id,
+    conversation = create_conversation(
+                    chat_request.request_id,
+                    supporter_id
+                )
+
+    create_notification(
+        user_id=chat_request.seeker_id,
         conversation_id=conversation.conversation_id,
-        title = "Chat Request Accepted",
-        message = "Your chat request has been accepted by a volunteer.",
+        title="Chat Request Accepted",
+        message="Your chat request has been accepted by a volunteer.",
         notification_type="ChatRequestAccepted"
     )
+
     print(
         "CREATING ACCEPTED CHAT NOTIFICATION FOR USER:",
         chat_request.seeker_id
     )
     
-    socketio.emit(
-        "new_notification",
-        {
-            "notification_id" : notification.notification_id,
-            "title" : notification.title,
-            "message" : notification.message,
-            "notification_type" : notification.notification_type,
-            "conversation_id" : notification.conversation_id
-        },
-        to = f"user_{chat_request.seeker_id}"
-    )
-
     return conversation, None
 
 
-def reject_chat_request(request_id):
+def reject_chat_request(request_id, supporter_id):
     request = ChatRequest.query.get_or_404(request_id)
 
     request.request_status = "Rejected"
     request.responded_at = datetime.utcnow()
 
     db.session.commit()
+
+    notification = (
+        Notification.query
+        .filter_by(
+            user_id = supporter_id,
+            request_id = request.request_id,
+            notification_type = "ChatRequestCreated",
+            is_read = False
+        ).first()
+    )
+
+    if notification:
+        notification.is_read = True
+        db.session.commit()
 
 def get_latest_request(seeker_id):
     return(
@@ -110,7 +136,7 @@ def get_seeker_requests(seeker_id):
     return(
         ChatRequest.query
         .filter_by(seeker_id = seeker_id)
-        .order_by(ChatRequest.request_at.desc())
+        .order_by(ChatRequest.requested_at.desc())
         .all()
     )
 

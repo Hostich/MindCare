@@ -5,6 +5,7 @@ from app.models.notification import Notification
 
 def create_notification(
     user_id,
+    request_id = None,
     conversation_id = None,
     session_id = None,
     title = None,
@@ -13,6 +14,7 @@ def create_notification(
 ):
     notification = Notification(
         user_id = user_id,
+        request_id = request_id,
         conversation_id = conversation_id,
         session_id = session_id,
         title = title,
@@ -34,7 +36,8 @@ def create_notification(
             "message" : notification.message,
             "notification_type" : notification.notification_type,
             "conversation_id" : notification.conversation_id,
-            "session_id": notification.session_id
+            "session_id": notification.session_id,
+            "request_id" : notification.request_id
         },
         to = f"user_{user_id}"
     )
