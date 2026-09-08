@@ -30,7 +30,7 @@ ul {
 
 /* ===== BUTTONS ===== */
 .btn-solid {
-    background-color: #0d9488;
+    background-color: #FF8C69;
     color: #ffffff;
     padding: 14px 28px;
     border-radius: 30px;
@@ -39,19 +39,19 @@ ul {
     display: inline-block;
     border: none;
     cursor: pointer;
-    box-shadow: 0 8px 20px rgba(13, 148, 136, 0.28);
+    box-shadow: 0 8px 20px rgba(255, 140, 105, 0.32);
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
     .btn-solid:hover {
-        background-color: #0f766e;
+        background-color: #F2704A;
         transform: translateY(-2px);
-        box-shadow: 0 12px 24px rgba(13, 148, 136, 0.35);
+        box-shadow: 0 12px 24px rgba(255, 140, 105, 0.4);
     }
 
 .btn-outline {
-    border: 2px solid #0d9488;
-    color: #0d9488;
+    border: 2px solid #7C6FDB;
+    color: #7C6FDB;
     padding: 12px 26px;
     border-radius: 30px;
     font-weight: 600;
@@ -61,7 +61,7 @@ ul {
 }
 
     .btn-outline:hover {
-        background-color: #0d9488;
+        background-color: #7C6FDB;
         color: #ffffff;
         transform: translateY(-2px);
     }
@@ -73,7 +73,7 @@ ul {
 }
 
     .btn-text:hover {
-        color: #0d9488;
+        color: #7C6FDB;
     }
 
 /* ===== NAVBAR ===== */
@@ -93,7 +93,7 @@ ul {
 .logo {
     font-size: 22px;
     font-weight: 800;
-    color: #0d9488;
+    color: #7C6FDB;
     letter-spacing: 0.5px;
 }
 
@@ -118,12 +118,12 @@ ul {
             bottom: 0;
             width: 0;
             height: 2px;
-            background-color: #0d9488;
+            background-color: #7C6FDB;
             transition: width 0.25s ease;
         }
 
         .nav-links a:hover {
-            color: #0d9488;
+            color: #7C6FDB;
         }
 
             .nav-links a:hover::after {
@@ -142,7 +142,7 @@ ul {
     align-items: center;
     justify-content: space-between;
     padding: 90px 60px 120px;
-    background: radial-gradient(circle at 80% 20%, #e6fffa 0%, #f0fdf9 55%, #ffffff 100%);
+    background: radial-gradient(circle at 80% 20%, #EFEAFB 0%, #F8F7FE 55%, #ffffff 100%);
     gap: 40px;
     position: relative;
     overflow: hidden;
@@ -155,8 +155,8 @@ ul {
 }
 
 .badge {
-    background-color: #ccfbf1;
-    color: #0d9488;
+    background-color: #EDE9FE;
+    color: #7C6FDB;
     padding: 7px 18px;
     border-radius: 20px;
     font-size: 13px;
@@ -164,7 +164,7 @@ ul {
     display: inline-block;
     margin-bottom: 22px;
     letter-spacing: 0.3px;
-    box-shadow: 0 2px 8px rgba(13, 148, 136, 0.12);
+    box-shadow: 0 2px 8px rgba(124, 111, 219, 0.12);
 }
 
 .hero-text h1 {
@@ -177,7 +177,7 @@ ul {
 }
 
     .hero-text h1 .highlight {
-        color: #0d9488;
+        color: #FF8C69;
         font-weight: 800;
     }
 
@@ -210,7 +210,7 @@ ul {
     width: 380px;
     text-align: center;
     box-shadow: 0 30px 60px rgba(15, 118, 110, 0.15), 0 8px 20px rgba(0, 0, 0, 0.04);
-    border: 1px solid #ecfdf5;
+    border: 1px solid #F5F3FF;
     transition: transform 0.35s ease;
 }
 
@@ -219,8 +219,8 @@ ul {
     }
 
 .phone-icon {
-    background: linear-gradient(135deg, #ccfbf1, #a7f3d0);
-    color: #0d9488;
+    background: linear-gradient(135deg, #EDE9FE, #C9BFF2);
+    color: #7C6FDB;
     width: 78px;
     height: 78px;
     border-radius: 50%;
@@ -229,7 +229,7 @@ ul {
     align-items: center;
     justify-content: center;
     margin: 0 auto 26px;
-    box-shadow: 0 8px 20px rgba(13, 148, 136, 0.18);
+    box-shadow: 0 8px 20px rgba(124, 111, 219, 0.18);
 }
 
 .phone-title {
@@ -246,13 +246,13 @@ ul {
 }
 
 .phone-badge {
-    background-color: #ecfdf5;
-    color: #0d9488;
+    background-color: #F5F3FF;
+    color: #7C6FDB;
     font-size: 14px;
     font-weight: 600;
     padding: 14px;
     border-radius: 12px;
-    border: 1px solid #d1fae5;
+    border: 1px solid #E0DBFA;
 }
 
 /* ===== OFFER SECTION ===== */
@@ -294,12 +294,12 @@ ul {
     .card:hover {
         transform: translateY(-6px);
         box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
-        border-color: #ccfbf1;
+        border-color: #EDE9FE;
     }
 
     .card .icon {
-        background: linear-gradient(135deg, #ccfbf1, #a7f3d0);
-        color: #0d9488;
+        background: linear-gradient(135deg, #EDE9FE, #C9BFF2);
+        color: #7C6FDB;
         width: 48px;
         height: 48px;
         border-radius: 12px;
@@ -329,7 +329,7 @@ ul {
     align-items: center;
     justify-content: space-between;
     gap: 40px;
-    background: linear-gradient(135deg, #0f766e, #0d9488);
+    background: linear-gradient(135deg, #6355C7, #7C6FDB);
     color: #ffffff;
     padding: 64px;
     border-radius: 28px;
@@ -349,7 +349,7 @@ ul {
     }
 
     .about-text p {
-        color: #d1fae5;
+        color: #E0DBFA;
         font-size: 14px;
         margin-bottom: 15px;
         line-height: 1.7;
@@ -384,20 +384,20 @@ ul {
 
     .stat-box span {
         font-size: 13px;
-        color: #d1fae5;
+        color: #E0DBFA;
         font-weight: 500;
     }
 
 /* ===== VOLUNTEER CTA SECTION ===== */
 .volunteer-cta {
     text-align: center;
-    background: linear-gradient(180deg, #f0f9ff 0%, #f8fdfc 100%);
+    background: linear-gradient(180deg, #FFF4EE 0%, #FFF9F6 100%);
     padding: 100px 20px;
 }
 
 .cta-icon {
     background-color: #ffffff;
-    color: #0d9488;
+    color: #7C6FDB;
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -406,7 +406,7 @@ ul {
     align-items: center;
     justify-content: center;
     margin: 0 auto 24px;
-    box-shadow: 0 10px 24px rgba(13, 148, 136, 0.15);
+    box-shadow: 0 10px 24px rgba(124, 111, 219, 0.15);
 }
 
 .volunteer-cta h2 {

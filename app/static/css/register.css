@@ -7,7 +7,7 @@
 /* ===== LEFT SIDE PANEL ===== */
 .register-side {
     flex: 0 0 320px;
-    background: linear-gradient(160deg, #0d9488, #0f766e);
+    background: linear-gradient(160deg, #7C6FDB, #6355C7);
     color: #ffffff;
     display: flex;
     flex-direction: column;
@@ -38,7 +38,7 @@
 
 .register-side p {
     font-size: 14px;
-    color: #d1fae5;
+    color: #E0DBFA;
     line-height: 1.7;
     margin-bottom: 30px;
     max-width: 240px;
@@ -51,7 +51,7 @@
     padding: 16px 20px;
     font-size: 12px;
     font-weight: 500;
-    color: #ecfdf5;
+    color: #F5F3FF;
     line-height: 1.6;
 }
 
@@ -62,7 +62,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: radial-gradient(circle at 80% 20%, #e6fffa 0%, #f0fdf9 55%, #ffffff 100%);
+    background: radial-gradient(circle at 80% 20%, #EFEAFB 0%, #F8F7FE 55%, #ffffff 100%);
     padding: 60px 20px;
 }
 
@@ -116,14 +116,14 @@
     .input-group input:focus,
     .input-group select:focus {
         outline: none;
-        border-color: #0d9488;
+        border-color: #7C6FDB;
         background-color: #ffffff;
-        box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
+        box-shadow: 0 0 0 3px rgba(124, 111, 219, 0.15);
     }
 
 .register-btn {
     width: 100%;
-    background: linear-gradient(135deg, #0d9488, #0f766e);
+    background: linear-gradient(135deg, #FF8C69, #F2704A);
     color: #ffffff;
     padding: 15px;
     border: none;
@@ -133,13 +133,13 @@
     letter-spacing: 0.5px;
     cursor: pointer;
     margin-top: 8px;
-    box-shadow: 0 10px 20px rgba(13, 148, 136, 0.25);
+    box-shadow: 0 10px 20px rgba(255, 140, 105, 0.32);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
     .register-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 14px 28px rgba(13, 148, 136, 0.32);
+        box-shadow: 0 14px 28px rgba(255, 140, 105, 0.4);
     }
 
 .login-text {
@@ -150,7 +150,7 @@
 }
 
     .login-text a {
-        color: #0d9488;
+        color: #7C6FDB;
         font-weight: 600;
     }
 

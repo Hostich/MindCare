@@ -9,12 +9,14 @@ Mood Tracker
 
 <div class="tracker-page">
 
-    <div class="tracker-header">
-        <h2>Mood Tracker</h2>
-        <p>Track and understand your emotional journey over time.</p>
+    <div class="tracker-header-banner">
+        <div class="tracker-header">
+            <h2>Mood Tracker</h2>
+            <p>Track and understand your emotional journey over time.</p>
+        </div>
     </div>
 
-    <div class="tracker-grid">
+    <div class="tracker-grid tracker-grid-top">
 
         <div class="tracker-card today-card">
             <h3>Today's Mood</h3>
@@ -60,50 +62,64 @@ Mood Tracker
             {% endif %}
         </div>
 
-        <div class="tracker-card">
+        <div class="tracker-card entries-card">
             <h3>Recent Mood Entries</h3>
 
-            {% for mood in recent_moods %}
+            <div class="entries-list">
 
-            <div class="entry-row">
-                <div class="entry-icon mood-icon-{{ mood.mood|lower }}">
-                    {% if mood.mood|lower == "happy" %}
-                    <span class="mood-emoji-small">&#128522;</span>
-                    {% elif mood.mood|lower == "calm" %}
-                    <span class="mood-emoji-small">&#128524;</span>
-                    {% elif mood.mood|lower == "neutral" or mood.mood|lower == "okay" %}
-                    <span class="mood-emoji-small">&#128528;</span>
-                    {% elif mood.mood|lower == "sad" %}
-                    <span class="mood-emoji-small">&#128546;</span>
-                    {% elif mood.mood|lower == "anxious" %}
-                    <span class="mood-emoji-small">&#128543;</span>
-                    {% elif mood.mood|lower == "angry" %}
-                    <span class="mood-emoji-small">&#128544;</span>
-                    {% else %}
-                    <span class="mood-emoji-small">&#128528;</span>
-                    {% endif %}
+                {% for mood in recent_moods %}
+
+                <div class="entry-row {% if loop.index > 3 %}entry-extra{% endif %}" {% if loop.index>
+                    3 %}hidden{% endif %}>
+                    <div class="entry-icon mood-icon-{{ mood.mood|lower }}">
+                        {% if mood.mood|lower == "happy" %}
+                        <span class="mood-emoji-small">&#128522;</span>
+                        {% elif mood.mood|lower == "calm" %}
+                        <span class="mood-emoji-small">&#128524;</span>
+                        {% elif mood.mood|lower == "neutral" or mood.mood|lower == "okay" %}
+                        <span class="mood-emoji-small">&#128528;</span>
+                        {% elif mood.mood|lower == "sad" %}
+                        <span class="mood-emoji-small">&#128546;</span>
+                        {% elif mood.mood|lower == "anxious" %}
+                        <span class="mood-emoji-small">&#128543;</span>
+                        {% elif mood.mood|lower == "angry" %}
+                        <span class="mood-emoji-small">&#128544;</span>
+                        {% else %}
+                        <span class="mood-emoji-small">&#128528;</span>
+                        {% endif %}
+                    </div>
+                    <div class="entry-info">
+                        <strong>{{ mood.mood }}</strong>
+                        <span class="entry-date">{{ mood.recorded_at.strftime("%B %d, %Y") }}</span>
+                        {% if mood.note %}
+                        <p class="entry-note">{{ mood.note }}</p>
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="entry-info">
-                    <strong>{{ mood.mood }}</strong>
-                    <span class="entry-date">{{ mood.recorded_at.strftime("%B %d, %Y") }}</span>
-                    {% if mood.note %}
-                    <p class="entry-note">{{ mood.note }}</p>
-                    {% endif %}
-                </div>
+
+                {% else %}
+
+                <p class="empty-text">No mood history available.</p>
+
+                {% endfor %}
+
             </div>
 
-            {% else %}
-
-            <p class="empty-text">No mood history available.</p>
-
-            {% endfor %}
+            {% if recent_moods|length > 3 %}
+            <div class="entries-footer">
+                <button type="button" id="entries-toggle-btn" class="entries-toggle-btn" onclick="toggleEntries()">
+                    <span id="entries-toggle-text">Show more</span>
+                    <span id="entries-toggle-icon" class="entries-toggle-icon">&#8595;</span>
+                </button>
+            </div>
+            {% endif %}
         </div>
 
     </div>
 
-    <div class="tracker-grid">
+    <div class="tracker-grid tracker-grid-bottom">
 
-        <div class="tracker-card placeholder-card">
+        <div class="tracker-card placeholder-card overview-card">
             <h3>Mood Overview</h3>
             <div class="placeholder-box">
                 <span class="placeholder-icon">&#128200;</span>
@@ -111,7 +127,7 @@ Mood Tracker
             </div>
         </div>
 
-        <div class="tracker-card placeholder-card">
+        <div class="tracker-card placeholder-card distribution-card">
             <h3>Mood Distribution</h3>
             <div class="placeholder-box">
                 <span class="placeholder-icon">&#128202;</span>
@@ -121,26 +137,51 @@ Mood Tracker
 
     </div>
 
-    <div class="tracker-card full-width">
-        <h3>Available Volunteers</h3>
-        <p class="coming-soon">Coming soon...</p>
-    </div>
+    <div class="tracker-card full-width combined-card">
 
-    <div class="tracker-card full-width">
-        <h3>Mood Statistics</h3>
+        <div class="combined-section">
+            <h3>Available Volunteers</h3>
+            <p class="coming-soon">Coming soon...</p>
+        </div>
 
-        <div class="stats-row">
-            <div class="stat-block">
-                <span class="stat-label">Total Entries</span>
-                <span class="stat-value">{{ statistics.total_entries }}</span>
-            </div>
+        <hr class="combined-divider">
 
-            <div class="stat-block">
-                <span class="stat-label">Most Frequent Mood</span>
-                <span class="stat-value">{{ statistics.most_common_mood }}</span>
+        <div class="combined-section">
+            <h3>Mood Statistics</h3>
+
+            <div class="stats-row">
+                <div class="stat-block">
+                    <span class="stat-label">Total Entries</span>
+                    <span class="stat-value">{{ statistics.total_entries }}</span>
+                </div>
+
+                <div class="stat-block">
+                    <span class="stat-label">Most Frequent Mood</span>
+                    <span class="stat-value">{{ statistics.most_common_mood }}</span>
+                </div>
             </div>
         </div>
+
     </div>
 
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function toggleEntries() {
+        const extraRows = document.querySelectorAll('.entry-extra');
+        const icon = document.getElementById('entries-toggle-icon');
+        const text = document.getElementById('entries-toggle-text');
+
+        const isHidden = extraRows.length > 0 && extraRows[0].hidden;
+
+        extraRows.forEach(function (row) {
+            row.hidden = !isHidden;
+        });
+
+        text.textContent = isHidden ? 'Show less' : 'Show more';
+        icon.innerHTML = isHidden ? '&#8593;' : '&#8595;';
+    }
+</script>
 {% endblock %}
