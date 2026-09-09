@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\templates\\authorize\\login.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:app\\templates\\authorize\\login.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\routes\\landingpage.py||{3B902123-F8A7-4915-9F01-361F908088D0}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:app\\routes\\landingpage.py||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\templates\\authorize\\login.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:app\\templates\\authorize\\login.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\static\\css\\login.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
@@ -26,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -50,8 +50,7 @@
               "RelativeToolTip": "app\\static\\css\\login.css",
               "ViewState": "AgIAAF0AAAAAAAAAAAAUwIgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-08-13T09:37:27.913Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-13T09:37:27.913Z"
             },
             {
               "$type": "Document",
@@ -63,25 +62,24 @@
               "RelativeToolTip": "app\\static\\css\\landing.css",
               "ViewState": "AgIAAIgBAAAAAAAAAAAiwN8BAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-08-13T08:08:41.234Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-13T08:08:41.234Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "landingpage.py",
               "DocumentMoniker": "C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\routes\\landingpage.py",
               "RelativeDocumentMoniker": "app\\routes\\landingpage.py",
               "ToolTip": "C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\routes\\landingpage.py",
               "RelativeToolTip": "app\\routes\\landingpage.py",
-              "ViewState": "AgIAAEgAAAAAAAAAAAAQwF4AAAA+AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
               "WhenOpened": "2026-08-13T07:43:52.234Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "login.html",
               "DocumentMoniker": "C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\templates\\authorize\\login.html",
               "RelativeDocumentMoniker": "app\\templates\\authorize\\login.html",

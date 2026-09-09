@@ -2,14 +2,14 @@
   "ExpandedNodes": [
     "",
     "\\app",
-    "\\app\\routes",
     "\\app\\static",
     "\\app\\static\\css",
     "\\app\\templates",
-    "\\app\\templates\\authorize",
-    "\\venv",
-    "\\__pycache__"
+    "\\app\\templates\\community",
+    "\\app\\templates\\mood",
+    "\\app\\templates\\profile",
+    "\\app\\templates\\seeker"
   ],
-  "SelectedNode": "\\app\\routes\\landingpage.py",
+  "SelectedNode": "\\app\\templates\\community\\community.html",
   "PreviewInSolutionExplorer": false
 }
