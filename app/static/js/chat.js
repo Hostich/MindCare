@@ -8,6 +8,9 @@ console.log("CHAT.JS LOADED");
 const socket = io();
 
 
+
+
+
 /* =========================================
    SOCKET CONNECTED
 ========================================= */
@@ -19,6 +22,28 @@ socket.on("connect", function () {
         socket.id
     );
 
+     /*
+        Join the user's notification room.
+
+        This allows this socket connection to
+        receive new chat request notifications.
+    */
+
+    if (typeof currentUserId !== "undefined") {
+
+        socket.emit(
+            "join_notification_room",
+            {
+                user_id: currentUserId
+            }
+        );
+
+        console.log(
+            "Joined notification room:",
+            currentUserId
+        );
+
+    }
 
     /*
         Only join a room when a conversation
@@ -288,3 +313,90 @@ if(allVolunteersBtn && privateChatBtn && volunteerList && privateChatList){
         }
     );
 }
+
+/* =========================================
+   VOLUNTEER NOTIFICATION CHAT REQUEST
+========================================= */
+socket.on("new_notification", function(data){
+
+    console.log("CHAT PAGE RECEIVED NOTIFICATION:", data);
+
+    if(data.notification_type !== "ChatRequestCreated"){
+        return;
+    }
+
+    const pendingList = document.getElementById("pending-list");
+
+    if(!pendingList){
+        console.log("PENDING LIST NOT FOUND");
+        return;
+    }
+
+    // Prevent duplicate request cards
+    const existingRequest = pendingList.querySelector(
+        `[data-request-id="${data.request_id}"]`
+    );
+
+    if(existingRequest){
+        return;
+    }
+
+    // Create request card
+    const requestCard = document.createElement("div");
+    requestCard.classList.add("request-card");
+    requestCard.dataset.requestId = data.request_id;
+
+    // Request information
+    const requestInfo = document.createElement("div");
+    requestInfo.classList.add("request-info");
+
+    const seekerName = document.createElement("strong");
+    seekerName.textContent = "Anonymous Seeker";
+
+    const requestMessage = document.createElement("p");
+    requestMessage.textContent = "Wants to start a conversation";
+
+    requestInfo.appendChild(seekerName);
+    requestInfo.appendChild(requestMessage);
+
+    // Accept button
+    const acceptButton = document.createElement("a");
+    acceptButton.href = acceptRequestUrl.replace(
+        /0$/,
+        data.request_id
+    );
+    acceptButton.textContent = "Accept";
+
+    // Reject form
+    const rejectForm = document.createElement("form");
+    rejectForm.method = "POST";
+    rejectForm.action = rejectRequestUrl.replace(
+        /0$/,
+        data.request_id
+    );
+
+    const rejectButton = document.createElement("button");
+    rejectButton.type = "submit";
+    rejectButton.textContent = "Reject";
+
+    rejectForm.appendChild(rejectButton);
+
+    // Add everything to request card
+    requestCard.appendChild(requestInfo);
+    requestCard.appendChild(acceptButton);
+    requestCard.appendChild(rejectForm);
+
+    // Add the request before the "No pending..." message
+    const noRequestsMessage = pendingList.querySelector("p");
+
+    if(
+        noRequestsMessage &&
+        noRequestsMessage.textContent.includes(
+            "No pending chat requests"
+        )
+    ){
+        noRequestsMessage.remove();
+    }
+
+    pendingList.appendChild(requestCard);
+});

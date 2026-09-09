@@ -217,6 +217,25 @@ Seeker Chat
                         Request rejected
                     </p>
 
+                    <!-- REQUEST AGAIN -->
+
+                    <form method="POST"
+                        action="{{ url_for('chat_request.send_request') }}">
+
+                        <input type="hidden"
+                            name="volunteer_id"
+                            value="{{ chat.request.volunteer_id }}">
+
+                        <input type="hidden"
+                            name="source"
+                            value="chat">
+
+                        <button type="submit" class="request-btn">
+                            Request Again
+                        </button>
+
+                    </form>
+
                     {% endif %}
 
                 </div>
