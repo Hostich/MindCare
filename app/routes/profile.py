@@ -41,6 +41,10 @@ def edit_profile():
 
         flash("Profile updated successfully.", "success")
 
+        # Redirect depending on role
+        if current_user.role == "Volunteer":
+            return redirect(url_for("profile.volunteer_profile"))
+
         return redirect(url_for("profile.view_profile"))
 
     return render_template(
