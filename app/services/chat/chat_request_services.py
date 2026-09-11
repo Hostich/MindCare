@@ -124,6 +124,23 @@ def reject_chat_request(request_id, supporter_id):
         notification.is_read = True
         db.session.commit()
 
+    create_notification(
+        user_id=request.seeker_id,
+        request_id=request.request_id,
+        title="Chat Request Rejected",
+        message = "Your chat request has been rejected by the volunteer.",
+        notification_type="ChatRequestRejected"
+    )
+
+
+    socketio.emit(
+        "chat_request_rejected",
+        {
+            "request_id" : request.request_id
+        },
+        to=f"user_{request.seeker_id}"
+    )
+
 def get_latest_request(seeker_id):
     return(
         ChatRequest.query

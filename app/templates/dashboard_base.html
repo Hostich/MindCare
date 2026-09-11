@@ -133,8 +133,10 @@
 
                         {% for notification in notifications %}
 
+                    
+
                         <div
-                            class="notification-item"
+                            class="notification-item {% if not notification.is_read %}notification-unread{% endif %}"
                             data-notification-id="{{ notification.notification_id }}"
                         >
 

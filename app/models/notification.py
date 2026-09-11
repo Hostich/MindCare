@@ -45,6 +45,7 @@ class Notification(db.Model):
         db.Enum(
             "ChatRequestCreated",
             "ChatRequestAccepted",
+            "ChatRequestRejected",
             "CounselingSessionCreated",
             name = "notification_type_enum"
         ),

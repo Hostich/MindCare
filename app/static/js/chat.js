@@ -400,3 +400,133 @@ socket.on("new_notification", function(data){
 
     pendingList.appendChild(requestCard);
 });
+
+
+/* =========================================
+   SEEKER CHAT REQUEST REJECTED
+========================================= */
+
+socket.on("chat_request_rejected", function(data){
+
+    console.log(
+        "Chat request rejected:",
+        data
+    );
+
+    const privateChatList =
+        document.getElementById("private-chat-list");
+
+    // Only run on the Seeker Chat page
+    if(!privateChatList){
+        return;
+    }
+
+    const requestCard =
+        privateChatList.querySelector(
+            `[data-request-id="${data.request_id}"]`
+        );
+
+    if(!requestCard){
+        console.log(
+            "Rejected request card not found:",
+            data.request_id
+        );
+        return;
+    }
+
+    /*
+        Find the current status message.
+    */
+
+    const statusMessage =
+        requestCard.querySelector(
+            ".status-pending"
+        );
+
+    if(statusMessage){
+
+        statusMessage.classList.remove(
+            "status-pending"
+        );
+
+        statusMessage.classList.add(
+            "status-rejected"
+        );
+
+        statusMessage.textContent =
+            "Request rejected";
+
+    }
+
+    /*
+        Create Request Again button.
+    */
+
+    const existingButton =
+        requestCard.querySelector(
+            ".request-btn"
+        );
+
+    if(existingButton){
+        return;
+    }
+
+    const volunteerId =
+        requestCard.dataset.volunteerId;
+
+    if(!volunteerId){
+        console.log(
+            "Volunteer ID not found for rejected request."
+        );
+        return;
+    }
+
+    const requestAgainForm =
+        document.createElement("form");
+
+    requestAgainForm.method = "POST";
+
+    requestAgainForm.action = sendChatRequestUrl;
+     
+
+    const volunteerInput =
+        document.createElement("input");
+
+    volunteerInput.type = "hidden";
+    volunteerInput.name = "volunteer_id";
+    volunteerInput.value = volunteerId;
+
+    const sourceInput =
+        document.createElement("input");
+
+    sourceInput.type = "hidden";
+    sourceInput.name = "source";
+    sourceInput.value = "chat";
+
+    const requestAgainButton =
+        document.createElement("button");
+
+    requestAgainButton.type = "submit";
+    requestAgainButton.classList.add(
+        "request-btn"
+    );
+    requestAgainButton.textContent =
+        "Request Again";
+
+    requestAgainForm.appendChild(
+        volunteerInput
+    );
+
+    requestAgainForm.appendChild(
+        sourceInput
+    );
+
+    requestAgainForm.appendChild(
+        requestAgainButton
+    );
+
+    requestCard.appendChild(
+        requestAgainForm
+    );
+
+});

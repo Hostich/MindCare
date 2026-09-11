@@ -142,7 +142,7 @@ Seeker Chat
 
                 {% for chat in private_chats %}
 
-                <div class="private-chat-card">
+                <div class="private-chat-card" data-request-id="{{chat.request.request_id}}" data-volunteer-id="{{chat.request.volunteer_id}}">
 
                     <!-- VOLUNTEER NAME -->
 
@@ -436,6 +436,9 @@ Seeker Chat
 </script>
 
 {% endif %}
+<script>
+    const sendChatRequestUrl = {{url_for('chat_request.send_request') | tojson}}
+</script>
 
 <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 

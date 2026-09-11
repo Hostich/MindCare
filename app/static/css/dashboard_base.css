@@ -367,6 +367,10 @@ body {
         font-size: 12px;
     }
 
+.notification-unread {
+    background-color: #e7f3ff;
+}
+
 /* ===== FLASH MESSAGES ===== */
 .flash {
     margin: 20px 36px 0;

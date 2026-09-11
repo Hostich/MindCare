@@ -6,6 +6,38 @@ const notificationButton = document.getElementById("notification-button");
 const notificationDropdown = document.getElementById("notification-dropdown");
 let notificationBadge = document.querySelector(".notification-badge");
 
+// CLICK EXISTING NOTIFICATIONS
+if(notificationDropdown){
+    notificationDropdown.addEventListener("click", function(e){
+        const notificationItem = e.target.closest(".notification-item");
+
+        if(!notificationItem){
+            return;
+        }
+        const notificationId = notificationItem.dataset.notificationId;
+
+        if(!notificationId){
+            return;
+        }
+        console.log("NOTIFICATION CLICKED:", notificationId);
+
+        notificationItem.classList.remove("notification-unread");
+        fetch("/notification/read/"+ notificationId)
+            .then(function(){
+                if(notificationBadge){
+                    let count = parseInt(notificationBadge.textContent) || 0;
+                    count--;
+                    if(count <= 0){
+                        notificationBadge.remove();
+                        notificationBadge = null;
+                    }else{
+                        notificationBadge.textContent = count;
+                    }
+                }
+            });
+        });
+    }
+
 //join notification room
 notificationSocket.on(
     "connect",
@@ -56,9 +88,29 @@ notificationSocket.on(
         const notificationItem = document.createElement("div");
 
         notificationItem.classList.add("notification-item");
+        notificationItem.classList.add("notification-unread");
         
         notificationItem.dataset.notificationId =
             data.notification_id;
+
+        notificationItem.addEventListener("click", function()
+        {
+            console.log("NOTIFICATION CLICKED:", data.notification_id);
+            fetch("/notification/read/" + data.notification_id)
+            .then(function (){
+                if(notificationBadge){
+                    let count = parseInt(notificationBadge.textContent) || 0;
+                    count--;
+
+                    if(count <= 0){
+                        notificationBadge.remove();
+                        notificationBadge = null;
+                    }else{
+                        notificationBadge.textContent = count;
+                    }
+                }
+            });
+        });
 
         const title = document.createElement("strong");
 
