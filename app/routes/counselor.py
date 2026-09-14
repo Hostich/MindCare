@@ -277,6 +277,9 @@ def complete_session(session_id):
     session.session_status = "Completed"
     session.ended_at = datetime.utcnow()
 
+    if session.referral:
+        session.referral.referral_status = "Completed"
+
     if session.conversation:
         session.conversation.conversation_status = "Closed"
         session.conversation.ended_at = ended_at

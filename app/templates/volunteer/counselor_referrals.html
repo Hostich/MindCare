@@ -1,0 +1,473 @@
+{% extends "dashboard_base.html" %}
+
+{% block title %}
+Counselor Referrals
+{% endblock %}
+
+{% block content %}
+
+<div class="counselor-referrals-page">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+
+        <h1>Counselor Referrals</h1>
+
+        <p>
+            Manage and monitor your referrals to counselors.
+        </p>
+
+    </div>
+
+
+    <!-- REFERRAL TABS -->
+    <div class="referral-tabs">
+
+         <button type="button"
+            class="referral-tab active"
+            data-status="All">
+
+            All
+
+        </button>
+
+        <button type="button"
+                class="referral-tab active"
+                data-status="Pending">
+
+            Pending
+
+        </button>
+
+
+        <button type="button"
+                class="referral-tab"
+                data-status="Rejected">
+
+            Declined
+
+        </button>
+
+
+        <button type="button"
+                class="referral-tab"
+                data-status="Accepted">
+
+            Accepted
+
+        </button>
+
+
+        <button type="button"
+                class="referral-tab"
+                data-status="Completed">
+
+            Completed
+
+        </button>
+
+    </div>
+
+
+    <!-- MAIN REFERRAL AREA -->
+    <div class="referral-content">
+
+
+        <!-- REFERRAL LIST -->
+        <section class="referral-list-section">
+
+            <h2>Referrals</h2>
+
+
+            {% if referrals %}
+
+                {% for referral in referrals %}
+
+                    <div class="referral-card"
+                         data-referral-status="{{ referral.referral_status }}">
+
+
+                        <!-- SEEKER -->
+                        <div class="referral-seeker">
+
+                            <strong>
+                                Anonymous Seeker
+                            </strong>
+
+                            <p>
+                                Seeker referred for professional support.
+                            </p>
+
+                        </div>
+
+
+                        <!-- REFERRAL DETAILS -->
+                        <div class="referral-details">
+
+
+                            <!-- COUNSELOR -->
+                            <div>
+
+                                <strong>
+                                    Related Counselor
+                                </strong>
+
+                                <p>
+                                    Counselor: {{ referral.counselor.username}}
+                                </p>
+
+                            </div>
+
+
+                            <!-- STATUS -->
+                            <div>
+
+                                <strong>
+                                    Status
+                                </strong>
+
+                                <p>
+
+                                    {% if referral.referral_status == "Rejected" %}
+
+                                        Declined
+
+                                    {% else %}
+
+                                        {{ referral.referral_status }}
+
+                                    {% endif %}
+
+                                </p>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <!-- REFER TO ANOTHER COUNSELOR -->
+                        {% if referral.referral_status == "Rejected" %}
+
+                            <button type="button"
+                                    class="refer-another-counselor-btn"
+                                    onclick="openCounselorModal()">
+
+                                Refer to Another Counselor
+
+                            </button>
+
+                        {% endif %}
+
+
+                    </div>
+
+                {% endfor %}
+
+
+            {% else %}
+
+                <p id="no-referrals-message">
+
+                    No referrals found.
+
+                </p>
+
+            {% endif %}
+
+
+        </section>
+
+
+        <!-- REFERRAL SUMMARY -->
+        <aside class="referral-summary">
+
+            <h2>
+                Referral Summary
+            </h2>
+
+
+            <!-- PENDING -->
+            <div class="summary-card">
+
+                <span>
+                    Pending
+                </span>
+
+                <strong>
+                    {{ pending_count }}
+                </strong>
+
+            </div>
+
+
+            <!-- DECLINED -->
+            <div class="summary-card">
+
+                <span>
+                    Declined
+                </span>
+
+                <strong>
+                    {{ declined_count }}
+                </strong>
+
+            </div>
+
+
+            <!-- ACCEPTED -->
+            <div class="summary-card">
+
+                <span>
+                    Accepted
+                </span>
+
+                <strong>
+                    {{ accepted_count }}
+                </strong>
+
+            </div>
+
+
+            <!-- COMPLETED -->
+            <div class="summary-card">
+
+                <span>
+                    Completed
+                </span>
+
+                <strong>
+                    {{ completed_count }}
+                </strong>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+
+    <!-- ================================= -->
+    <!-- COUNSELOR SELECTION MODAL -->
+    <!-- ================================= -->
+
+    <div id="counselor-modal"
+         class="counselor-modal"
+         hidden>
+
+
+        <div class="counselor-modal-content">
+
+
+            <!-- MODAL HEADER -->
+            <div class="counselor-modal-header">
+
+                <h2>
+                    Select Another Counselor
+                </h2>
+
+
+                <button type="button"
+                        class="close-counselor-modal"
+                        onclick="closeCounselorModal()">
+
+                    &times;
+
+                </button>
+
+            </div>
+
+
+            <p>
+                Select a counselor to send a new referral to.
+            </p>
+
+
+            <!-- COUNSELOR LIST -->
+            <div class="counselor-list">
+
+
+                <!-- TEMPORARY COUNSELOR -->
+                <!-- This will be replaced with real counselors later. -->
+
+                <div class="counselor-card">
+
+                    <div class="counselor-avatar"></div>
+
+
+                    <div class="counselor-info">
+
+                        <strong>
+                            Sample Counselor
+                        </strong>
+
+                        <p>
+                            Counselor
+                        </p>
+
+                        <span>
+                            Available
+                        </span>
+
+                    </div>
+
+
+                    <button type="button"
+                            class="select-counselor-btn">
+
+                        Refer
+
+                    </button>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- MODAL FOOTER -->
+            <div class="counselor-modal-footer">
+
+                <button type="button"
+                        onclick="closeCounselorModal()">
+
+                    Cancel
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+    // ============================
+    // REFERRAL TABS
+    // ============================
+
+    const referralTabs =
+        document.querySelectorAll(".referral-tab");
+
+
+    const referralCards =
+        document.querySelectorAll(".referral-card");
+
+
+    const noReferralsMessage =
+        document.getElementById("no-referrals-message");
+
+
+    referralTabs.forEach(function(tab) {
+
+        tab.addEventListener("click", function() {
+
+            const selectedStatus =
+                tab.dataset.status;
+
+
+            // Remove active state
+            referralTabs.forEach(function(otherTab) {
+
+                otherTab.classList.remove("active");
+
+            });
+
+
+            // Add active state
+            tab.classList.add("active");
+
+
+            let visibleCount = 0;
+
+
+            // Show matching referrals
+            referralCards.forEach(function(card) {
+
+                const referralStatus =
+                    card.dataset.referralStatus;
+
+
+                    if(
+                        selectedStatus === "All" ||
+                        referralStatus === selectedStatus
+                    ) {
+                        card.hidden = false;
+                        visibleCount++;
+                    }
+                    else {
+                        card.hidden = true;
+                    }
+
+            });
+
+
+            // Show empty state
+            if(noReferralsMessage) {
+
+                if(visibleCount === 0) {
+
+                    noReferralsMessage.hidden = false;
+
+                }
+                else {
+
+                    noReferralsMessage.hidden = true;
+
+                }
+
+            }
+
+        });
+
+    });
+
+
+    // ============================
+    // COUNSELOR MODAL
+    // ============================
+
+    const counselorModal =
+        document.getElementById("counselor-modal");
+
+
+    function openCounselorModal() {
+
+        counselorModal.hidden = false;
+
+    }
+
+
+    function closeCounselorModal() {
+
+        counselorModal.hidden = true;
+
+    }
+
+
+    // Close modal when clicking outside
+    counselorModal.addEventListener(
+        "click",
+        function(event) {
+
+            if(event.target === counselorModal) {
+
+                closeCounselorModal();
+
+            }
+
+        }
+    );
+
+</script>
+
+{% endblock %}

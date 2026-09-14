@@ -5,7 +5,7 @@ from app.models import Conversation, User, Notification
 from app.services.chat.chat_request_services import get_peding_requests, accept_chat_request, reject_chat_request, get_volunteer_private_chats
 from app.services.chat.conversation_services import get_conversation, end_conversation
 from app.services.chat.message_services import get_messages, send_message
-from app.services.referral.referral_services import create_referral
+from app.services.referral.referral_services import create_referral, get_volunteer_referrals
 
 volunteer = Blueprint("volunteer", __name__, url_prefix="/volunteer")
 
@@ -229,3 +229,20 @@ def refer_seeker(conversation_id):
     flash("referral sent Successfully.", "success")
 
     return redirect(url_for("volunteer.chat", conversation_id = conversation_id))
+
+@volunteer.route("/counselor-referrals")
+@login_required
+def counselor_referrals():
+    if current_user.role != "Volunteer":
+        flash("Unauthorized Access.", "danger")
+        return redirect(url_for("auth.login"))
+
+    referrals = get_volunteer_referrals(current_user.user_id)
+
+    pending_count = sum(1 for referral in referrals if referral.referral_status == "Pending")
+    declined_count = sum(1 for referral in referrals if referral.referral_status == "Rejected")
+    accepted_count = sum(1 for referral in referrals if referral.referral_status == "Accepted")
+    completed_count = sum(1 for referral in referrals if referral.referral_status == "Completed")
+
+    return render_template("volunteer/counselor_referrals.html", referrals=referrals, pending_count = pending_count, declined_count = declined_count, accepted_count = accepted_count, completed_count = completed_count)
+    
