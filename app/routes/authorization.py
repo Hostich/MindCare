@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, session, flash, url_for
-from flask_login import login_user
+from flask_login import login_user, logout_user, login_required
 from app.services.auth.user_services import create_user
 from app.services.auth.auth_services import validate_registration, authenticate_user
 from app.services.auth.verification_services import start_email_verification, verify_registration_code, clear_verification_session
@@ -126,3 +126,9 @@ def login():
     return render_template(
         "authorize/login.html"
     )   
+
+@auth.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("auth.login"))
