@@ -5,29 +5,32 @@ Volunteer Dashboard
 {% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/v_dashboard.css') }}">
 
 <div class="dashboard-container">
 
     <!-- HEADER -->
 
-    <div class="dashboard-header">
+    <div class="dashboard-header-banner">
 
-        <div>
+        <div class="dashboard-header">
 
-            <h2>
-                Welcome,
-                {{ current_user.full_name if current_user.full_name else current_user.username }}
-            </h2>
+            <div>
 
-            <p>
-                Thank you for supporting the MindCare community.
-            </p>
+                <h2>
+                    Welcome,
+                    {{ current_user.full_name if current_user.full_name else current_user.username }}
+                </h2>
+
+                <p>
+                    Thank you for supporting the MindCare community.
+                </p>
+
+            </div>
 
         </div>
 
     </div>
-
-    <hr>
 
     <!-- STATISTICS -->
 
@@ -59,51 +62,43 @@ Volunteer Dashboard
 
     </div>
 
-    <br>
-
     <div class="dashboard-main">
 
         <!-- RECENT CONVERSATIONS -->
 
-        <div class="recent-conversations">
+        <div class="panel-card recent-conversations">
 
             <h3>Recent Conversations</h3>
-
-            <hr>
 
             {% for conversation in recent_conversations %}
 
             <div class="conversation-card">
 
-                <strong>Anonymous User</strong>
+                <div class="conversation-avatar">A</div>
 
-                <br>
+                <div class="conversation-info">
 
-                <small>
+                    <strong>Anonymous User</strong>
 
-                    {{ conversation.last_message }}
+                    <small>
+                        {{ conversation.last_message }}
+                    </small>
 
-                </small>
+                </div>
 
-                <br><br>
-
-                <span>
-
+                <span class="status-badge {% if conversation.is_online %}status-online{% else %}status-offline{% endif %}">
                     {% if conversation.is_online %}
-                        🟢 Online
+                    🟢 Online
                     {% else %}
-                        ⚪ Offline
+                    ⚪ Offline
                     {% endif %}
-
                 </span>
 
             </div>
 
-            <hr>
-
             {% else %}
 
-            <p>No recent conversations.</p>
+            <p class="empty-text">No recent conversations.</p>
 
             {% endfor %}
 
@@ -111,33 +106,31 @@ Volunteer Dashboard
 
         <!-- REFERRALS -->
 
-        <div class="referral-panel">
+        <div class="panel-card referral-panel">
 
             <h3>Referred to Counselor</h3>
-
-            <hr>
 
             {% for referral in referrals %}
 
             <div class="referral-card">
 
-                <strong>Anonymous User</strong>
+                <div class="referral-avatar">A</div>
 
-                <br>
+                <div class="referral-info">
 
-                <small>
+                    <strong>Anonymous User</strong>
 
-                    {{ referral.referral_status }}
+                    <small>
+                        {{ referral.referral_status }}
+                    </small>
 
-                </small>
+                </div>
 
             </div>
 
-            <hr>
-
             {% else %}
 
-            <p>No referrals yet.</p>
+            <p class="empty-text">No referrals yet.</p>
 
             {% endfor %}
 
@@ -145,15 +138,11 @@ Volunteer Dashboard
 
     </div>
 
-    <br>
-
     <!-- RECENT ACTIVITY -->
 
-    <div class="recent-activity">
+    <div class="panel-card recent-activity">
 
         <h3>Recent Activity</h3>
-
-        <hr>
 
         {% for activity in recent_activities %}
 
@@ -161,27 +150,19 @@ Volunteer Dashboard
 
             <strong>{{ activity.title }}</strong>
 
-            <br>
-
             <small>
-
                 {{ activity.description }}
-
             </small>
 
-            <br>
-
-            <small>
-
+            <span class="activity-time">
                 {{ activity.created_at.strftime("%B %d, %Y %I:%M %p") }}
-
-            </small>
+            </span>
 
         </div>
 
         {% else %}
 
-        <p>No recent activity.</p>
+        <p class="empty-text">No recent activity.</p>
 
         {% endfor %}
 

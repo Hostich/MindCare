@@ -5,58 +5,59 @@ Volunteer Chat
 {% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/v_chat.css') }}">
 
 <div class="chat-container">
 
-    <!-- ================================= -->
-    <!-- LEFT SIDE -->
-    <!-- ================================= -->
+    <div class="chat-header-banner">
+        <h2>Chat</h2>
+    </div>
 
-    <div class="chat-sidebar">
-
-        <h3>Chat</h3>
-
+    <div class="chat-body">
 
         <!-- ================================= -->
-        <!-- CHAT TABS -->
+        <!-- LEFT SIDE -->
         <!-- ================================= -->
 
-        <div class="chat-tabs">
+        <div class="chat-sidebar">
 
-            <button
-                type="button"
-                id="pending-btn"
-                class="chat-tab active"
-            >
-                Requests
-            </button>
-
-            <button
-                type="button"
-                id="private-chat-btn"
-                class="chat-tab"
-            >
-                Private Chat
-            </button>
-
-        </div>
+            <h3 class="chat-title">Chat</h3>
 
 
-        <!-- ================================= -->
-        <!-- PENDING REQUESTS -->
-        <!-- ================================= -->
+            <!-- ================================= -->
+            <!-- CHAT TABS -->
+            <!-- ================================= -->
 
-        <div
-            id="pending-list"
-            class="pending-list"
-        >
+            <div class="chat-tabs">
 
-            <h4>
-                Chat Requests
-            </h4>
+                <button type="button"
+                        id="pending-btn"
+                        class="chat-tab active">
+                    Requests
+                </button>
+
+                <button type="button"
+                        id="private-chat-btn"
+                        class="chat-tab">
+                    Private Chat
+                </button>
+
+            </div>
 
 
-            {% for chat_request in requests %}
+            <!-- ================================= -->
+            <!-- PENDING REQUESTS -->
+            <!-- ================================= -->
+
+            <div id="pending-list"
+                 class="pending-list">
+
+                <h4 class="list-heading">
+                    Chat Requests
+                </h4>
+
+
+                {% for chat_request in requests %}
 
                 <div class="request-card" data-request-id="{{request.request_id}}">
 
@@ -79,78 +80,79 @@ Volunteer Chat
 
                         {% if chat_request.seeker_mood %}
 
-                            <small>
-                                Mood:
-                                {{ chat_request.seeker_mood.mood }}
-                            </small>
+                        <small>
+                            Mood:
+                            {{ chat_request.seeker_mood.mood }}
+                        </small>
 
                         {% endif %}
 
                     </div>
 
 
-                    <!-- ================================= -->
-                    <!-- ACCEPT REQUEST -->
-                    <!-- ================================= -->
+                    <div class="request-actions">
 
-                    <a
-                        href="{{ url_for(
+                        <!-- ================================= -->
+                        <!-- ACCEPT REQUEST -->
+                        <!-- ================================= -->
+                        class="accept-btn"
+                        href="{{
+ url_for(
                             'volunteer.accept_request',
                             request_id=chat_request.request_id
-                        ) }}"
-                    >
+                        )
+                        }}"
+                        >
                         Accept
-                    </a>
+                        </a>
 
 
-                    <!-- ================================= -->
-                    <!-- REJECT REQUEST -->
-                    <!-- ================================= -->
+                        <!-- ================================= -->
+                        <!-- REJECT REQUEST -->
+                        <!-- ================================= -->
 
-                    <form
-                        method="POST"
-                        action="{{ url_for(
+                        <form method="POST"
+                              action="{{ url_for(
                             'volunteer.reject_request',
                             request_id=chat_request.request_id
-                        ) }}"
-                    >
+                        ) }}">
 
-                        <button type="submit">
-                            Reject
-                        </button>
+                            <button type="submit" class="reject-btn">
+                                Reject
+                            </button>
 
-                    </form>
+                        </form>
+
+                    </div>
 
                 </div>
 
 
-            {% else %}
+                {% else %}
 
-                <p>
+                <p class="empty-text">
                     No pending chat requests.
                 </p>
 
-            {% endfor %}
+                {% endfor %}
 
-        </div>
-
-
-        <!-- ================================= -->
-        <!-- PRIVATE CHAT -->
-        <!-- ================================= -->
-
-        <div
-            id="private-chat-list"
-            class="private-chat-list"
-            hidden
-        >
-
-            <h4>
-                Private Chat
-            </h4>
+            </div>
 
 
-            {% if conversation %}
+            <!-- ================================= -->
+            <!-- PRIVATE CHAT -->
+            <!-- ================================= -->
+
+            <div id="private-chat-list"
+                 class="private-chat-list"
+                 hidden>
+
+                <h4 class="list-heading">
+                    Private Chat
+                </h4>
+
+
+                {% if conversation %}
 
                 <div class="private-chat-card">
 
@@ -165,47 +167,47 @@ Volunteer Chat
 
                     {% if conversation.conversation_status == "Active" %}
 
-                        <p>
-                            🟢 Active conversation
-                        </p>
+                    <p class="status-active">
+                        🟢 Active conversation
+                    </p>
 
-                        <small>
-                            You are currently chatting
-                            with an anonymous seeker.
-                        </small>
+                    <small>
+                        You are currently chatting
+                        with an anonymous seeker.
+                    </small>
 
                     {% else %}
 
-                        <p>
-                            ⚫ Conversation ended
-                        </p>
+                    <p class="status-closed">
+                        ⚫ Conversation ended
+                    </p>
 
                     {% endif %}
 
                 </div>
 
 
-            {% else %}
+                {% else %}
 
-                <p>
+                <p class="empty-text">
                     You don't have an active private conversation.
                 </p>
 
-            {% endif %}
+                {% endif %}
+
+            </div>
 
         </div>
 
-    </div>
 
+        <!-- ================================= -->
+        <!-- RIGHT SIDE -->
+        <!-- CONVERSATION -->
+        <!-- ================================= -->
 
-    <!-- ================================= -->
-    <!-- RIGHT SIDE -->
-    <!-- CONVERSATION -->
-    <!-- ================================= -->
+        <div class="conversation-panel">
 
-    <div class="conversation-panel">
-
-        {% if conversation %}
+            {% if conversation %}
 
             <!-- ================================= -->
             <!-- CONVERSATION HEADER -->
@@ -226,178 +228,168 @@ Volunteer Chat
 
                 </div>
 
+                <div class="conversation-header-right">
 
-                {% if conversation.conversation_status == "Active" %}
+                    {% if conversation.conversation_status == "Active" %}
 
-                    <span>
+                    <span class="status-online">
                         🟢 Active
                     </span>
 
-                {% else %}
+                    {% else %}
 
-                    <span>
+                    <span class="status-closed">
                         ⚫ Conversation Closed
                     </span>
 
-                {% endif %}
-                {% if conversation.conversation_status == "Active"%}
+                    {% endif %}
+                    {% if conversation.conversation_status == "Active"%}
                     <button type="button" id="refer-btn" class="refer-btn">
                         Refer to counselor
                     </button>
-                {% endif %}
+                    {% endif %}
+
+                </div>
             </div>
 
 
             <hr>
             {% if conversation.conversation_status == "Active" %}
 
-                <div id="referral-form-container" class="referral-form-container" hidden>
+            <div id="referral-form-container" class="referral-form-container" hidden>
 
-                    <div class="referral-header">
+                <div class="referral-header">
 
-                        <h3>
-                            Refer Seeker to Counselor
-                        </h3>
+                    <h3>
+                        Refer Seeker to Counselor
+                    </h3>
 
-                        <button type="button" id="close-referral-btn">
-                            ×
-                        </button>
+                    <button type="button" id="close-referral-btn" class="close-referral-icon">
+                        ×
+                    </button>
+
+                </div>
+
+
+                <form method="POST"
+                      class="referral-form"
+                      action="{{ url_for(
+                            'volunteer.refer_seeker',
+                            conversation_id=conversation.conversation_id
+                        ) }}">
+
+                    <!-- COUNSELOR -->
+
+                    <div class="form-group">
+
+                        <label for="counselor_id">
+                            Counselor
+                        </label>
+
+                        <select id="counselor_id"
+                                name="counselor_id"
+                                required>
+
+                            <option value="">
+                                Select a counselor
+                            </option>
+
+                            {% for counselor in counselors %}
+
+                            <option value="{{ counselor.user_id }}">
+                                {{ counselor.username }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
 
                     </div>
 
 
-                    <form
-                        method="POST"
-                        action="{{ url_for(
-                            'volunteer.refer_seeker',
-                            conversation_id=conversation.conversation_id
-                        ) }}"
-                    >
+                    <!-- REFERRAL REASON -->
 
-                        <!-- COUNSELOR -->
+                    <div class="form-group">
 
-                        <div class="form-group">
+                        <label for="reason">
+                            Reason for Referral
+                        </label>
 
-                            <label for="counselor_id">
-                                Counselor
-                            </label>
+                        <textarea id="reason"
+                                  name="reason"
+                                  rows="4"
+                                  placeholder="Explain why you are referring this seeker..."
+                                  required></textarea>
 
-                            <select
-                                id="counselor_id"
-                                name="counselor_id"
-                                required
-                            >
-
-                                <option value="">
-                                    Select a counselor
-                                </option>
-
-                                {% for counselor in counselors %}
-
-                                    <option value="{{ counselor.user_id }}">
-                                        {{ counselor.username }}
-                                    </option>
-
-                                {% endfor %}
-
-                            </select>
-
-                        </div>
+                    </div>
 
 
-                        <!-- REFERRAL REASON -->
+                    <!-- SESSION TYPE -->
 
-                        <div class="form-group">
+                    <div class="form-group">
 
-                            <label for="reason">
-                                Reason for Referral
-                            </label>
+                        <label for="preferred_session_type">
+                            Preferred Session Type
+                        </label>
 
-                            <textarea
-                                id="reason"
-                                name="reason"
-                                rows="4"
-                                placeholder="Explain why you are referring this seeker..."
-                                required
-                            ></textarea>
-
-                        </div>
-
-
-                        <!-- SESSION TYPE -->
-
-                        <div class="form-group">
-
-                            <label for="preferred_session_type">
-                                Preferred Session Type
-                            </label>
-
-                            <select
-                                id="preferred_session_type"
+                        <select id="preferred_session_type"
                                 name="preferred_session_type"
-                                required
-                            >
+                                required>
 
-                                <option value="">
-                                    Select session type
-                                </option>
+                            <option value="">
+                                Select session type
+                            </option>
 
-                                <option value="Chat">
-                                    Chat
-                                </option>
+                            <option value="Chat">
+                                Chat
+                            </option>
 
-                                <option value="Video">
-                                    Video
-                                </option>
+                            <option value="Video">
+                                Video
+                            </option>
 
-                            </select>
+                        </select>
 
-                        </div>
-
-
-                        <!-- VOLUNTEER NOTE -->
-
-                        <div class="form-group">
-
-                            <label for="volunteer_note">
-                                Additional Note
-                                <span>(Optional)</span>
-                            </label>
-
-                            <textarea
-                                id="volunteer_note"
-                                name="volunteer_note"
-                                rows="3"
-                                placeholder="Add any additional information for the counselor..."
-                            ></textarea>
-
-                        </div>
+                    </div>
 
 
-                        <!-- BUTTONS -->
+                    <!-- VOLUNTEER NOTE -->
 
-                        <div class="referral-actions">
+                    <div class="form-group">
 
-                            <button
-                                type="submit"
-                                class="submit-referral-btn"
-                            >
-                                Send Referral
-                            </button>
+                        <label for="volunteer_note">
+                            Additional Note
+                            <span>(Optional)</span>
+                        </label>
 
-                            <button
-                                type="button"
+                        <textarea id="volunteer_note"
+                                  name="volunteer_note"
+                                  rows="3"
+                                  placeholder="Add any additional information for the counselor..."></textarea>
+
+                    </div>
+
+
+                    <!-- BUTTONS -->
+
+                    <div class="referral-actions">
+
+                        <button type="submit"
+                                class="submit-referral-btn">
+                            Send Referral
+                        </button>
+
+                        <button type="button"
                                 id="cancel-referral-btn"
-                                class="cancel-referral-btn"
-                            >
-                                Cancel
-                            </button>
+                                class="cancel-referral-btn">
+                            Cancel
+                        </button>
 
-                        </div>
+                    </div>
 
-                    </form>
+                </form>
 
-                </div>
+            </div>
 
             {% endif %}
 
@@ -405,21 +397,20 @@ Volunteer Chat
             <!-- ================================= -->
             <!-- NEW CONVERSATION NOTICE -->
             <!-- ================================= -->
-
             {% if not messages %}
 
-                <div class="new-conversation-notice">
+            <div class="new-conversation-notice">
 
-                    <strong>
-                        🔔 This is a new conversation.
-                    </strong>
+                <strong>
+                    🔔 This is a new conversation.
+                </strong>
 
-                    <p>
-                        You are starting a new private
-                        conversation with an anonymous seeker.
-                    </p>
+                <p>
+                    You are starting a new private
+                    conversation with an anonymous seeker.
+                </p>
 
-                </div>
+            </div>
 
             {% endif %}
 
@@ -428,48 +419,46 @@ Volunteer Chat
             <!-- MESSAGE AREA -->
             <!-- ================================= -->
 
-            <div
-                id="chat-box"
-                class="chat-box"
-            >
+            <div id="chat-box"
+                 class="chat-box">
 
                 {% for message in messages %}
 
-                    <div class="message">
+                <div class="message {% if message.sender_id == current_user.user_id %}message-mine{% else %}message-theirs{% endif %}">
 
-                        {% if message.sender_id == current_user.user_id %}
+                    {% if message.sender_id == current_user.user_id %}
 
-                            <!-- VOLUNTEER'S OWN MESSAGE -->
+                    <!-- VOLUNTEER'S OWN MESSAGE -->
 
-                            <strong>
-                                You
-                            </strong>
+                    <strong>
+                        You
+                    </strong>
 
-                        {% else %}
+                    {% else %}
 
-                            <!-- SEEKER MESSAGE -->
+                    <!-- SEEKER MESSAGE -->
 
-                            <strong>
-                                Anonymous Seeker
-                            </strong>
+                    <strong>
+                        Anonymous Seeker
+                    </strong>
 
-                        {% endif %}
-
-
-                        <p>
-                            {{ message.message }}
-                        </p>
+                    {% endif %}
 
 
-                        <small>
-                            {{ message.sent_at.strftime(
+                    <p>
+                        {{ message.message }}
+                    </p>
+
+
+                    <small>
+                        {{
+ message.sent_at.strftime(
                                 "%B %d, %Y %I:%M %p"
-                            ) }}
-                        </small>
+                            )
+                        }}
+                    </small>
 
-                    </div>
-
-                    <hr>
+                </div>
 
                 {% endfor %}
 
@@ -479,79 +468,73 @@ Volunteer Chat
             <!-- ================================= -->
             <!-- ACTIVE CONVERSATION -->
             <!-- ================================= -->
-
             {% if conversation.conversation_status == "Active" %}
 
 
-                <!-- ================================= -->
-                <!-- MESSAGE FORM -->
-                <!-- ================================= -->
+            <!-- ================================= -->
+            <!-- MESSAGE FORM -->
+            <!-- ================================= -->
 
-                <form
-                    id="chat-form"
-                    onsubmit="return false;"
-                >
+            <form id="chat-form"
+                  class="chat-form"
+                  onsubmit="return false;">
 
-                    <textarea
-                        id="message-input"
-                        rows="3"
-                        placeholder="Type your message..."
-                        required
-                    ></textarea>
+                <textarea id="message-input"
+                          class="message-input"
+                          rows="1"
+                          placeholder="Type your message..."
+                          required></textarea>
 
 
-                    <button
-                        type="submit"
+                <button type="submit"
                         id="send-button"
-                    >
-                        Send
-                    </button>
+                        class="send-btn">
+                    Send
+                </button>
 
-                </form>
+            </form>
 
 
-                <!-- ================================= -->
-                <!-- END CONVERSATION -->
-                <!-- ================================= -->
+            <!-- ================================= -->
+            <!-- END CONVERSATION -->
+            <!-- ================================= -->
 
-                <form
-                    action="{{ url_for(
+            <form action="{{ url_for(
                         'volunteer.end_conversation_route',
                         conversation_id=conversation.conversation_id
                     ) }}"
-                    method="POST"
-                >
+                  method="POST"
+                  class="end-conversation-form">
 
-                    <button
-                        type="submit"
+                <button type="submit"
+                        class="end-conversation-btn"
                         onclick="return confirm(
                             'Are you sure you want to end this conversation?'
-                        )"
-                    >
-                        End Conversation
-                    </button>
+                        )">
+                    End Conversation
+                </button>
 
-                </form>
+            </form>
 
 
             {% else %}
 
-                <!-- ================================= -->
-                <!-- CLOSED CONVERSATION -->
-                <!-- ================================= -->
+            <!-- ================================= -->
+            <!-- CLOSED CONVERSATION -->
+            <!-- ================================= -->
 
-                <div class="conversation-ended">
+            <div class="conversation-ended">
 
-                    <p>
-                        This conversation has ended.
-                    </p>
+                <p>
+                    This conversation has ended.
+                </p>
 
-                </div>
+            </div>
 
             {% endif %}
 
 
-        {% else %}
+            {% else %}
 
             <!-- ================================= -->
             <!-- NO CONVERSATION -->
@@ -575,7 +558,9 @@ Volunteer Chat
 
             </div>
 
-        {% endif %}
+            {% endif %}
+
+        </div>
 
     </div>
 
@@ -596,7 +581,6 @@ Volunteer Chat
 <!-- ================================= -->
 <!-- CHAT VARIABLES -->
 <!-- ================================= -->
-
 {% if conversation %}
 
 <script>
@@ -614,9 +598,7 @@ Volunteer Chat
 <!-- SHARED CHAT JAVASCRIPT -->
 <!-- ================================= -->
 
-<script
-    src="{{ url_for('static', filename='js/chat.js') }}"
-></script>
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 
 
 <!-- ================================= -->
