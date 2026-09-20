@@ -1,1 +1,173 @@
 {%extends 'dashboard_base.html'%}
+
+{% block title %}
+Counselor Dashboard
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/c_dashboard.css') }}">
+
+<div class="counselor-dashboard">
+
+    <!-- HEADER -->
+    <div class="counselor-header-banner">
+        <div class="counselor-header">
+            <div>
+                <h2>Welcome, {{ current_user.full_name if current_user.full_name else current_user.username }}</h2>
+                <p>Here is your daily overview and pending referrals.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="counselor-stats">
+
+        <div class="stat-card stat-waiting">
+            <span class="stat-label">Waiting Referrals</span>
+            <span class="stat-value">{{ waiting_referral_count }}</span>
+        </div>
+
+        <div class="stat-card stat-priority">
+            <span class="stat-label">High Priority</span>
+            <span class="stat-value">{{ high_priority_count }}</span>
+        </div>
+
+        <div class="stat-card stat-accepted">
+            <span class="stat-label">Accepted</span>
+            <span class="stat-value">{{ accepted_count }}</span>
+        </div>
+
+        <div class="stat-card stat-completed">
+            <span class="stat-label">Completed Today</span>
+            <span class="stat-value">{{ completed_today_count }}</span>
+        </div>
+
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="counselor-main">
+        <!-- REFERRALS -->
+        <div class="panel-card referrals-panel">
+
+            <div class="panel-header">
+                <h3><span class="panel-icon icon-referral">📋</span> Referrals</h3>
+                <a href="{{ url_for('counselor.referrals') }}" class="view-all-link">View All</a>
+            </div>
+
+            {% for referral in high_priority_referrals %}
+
+            <div class="referral-card {% if referral.is_high_priority %}referral-urgent{% endif %}">
+
+                {% if loop.first and referral.is_high_priority %}
+                <span class="priority-flag">⚠ High Priority</span>
+                {% endif %}
+
+                <div class="referral-top">
+                    <div class="referral-avatar">A</div>
+
+                    <div class="referral-info">
+                        <strong>Anonymous user #{{ referral.referral_id }}</strong>
+                        <span class="referral-meta">Source: {{ referral.source }}</span>
+                        <span class="referral-meta">
+                            Mood: <span class="mood-highlight">{{ referral.mood }}</span>
+                        </span>
+                        <span class="referral-time">Receive: {{ referral.received_ago }}</span>
+                    </div>
+
+                    <a href="{{ url_for('counselor.review_referral', referral_id=referral.referral_id) }}" class="review-btn">
+                        Review
+                    </a>
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-state">
+                <span class="empty-icon">📥</span>
+                <p class="empty-text">No pending referrals.</p>
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- COMPLETED SESSIONS -->
+        <div class="panel-card completed-panel">
+
+            <h3><span class="panel-icon icon-session">✅</span> Completed Session</h3>
+
+            {% for session in completed_sessions %}
+
+            <div class="session-card">
+                <div class="session-avatar">A</div>
+
+                <div class="session-info">
+                    <strong>Anonymous user</strong>
+                    <span>type: {{ session.session_type }}</span>
+                </div>
+            </div>
+
+            {% else %}
+
+            <div class="empty-state">
+                <span class="empty-icon">🗂️</span>
+                <p class="empty-text">No completed sessions yet.</p>
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- COMPLETED SESSIONS -->
+        <div class="panel-card completed-panel">
+
+            <h3>Completed Session</h3>
+
+            {% for session in completed_sessions %}
+
+            <div class="session-card">
+                <div class="session-avatar">A</div>
+
+                <div class="session-info">
+                    <strong>Anonymous user</strong>
+                    <span>type: {{ session.session_type }}</span>
+                </div>
+            </div>
+
+            {% else %}
+
+            <p class="empty-text">No completed sessions yet.</p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+    <!-- RECENT ACTIVITY -->
+    <div class="panel-card recent-activity-panel">
+
+        <h3><span class="panel-icon icon-activity">🕒</span> Recent Activity</h3>
+
+        <div class="activity-row">
+
+            {% for activity in recent_activities %}
+
+            <div class="activity-item">
+                <strong>{{ activity.title }}</strong>
+                <span>{{ activity.time_label }}</span>
+            </div>
+
+            {% else %}
+
+            <div class="empty-state empty-state-wide">
+                <span class="empty-icon">📭</span>
+                <p class="empty-text">No recent activity.</p>
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+    {% endblock %}

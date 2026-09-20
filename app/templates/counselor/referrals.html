@@ -5,156 +5,172 @@ Counselor Referrals
 {% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/c_referrals.css') }}">
 
 <div class="referrals-container">
 
-    <h2>Referrals</h2>
+    <div class="referrals-header-banner">
+        <h2>Referrals</h2>
+        <p>Review and manage incoming referrals.</p>
+    </div>
+
+    <!-- ================================= -->
+    <!-- STATS -->
+    <!-- ================================= -->
+
+    <div class="referrals-stats">
+
+        <div class="stat-card stat-total">
+            <span class="stat-label">Total Referrals</span>
+            <span class="stat-value">{{ referrals|length }}</span>
+        </div>
+
+        <div class="stat-card stat-new">
+            <span class="stat-label">New</span>
+            <span class="stat-value">{{ referrals|selectattr("referral_status", "equalto", "Pending")|list|length }}</span>
+        </div>
+
+        <div class="stat-card stat-accepted">
+            <span class="stat-label">Accepted</span>
+            <span class="stat-value">{{ referrals|selectattr("referral_status", "equalto", "Accepted")|list|length }}</span>
+        </div>
+
+        <div class="stat-card stat-declined">
+            <span class="stat-label">Declined</span>
+            <span class="stat-value">{{ referrals|selectattr("referral_status", "equalto", "Rejected")|list|length }}</span>
+        </div>
+
+    </div>
+
+    <!-- ================================= -->
+    <!-- FILTER TABS -->
+    <!-- ================================= -->
+
+    <div class="referral-filter-tabs">
+        <button type="button" class="filter-tab active" data-filter="all">All Referrals</button>
+        <button type="button" class="filter-tab" data-filter="Pending">Pending</button>
+        <button type="button" class="filter-tab" data-filter="Accepted">Accepted</button>
+        <button type="button" class="filter-tab" data-filter="Rejected">Declined</button>
+    </div>
 
 
     <!-- ================================= -->
     <!-- REFERRAL LIST -->
     <!-- ================================= -->
-
     {% if referrals %}
 
-        {% for referral in referrals %}
+    {% for referral in referrals %}
 
-            <div class="referral-card">
+    <div class="referral-card" data-status="{{ referral.referral_status }}">
 
-                <!-- ================================= -->
-                <!-- SEEKER -->
-                <!-- ================================= -->
+        <!-- ================================= -->
+        <!-- SEEKER -->
+        <!-- ================================= -->
 
-                <div class="referral-seeker">
+        <div class="referral-seeker">
 
-                    <strong>
-                        Anonymous Seeker
-                    </strong>
+            <div class="referral-avatar">A</div>
 
-                    <small>
-                        Referred
-                        {{ referral.referred_at.strftime(
-                            "%B %d, %Y %I:%M %p"
-                        ) }}
-                    </small>
+            <div class="referral-seeker-text">
 
-                </div>
+                <strong>
+                    Anonymous Seeker
+                </strong>
 
-
-                <!-- ================================= -->
-                <!-- REFERRAL INFORMATION -->
-                <!-- ================================= -->
-
-                <div class="referral-info">
-
-                    <p>
-
-                        <strong>
-                            Session Type:
-                        </strong>
-
-                        {{ referral.preferred_session_type }}
-
-                    </p>
-
-
-                    <p>
-
-                        <strong>
-                            Reason:
-                        </strong>
-
-                        {{ referral.reason }}
-
-                    </p>
-
-
-                    {% if referral.volunteer_note %}
-
-                        <p>
-
-                            <strong>
-                                Volunteer Note:
-                            </strong>
-
-                            {{ referral.volunteer_note }}
-
-                        </p>
-
-                    {% endif %}
-
-
-                    <p>
-
-                        <strong>
-                            Status:
-                        </strong>
-
-                        {{ referral.referral_status }}
-
-                    </p>
-
-                </div>
-
-
-                <!-- ================================= -->
-                <!-- ACTION -->
-                <!-- ================================= -->
-
-                <div class="referral-actions">
-
-                    {% if referral.referral_status == "Pending" %}
-
-                        <button
-                            type="button"
-                            class="review-referral-btn"
-
-                            data-referral-id="{{ referral.referral_id }}"
-
-                            data-session-type="{{ referral.preferred_session_type }}"
-
-                            data-reason="{{ referral.reason }}"
-
-                            data-volunteer-note="{{ referral.volunteer_note or '' }}"
-                        >
-                            Review
-                        </button>
-
-
-                    {% elif referral.referral_status == "Accepted" %}
-
-                        <span>
-                            Accepted
-                        </span>
-
-
-                    {% elif referral.referral_status == "Rejected" %}
-
-                        <span>
-                            Declined
-                        </span>
-
-
-                    {% elif referral.referral_status == "Completed" %}
-
-                        <span>
-                            Completed
-                        </span>
-
-                    {% endif %}
-
-                </div>
+                <small>
+                    Referred
+                    {{
+ referral.referred_at.strftime(
+                                "%B %d, %Y %I:%M %p"
+                            )
+                    }}
+                </small>
 
             </div>
 
-        {% endfor %}
+        </div>
+
+
+        <!-- ================================= -->
+        <!-- REFERRAL INFORMATION -->
+        <!-- ================================= -->
+
+        <div class="referral-info">
+
+            <div class="info-pill">
+                <span class="info-pill-label">Session Type</span>
+                <span class="info-pill-value">{{ referral.preferred_session_type }}</span>
+            </div>
+
+            <div class="info-pill info-pill-wide">
+                <span class="info-pill-label">Reason</span>
+                <span class="info-pill-value">{{ referral.reason }}</span>
+            </div>
+
+            {% if referral.volunteer_note %}
+
+            <div class="info-pill info-pill-wide">
+                <span class="info-pill-label">Volunteer Note</span>
+                <span class="info-pill-value">{{ referral.volunteer_note }}</span>
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- ================================= -->
+        <!-- ACTION -->
+        <!-- ================================= -->
+
+        <div class="referral-actions">
+
+            {% if referral.referral_status == "Pending" %}
+
+            <button type="button"
+                    class="review-referral-btn"
+                    data-referral-id="{{ referral.referral_id }}"
+                    data-session-type="{{ referral.preferred_session_type }}"
+                    data-reason="{{ referral.reason }}"
+                    data-volunteer-note="{{ referral.volunteer_note or '' }}">
+                Review
+            </button>
+
+
+            {% elif referral.referral_status == "Accepted" %}
+
+            <span class="status-badge status-accepted">
+                Accepted
+            </span>
+
+
+            {% elif referral.referral_status == "Rejected" %}
+
+            <span class="status-badge status-declined">
+                Declined
+            </span>
+
+
+            {% elif referral.referral_status == "Completed" %}
+
+            <span class="status-badge status-completed">
+                Completed
+            </span>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    {% endfor %}
 
 
     {% else %}
 
-        <p>
-            No referrals available.
-        </p>
+    <p class="empty-text">
+        No referrals available.
+    </p>
 
     {% endif %}
 
@@ -164,11 +180,9 @@ Counselor Referrals
     <!-- REFERRAL REVIEW MODAL -->
     <!-- ================================= -->
 
-    <div
-        id="referral-modal"
-        class="referral-modal"
-        hidden
-    >
+    <div id="referral-modal"
+         class="referral-modal"
+         hidden>
 
         <div class="referral-modal-content">
 
@@ -184,10 +198,8 @@ Counselor Referrals
                 </h3>
 
 
-                <button
-                    type="button"
-                    id="close-referral-modal"
-                >
+                <button type="button"
+                        id="close-referral-modal">
                     ×
                 </button>
 
@@ -246,9 +258,7 @@ Counselor Referrals
 
                 <!-- VOLUNTEER NOTE -->
 
-                <div
-                    id="modal-volunteer-note-container"
-                >
+                <div id="modal-volunteer-note-container">
 
                     <p>
 
@@ -276,15 +286,11 @@ Counselor Referrals
 
                 <!-- ACCEPT -->
 
-                <form
-                    id="accept-referral-form"
-                    method="POST"
-                >
+                <form id="accept-referral-form"
+                      method="POST">
 
-                    <button
-                        type="submit"
-                        class="accept-referral-btn"
-                    >
+                    <button type="submit"
+                            class="accept-referral-btn">
                         Accept
                     </button>
 
@@ -294,15 +300,11 @@ Counselor Referrals
 
                 <!-- REJECT -->
 
-                <form
-                    id="reject-referral-form"
-                    method="POST"
-                >
+                <form id="reject-referral-form"
+                      method="POST">
 
-                    <button
-                        type="submit"
-                        class="reject-referral-btn"
-                    >
+                    <button type="submit"
+                            class="reject-referral-btn">
                         Reject
                     </button>
 
@@ -312,10 +314,8 @@ Counselor Referrals
 
                 <!-- CANCEL -->
 
-                <button
-                    type="button"
-                    id="cancel-referral-modal"
-                >
+                <button type="button"
+                        id="cancel-referral-modal">
                     Cancel
                 </button>
 
@@ -409,11 +409,11 @@ Counselor Referrals
     ========================================= */
 
     reviewButtons.forEach(
-        function(button) {
+        function (button) {
 
             button.addEventListener(
                 "click",
-                function() {
+                function () {
 
 
                     /* -------------------------
@@ -556,7 +556,7 @@ Counselor Referrals
 
         referralModal.addEventListener(
             "click",
-            function(event) {
+            function (event) {
 
                 if (
                     event.target ===
@@ -571,6 +571,44 @@ Counselor Referrals
         );
 
     }
+
+
+
+    /* =========================================
+       FILTER TABS
+    ========================================= */
+
+    const filterTabs =
+        document.querySelectorAll(".filter-tab");
+
+    const referralCards =
+        document.querySelectorAll(".referral-card");
+
+    filterTabs.forEach(function (tab) {
+
+        tab.addEventListener("click", function () {
+
+            filterTabs.forEach(function (t) {
+                t.classList.remove("active");
+            });
+
+            tab.classList.add("active");
+
+            const filter = tab.dataset.filter;
+
+            referralCards.forEach(function (card) {
+
+                if (filter === "all" || card.dataset.status === filter) {
+                    card.hidden = false;
+                } else {
+                    card.hidden = true;
+                }
+
+            });
+
+        });
+
+    });
 
 </script>
 

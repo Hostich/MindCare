@@ -3,20 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\templates\\community\\community.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:app\\templates\\community\\community.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\templates\\counselor\\dashboard.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:app\\templates\\counselor\\dashboard.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\static\\css\\community.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:app\\static\\css\\community.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\static\\css\\c_dashboard.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:app\\static\\css\\c_dashboard.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\static\\css\\profile.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:app\\static\\css\\profile.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\static\\css\\verify_email.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:app\\static\\css\\verify_email.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\templates\\profile\\profile.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:app\\templates\\profile\\profile.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\templates\\authorize\\verify_email.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:app\\templates\\authorize\\verify_email.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -42,54 +42,54 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "community.html",
-              "DocumentMoniker": "C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\templates\\community\\community.html",
-              "RelativeDocumentMoniker": "app\\templates\\community\\community.html",
-              "ToolTip": "C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\templates\\community\\community.html",
-              "RelativeToolTip": "app\\templates\\community\\community.html",
-              "ViewState": "AgIAAKUAAAAAAAAAAAAQwLkAAAAOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2026-09-09T02:53:43.183Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "community.css",
-              "DocumentMoniker": "C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\static\\css\\community.css",
-              "RelativeDocumentMoniker": "app\\static\\css\\community.css",
-              "ToolTip": "C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\static\\css\\community.css",
-              "RelativeToolTip": "app\\static\\css\\community.css",
-              "ViewState": "AgIAAI8BAAAAAAAAAAAQwLoBAAAAAAAAAAAAAA==",
+              "Title": "c_dashboard.css",
+              "DocumentMoniker": "C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\static\\css\\c_dashboard.css",
+              "RelativeDocumentMoniker": "app\\static\\css\\c_dashboard.css",
+              "ToolTip": "C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\static\\css\\c_dashboard.css",
+              "RelativeToolTip": "app\\static\\css\\c_dashboard.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIMBAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-09-09T02:53:19.038Z",
+              "WhenOpened": "2026-09-17T05:22:53.58Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "profile.html",
-              "DocumentMoniker": "C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\templates\\profile\\profile.html",
-              "RelativeDocumentMoniker": "app\\templates\\profile\\profile.html",
-              "ToolTip": "C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\templates\\profile\\profile.html",
-              "RelativeToolTip": "app\\templates\\profile\\profile.html",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAPYAAAAOAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "dashboard.html",
+              "DocumentMoniker": "C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\templates\\counselor\\dashboard.html",
+              "RelativeDocumentMoniker": "app\\templates\\counselor\\dashboard.html",
+              "ToolTip": "C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\templates\\counselor\\dashboard.html",
+              "RelativeToolTip": "app\\templates\\counselor\\dashboard.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKsAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2026-09-09T02:08:47.98Z",
+              "WhenOpened": "2026-09-17T05:09:30.859Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "profile.css",
-              "DocumentMoniker": "C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\static\\css\\profile.css",
-              "RelativeDocumentMoniker": "app\\static\\css\\profile.css",
-              "ToolTip": "C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\static\\css\\profile.css",
-              "RelativeToolTip": "app\\static\\css\\profile.css",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAPoBAAAAAAAAAAAAAA==",
+              "Title": "verify_email.css",
+              "DocumentMoniker": "C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\static\\css\\verify_email.css",
+              "RelativeDocumentMoniker": "app\\static\\css\\verify_email.css",
+              "ToolTip": "C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\static\\css\\verify_email.css",
+              "RelativeToolTip": "app\\static\\css\\verify_email.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-09-09T02:08:21.162Z",
+              "WhenOpened": "2026-09-17T05:10:14.629Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "verify_email.html",
+              "DocumentMoniker": "C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\templates\\authorize\\verify_email.html",
+              "RelativeDocumentMoniker": "app\\templates\\authorize\\verify_email.html",
+              "ToolTip": "C:\\Users\\dell\\OneDrive\\Desktop\\MindCare\\app\\templates\\authorize\\verify_email.html",
+              "RelativeToolTip": "app\\templates\\authorize\\verify_email.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2026-09-17T05:09:45.26Z",
               "EditorCaption": ""
             }
           ]
