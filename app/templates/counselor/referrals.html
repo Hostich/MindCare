@@ -51,6 +51,7 @@ Counselor Referrals
         <button type="button" class="filter-tab" data-filter="Pending">Pending</button>
         <button type="button" class="filter-tab" data-filter="Accepted">Accepted</button>
         <button type="button" class="filter-tab" data-filter="Rejected">Declined</button>
+        <button type="button" class="filter-tab" data-filter="Completed">Completed</button>
     </div>
 
 
@@ -335,6 +336,8 @@ Counselor Referrals
 
 <script>
 
+    console.log("COUNSELOR REFERRALS SCRIPT LOADED");
+
     /* =========================================
        GET MODAL ELEMENTS
     ========================================= */
@@ -408,101 +411,85 @@ Counselor Referrals
        OPEN MODAL
     ========================================= */
 
-    reviewButtons.forEach(
-        function (button) {
+    reviewButtons.forEach(function(button) {
 
-            button.addEventListener(
-                "click",
-                function () {
+        button.addEventListener("click", function(event) {
 
+            event.preventDefault();
+            event.stopPropagation();
 
-                    /* -------------------------
-                       GET REFERRAL DATA
-                    ------------------------- */
-
-                    const referralId =
-                        this.dataset.referralId;
+            const referralId = this.dataset.referralId;
+            const sessionType = this.dataset.sessionType;
+            const reason = this.dataset.reason;
+            const volunteerNote = this.dataset.volunteerNote;
 
 
-                    const sessionType =
-                        this.dataset.sessionType;
+            /* -------------------------
+            PUT DATA INTO MODAL
+            ------------------------- */
+
+            modalSessionType.textContent = sessionType || "";
+
+            modalReason.textContent = reason || "";
 
 
-                    const reason =
-                        this.dataset.reason;
+            /* -------------------------
+            VOLUNTEER NOTE
+            ------------------------- */
+
+            if (volunteerNote && volunteerNote.trim() !== "") {
+
+                modalVolunteerNote.textContent = volunteerNote;
+
+                modalVolunteerNoteContainer.hidden = false;
+
+            } else {
+
+                modalVolunteerNote.textContent = "";
+
+                modalVolunteerNoteContainer.hidden = true;
+
+            }
 
 
-                    const volunteerNote =
-                        this.dataset.volunteerNote;
+            /* -------------------------
+            SET ACCEPT URL
+            ------------------------- */
+
+            acceptReferralForm.action =
+                `/counselor/referral/${referralId}/accept`;
+
+            console.log("ACCEPT FORM ACTION:", acceptReferralForm.action);
+            /* -------------------------
+            SET REJECT URL
+            ------------------------- */
+
+            rejectReferralForm.action =
+                `/counselor/referral/${referralId}/reject`;
 
 
+            console.log("REJECT FORM ACTION:", rejectReferralForm.action);    
+            /* -------------------------
+            SHOW MODAL
+            ------------------------- */
 
-                    /* -------------------------
-                       PUT DATA INTO MODAL
-                    ------------------------- */
+            referralModal.hidden = false;
 
-                    modalSessionType.textContent =
-                        sessionType;
+        });
 
+    });
 
-                    modalReason.textContent =
-                        reason;
+        document.querySelectorAll(".referral-card").forEach(function(card) {
 
+        card.addEventListener("click", function(event) {
 
+            if (!event.target.closest(".review-referral-btn")) {
+                return;
+            }
 
-                    /* -------------------------
-                       VOLUNTEER NOTE
-                    ------------------------- */
+        });
 
-                    if (volunteerNote) {
-
-                        modalVolunteerNote.textContent =
-                            volunteerNote;
-
-                        modalVolunteerNoteContainer.hidden =
-                            false;
-
-                    }
-                    else {
-
-                        modalVolunteerNoteContainer.hidden =
-                            true;
-
-                    }
-
-
-
-                    /* -------------------------
-                       SET ACCEPT URL
-                    ------------------------- */
-
-                    acceptReferralForm.action =
-                        `/counselor/referral/${referralId}/accept`;
-
-
-
-                    /* -------------------------
-                       SET REJECT URL
-                    ------------------------- */
-
-                    rejectReferralForm.action =
-                        `/counselor/referral/${referralId}/reject`;
-
-
-
-                    /* -------------------------
-                       SHOW MODAL
-                    ------------------------- */
-
-                    referralModal.hidden =
-                        false;
-
-                }
-            );
-
-        }
-    );
-
+    });
 
 
     /* =========================================
@@ -524,10 +511,14 @@ Counselor Referrals
 
     if (closeReferralModal) {
 
-        closeReferralModal.addEventListener(
-            "click",
-            closeReferralModalFunction
-        );
+        closeReferralModal.addEventListener("click", function(event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            referralModal.hidden = true;
+
+        });
 
     }
 
@@ -575,7 +566,7 @@ Counselor Referrals
 
 
     /* =========================================
-       FILTER TABS
+    FILTER TABS
     ========================================= */
 
     const filterTabs =
@@ -588,20 +579,40 @@ Counselor Referrals
 
         tab.addEventListener("click", function () {
 
+            const filter =
+                this.dataset.filter;
+
+            /* -------------------------
+            UPDATE ACTIVE TAB
+            ------------------------- */
+
             filterTabs.forEach(function (t) {
                 t.classList.remove("active");
             });
 
-            tab.classList.add("active");
+            this.classList.add("active");
 
-            const filter = tab.dataset.filter;
+
+            /* -------------------------
+            FILTER REFERRAL CARDS
+            ------------------------- */
 
             referralCards.forEach(function (card) {
 
-                if (filter === "all" || card.dataset.status === filter) {
-                    card.hidden = false;
+                const status =
+                    card.dataset.status;
+
+                if (
+                    filter === "all" ||
+                    status === filter
+                ) {
+
+                    card.classList.remove("filter-hidden");
+
                 } else {
-                    card.hidden = true;
+
+                    card.classList.add("filter-hidden");
+
                 }
 
             });
@@ -609,7 +620,6 @@ Counselor Referrals
         });
 
     });
-
 </script>
 
 {% endblock %}

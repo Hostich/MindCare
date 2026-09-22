@@ -140,6 +140,10 @@
         box-shadow: 0 8px 18px rgba(124, 111, 219, 0.3);
     }
 
+.referral-card.filter-hidden {
+    display: none;
+}
+
 /* ===== REFERRAL CARD ===== */
 .referral-card {
     background-color: #ffffff;
@@ -306,6 +310,11 @@
     z-index: 100;
 }
 
+/* Keep modal hidden when the HTML hidden attribute is present */
+.referral-modal[hidden] {
+    display: none;
+}
+
 .referral-modal-content {
     background-color: #ffffff;
     border-radius: 20px;
@@ -324,27 +333,27 @@
     margin-bottom: 18px;
 }
 
-    .referral-modal-header h3 {
-        font-size: 17px;
-        font-weight: 700;
-        color: #111827;
-    }
+.referral-modal-header h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #111827;
+}
 
-    .referral-modal-header button {
-        background: none;
-        border: none;
-        font-size: 22px;
-        color: #6b7280;
-        cursor: pointer;
-        line-height: 1;
-        padding: 4px 8px;
-        border-radius: 8px;
-        transition: background-color 0.2s ease;
-    }
+.referral-modal-header button {
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: #6b7280;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
 
-        .referral-modal-header button:hover {
-            background-color: #F5F3FF;
-        }
+.referral-modal-header button:hover {
+    background-color: #F5F3FF;
+}
 
 .referral-modal-body p {
     font-size: 13.5px;
@@ -353,9 +362,9 @@
     line-height: 1.6;
 }
 
-    .referral-modal-body p strong {
-        color: #111827;
-    }
+.referral-modal-body p strong {
+    color: #111827;
+}
 
 #modal-volunteer-note-container {
     background-color: #F5F3FF;
@@ -370,9 +379,9 @@
     margin-top: 20px;
 }
 
-    .referral-modal-actions form {
-        flex: 1;
-    }
+.referral-modal-actions form {
+    flex: 1;
+}
 
 .accept-referral-btn {
     width: 100%;
@@ -388,9 +397,9 @@
     transition: transform 0.15s ease;
 }
 
-    .accept-referral-btn:hover {
-        transform: translateY(-1px);
-    }
+.accept-referral-btn:hover {
+    transform: translateY(-1px);
+}
 
 .reject-referral-btn {
     width: 100%;
@@ -405,9 +414,9 @@
     transition: background-color 0.2s ease;
 }
 
-    .reject-referral-btn:hover {
-        background-color: #fef2f2;
-    }
+.reject-referral-btn:hover {
+    background-color: #fef2f2;
+}
 
 #cancel-referral-modal {
     background-color: #ffffff;
@@ -421,9 +430,9 @@
     transition: background-color 0.2s ease;
 }
 
-    #cancel-referral-modal:hover {
-        background-color: #f9fafb;
-    }
+#cancel-referral-modal:hover {
+    background-color: #f9fafb;
+}
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
