@@ -30,6 +30,9 @@ def community_feed():
 
     for post in posts:
         post.comments = get_comment_by_post(post.post_id)
+
+    if current_user.role == "Volunteer":
+        return render_template("community/community_volunteer.html", posts=posts)
     
     return render_template("community/community.html",posts=posts)
 

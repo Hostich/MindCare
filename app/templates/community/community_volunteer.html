@@ -1,0 +1,176 @@
+{% extends "dashboard_base.html" %}
+
+{% block title %}
+Community
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/community.css') }}">
+
+<div class="community-page">
+
+    <div class="community-header-banner">
+        <div class="community-header">
+            <h2>Community</h2>
+            <p>A safe, anonymous space to share and support each other.</p>
+        </div>
+    </div>
+
+    <div class="community-layout">
+
+        <div class="community-main">
+
+            <h3 class="feed-heading">Community Feed</h3>
+
+            {% for post in posts %}
+
+            <div class="post-card">
+
+                <!-- POSTS ARE ALWAYS ANONYMOUS -->
+                <div class="post-head">
+                    <div class="post-avatar">A</div>
+                    <div class="post-meta">
+                        <strong>Anonymous</strong>
+                        <span class="mood-tag">Mood: {{ post.mood.mood }}</span>
+                    </div>
+                </div>
+
+                <p class="post-content">{{ post.content }}</p>
+
+                <div class="post-footer-row">
+                    <small class="post-time">
+                        {{ post.created_at.strftime("%B %d, %Y %I:%M %p") }}
+                    </small>
+
+                    <button type="button"
+                            class="comment-toggle-btn"
+                            onclick="toggleComments('{{ post.post_id }}')">
+                        &#128172; {{ post.comments|length }} Comment{{ 's' if post.comments|length != 1 else '' }}
+                    </button>
+                </div>
+
+                <div class="comments-wrapper" id="comments-{{ post.post_id }}" hidden>
+
+                    <hr>
+
+                    <!-- COMMENTS -->
+
+                    <div class="comments-section">
+
+                        {% for comment in post.comments %}
+
+                        <div class="comment">
+
+                            <div class="comment-head">
+
+                                {% if comment.user.role == "Volunteer" %}
+
+                                <strong>{{ comment.user.username }}</strong>
+                                <span class="verified-badge">
+                                    ✔ Verified Volunteer
+                                </span>
+
+                                {% else %}
+
+                                <strong>Anonymous</strong>
+
+                                {% endif %}
+
+                            </div>
+
+                            <p class="comment-content">{{ comment.content }}</p>
+
+                            <small class="comment-time">
+                                {{ comment.created_at.strftime("%B %d, %Y %I:%M %p") }}
+                            </small>
+
+                            {% if comment.user.role == "Volunteer" and current_user.role == "Seeker" %}
+                            <form method="POST" action="{{ url_for('chat_request.send_request') }}" class="request-chat-form">
+                                <input type="hidden"
+                                       name="volunteer_id"
+                                       value="{{ comment.user.user_id }}">
+
+                                <input type="hidden"
+                                       name="source"
+                                       value="community">
+
+                                <button type="submit" class="request-chat-btn">
+                                    Request Private Chat
+                                </button>
+
+                            </form>
+                            {% endif %}
+
+                        </div>
+
+                        {% else %}
+
+                        <small class="no-comments">No comments yet.</small>
+
+                        {% endfor %}
+
+                    </div>
+
+                    <!-- COMMENT FORM -->
+
+                    <form method="POST"
+                          action="{{ url_for('community.create_comment_route', post_id=post.post_id) }}"
+                          class="comment-form">
+
+                        <textarea name="content"
+                                  class="comment-textarea"
+                                  placeholder="Write a supportive comment..."
+                                  required></textarea>
+
+                        <button type="submit" class="comment-btn">
+                            Send
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <p class="empty-feed">No posts yet.</p>
+
+            {% endfor %}
+
+        </div>
+
+        <div class="community-sidebar">
+
+            <div class="sidebar-card">
+                <h4>Community Guidelines</h4>
+                <ul class="guidelines-list">
+                    <li>&#9989; Be kind and supportive</li>
+                    <li>&#9989; No personal information</li>
+                    <li>&#9989; Respect everyone's journey</li>
+                    <li>&#9989; Report harmful content</li>
+                </ul>
+            </div>
+
+            <div class="sidebar-card">
+                <h4>Anonymous Posting</h4>
+                <p class="sidebar-note">All posts are completely anonymous. Your real identity is never revealed to other users.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function toggleComments(postId) {
+        const el = document.getElementById('comments-' + postId);
+        if (el) {
+            el.hidden = !el.hidden;
+        }
+    }
+</script>
+{% endblock %}

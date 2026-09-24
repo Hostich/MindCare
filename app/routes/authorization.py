@@ -19,13 +19,13 @@ def register():
             "password" : request.form.get("password"),
             "confirm_password" : request.form.get("confirmpassword")
         }
-       
+        
         errors = validate_registration(data)
         
         if errors:
             for error in errors:
                 flash(error, "danger")
-       
+
             return render_template("authorize/register.html")
             
         start_email_verification(data)
@@ -89,8 +89,6 @@ def login():
             )
 
         login_user(user)
-
-        flash("Welcome Back!", "success")
 
         # ==========================
         # ROLE-BASED REDIRECTION
