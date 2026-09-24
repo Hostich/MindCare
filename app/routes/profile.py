@@ -6,7 +6,7 @@ profile = Blueprint("profile", __name__, url_prefix="/profile")
 
 
 # =========================
-# Regular User Profile
+# Seekeer Profile
 # =========================
 @profile.route("/")
 @login_required
