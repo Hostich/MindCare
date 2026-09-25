@@ -1,5 +1,6 @@
 from app.extensions import db
 from app.models import Referral
+from app.services.notification.notification_services import create_notification
 
 def create_referral(conversation_id, volunteer_id, seeker_id, counselor_id, reason, preferred_session_type, volunteer_note=None):
     referral = Referral(
@@ -15,6 +16,13 @@ def create_referral(conversation_id, volunteer_id, seeker_id, counselor_id, reas
 
     db.session.add(referral)
     db.session.commit()
+
+    create_notification(
+        user_id = counselor_id,
+        title = "New Referral",
+        message = "A volunteer has refered a seeker to you.",
+        notification_type= "ReferralCreated"
+    )
 
     return referral
 

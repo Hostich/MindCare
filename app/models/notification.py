@@ -46,6 +46,7 @@ class Notification(db.Model):
             "ChatRequestCreated",
             "ChatRequestAccepted",
             "ChatRequestRejected",
+            "ReferralCreated",
             "CounselingSessionCreated",
             name = "notification_type_enum"
         ),

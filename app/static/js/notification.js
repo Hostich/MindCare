@@ -241,6 +241,14 @@ notificationSocket.on(
                 counselingLink
             );
         }
+        else if(data.notification_type == "ReferralCreated"){
+            const referralLink = document.createElement("a");
+            referralLink.href = "/counselor/referrals";
+
+            referralLink.textContent = "View Referral";
+
+            notificationItem.appendChild(referralLink);
+        }
 
 
         const heading =
