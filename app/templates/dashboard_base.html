@@ -1,478 +1,161 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard_base.css') }}">
-
-    <title>
-        {% block title %}
-        MindCare
-        {% endblock %}
-    </title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindCare - Mental Health Platform</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/landing.css') }}">
 </head>
-
 <body>
 
-    {% if current_user.is_authenticated %}
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <img src="{{ url_for('static', filename='images/mindcare-logo.jpg') }}"
+                 alt="MindCare Logo">
+            <span>MINDCARE</span>
+        </a>
 
-    <aside class="sidebar">
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#volunteer">Volunteer</a></li>
+            <li><a href="#services">Services</a></li>
+        </ul>
 
-        <h2 class="sidebar-logo">MINDCARE</h2>
-
-        <!-- ===================== -->
-        <!-- SEEKER SIDEBAR -->
-        <!-- ===================== -->
-        {% if current_user.role == "Seeker" %}
-
-        <nav class="sidebar-nav">
-            <a href="{{ url_for('seeker.dashboard') }}">Dashboard</a>
-            <a href="{{ url_for('community.community_feed') }}">Community Feed</a>
-            <a href="{{ url_for('mood.mood_tracker') }}">Mood Tracker</a>
-            <a href="{{ url_for('seeker.chat', conversation_id=request.args.get('conversation_id')) }}">
-                Chat
+        <div class="nav-buttons">
+            <a href="{{ url_for('auth.login') }}" class="btn-solid">
+                Login / Sign Up
             </a>
-            <a href="#">Resources</a>
-            <a href="{{ url_for('profile.view_profile') }}">Profile</a>
-            <a href="#" class="crisis-link">Crisis Support</a>
-            <a href="#">Volunteer Application</a>
-        </nav>
-
-        <!-- ===================== -->
-        <!-- VOLUNTEER SIDEBAR -->
-        <!-- ===================== -->
-        {% elif current_user.role == "Volunteer" %}
-
-        <nav class="sidebar-nav">
-            <a href="{{ url_for('volunteer.dashboard') }}">Dashboard</a>
-            <a href="{{ url_for('community.community_feed') }}">Community Feed</a>
-            <a href="{{ url_for('volunteer.chat') }}">Chat</a>
-            <a href="{{url_for('volunteer.counselor_referrals')}}">Counselor Referral</a>
-            <a href="#">Resources</a>
-            <a href="{{ url_for('profile.volunteer_profile') }}">Profile</a>
-        </nav>
-
-        <!-- ===================== -->
-        <!-- COUNSELOR SIDEBAR -->
-        <!-- ===================== -->
-        {% elif current_user.role == "Counselor" %}
-
-        <nav class="sidebar-nav">
-            <a href="{{ url_for('counselor.dashboard') }}">Dashboard</a>
-            <a href="#">Counseling Sessions</a>
-            <a href="{{ url_for('counselor.referrals') }}">referrals</a>
-            <a href="#">Resources</a>
-            <a href="{{ url_for('profile.view_profile') }}">Profile</a>
-        </nav>
-
-        <!-- ===================== -->
-        <!-- ADMIN SIDEBAR -->
-        <!-- ===================== -->
-        {% elif current_user.role == "Admin" %}
-
-        <nav class="sidebar-nav">
-            <a href="#">Dashboard</a>
-            <a href="#">Users</a>
-            <a href="#">Community</a>
-            <a href="#">Volunteers</a>
-            <a href="#">Counselors</a>
-            <a href="#">Reports</a>
-            <a href="#">Resources</a>
-        </nav>
-
-        {% endif %}
-
-    </aside>
-
-    {% endif %}
-
-
-    <main class="main-content">
-
-        {% if current_user.is_authenticated %}
-
-        <!-- ===================== -->
-        <!-- TOP BAR -->
-        <!-- ===================== -->
-
-        <header class="topbar">
-
-            <div class="topbar-right">
-
-                <div class="notification-container">
-
-                    <button
-                        type="button"
-                        id="notification-button"
-                        class="notification-button"
-                    >
-                        🔔
-
-                        {% if unread_notifications|length > 0 %}
-
-                        <span class="notification-badge">
-                            {{ unread_notifications|length }}
-                        </span>
-
-                        {% endif %}
-
-                    </button>
-
-
-                    <div
-                        id="notification-dropdown"
-                        class="notification-dropdown"
-                        hidden
-                    >
-
-                        <h3>
-                            Notifications
-                        </h3>
-
-
-                        {% for notification in notifications %}
-
-                        <div
-                            class="notification-item {% if not notification.is_read %}notification-unread{% endif %}"
-                            data-notification-id="{{ notification.notification_id }}"
-                        >
-
-                            <strong>
-                                {{ notification.title }}
-                            </strong>
-
-                            <p>
-                                {{ notification.message }}
-                            </p>
-
-
-                            <!-- ===================== -->
-                            <!-- NEW CHAT REQUEST -->
-                            <!-- ===================== -->
-
-                            {% if notification.notification_type == "ChatRequestCreated"
-                                and notification.request_id
-                                and notification.request
-                                and notification.request.request_status == "Pending" %}
-
-                            <a
-                                href="{{ url_for(
-                                    'volunteer.accept_request',
-                                    request_id=notification.request_id
-                                ) }}"
-                            >
-                                Accept
-                            </a>
-
-                            <br>
-
-                            <form
-                                method="POST"
-                                action="{{ url_for(
-                                    'volunteer.reject_request',
-                                    request_id=notification.request_id
-                                ) }}"
-                            >
-
-                                <button type="submit">
-                                    Reject
-                                </button>
-
-                            </form>
-
-
-                            {% elif notification.notification_type == "ChatRequestCreated"
-                                and notification.request
-                                and notification.request.request_status == "Accepted" %}
-
-                            <p>
-                                Request Accepted
-                            </p>
-
-
-                            {% elif notification.notification_type == "ChatRequestCreated"
-                                and notification.request
-                                and notification.request.request_status == "Rejected" %}
-
-                            <p>
-                                Request Rejected
-                            </p>
-
-
-                            <!-- ===================== -->
-                            <!-- CHAT REQUEST ACCEPTED -->
-                            <!-- ===================== -->
-
-                            {% elif notification.notification_type == "ChatRequestAccepted"
-                                and notification.conversation
-                                and notification.conversation.conversation_status == "Active" %}
-
-                            <a
-                                href="{{ url_for(
-                                    'notification.notification_chat',
-                                    notification_id=notification.notification_id
-                                ) }}"
-                            >
-                                Enter Conversation
-                            </a>
-
-
-                            <!-- ===================== -->
-                            <!-- CHAT REQUEST ACCEPTED -->
-                            <!-- CONVERSATION CLOSED -->
-                            <!-- ===================== -->
-
-                            {% elif notification.notification_type == "ChatRequestAccepted"
-                                and notification.conversation
-                                and notification.conversation.conversation_status == "Closed" %}
-
-                            <p>
-                                Conversation Ended
-                            </p>
-
-
-                            <!-- ===================== -->
-                            <!-- COUNSELING SESSION CREATED -->
-                            <!-- ===================== -->
-
-                            {% elif notification.notification_type == "CounselingSessionCreated"
-                                and notification.session_id %}
-
-                            <a
-                                href="{{ url_for(
-                                    'notification.notification_counseling',
-                                    notification_id=notification.notification_id
-                                ) }}"
-                            >
-                                View Counseling Session
-                            </a>
-
-                            {% endif %}
-
-                        </div>
-
-
-                        {% else %}
-
-                        <p>
-                            No Notifications.
-                        </p>
-
-                        {% endfor %}
-
-                    </div>
-
-                </div>
-
-
-                <!-- ===================== -->
-                <!-- PROFILE MENU -->
-                <!-- ===================== -->
-
-                <div class="profile-menu">
-
-                    <button
-                        type="button"
-                        id="profile-button"
-                        class="profile-avatar-link"
-                    >
-
-                        <span class="profile-avatar">
-                            {{ current_user.username[0]|upper }}
-                        </span>
-
-                    </button>
-
-
-                    <div
-                        id="profile-dropdown"
-                        class="profile-dropdown"
-                        hidden
-                    >
-
-                        <div class="profile-dropdown-header">
-
-                            <span class="profile-avatar">
-                                {{ current_user.username[0]|upper }}
-                            </span>
-
-                            <span class="profile-dropdown-name">
-                                {{ current_user.username }}
-                            </span>
-
-                        </div>
-
-                        <hr>
-
-                        <a
-                            href="{{ url_for('profile.view_profile') }}"
-                            class="profile-dropdown-item"
-                        >
-                            View Profile
-                        </a>
-
-                        <a
-                            href="#"
-                            class="profile-dropdown-item"
-                        >
-                            Settings
-                        </a>
-
-                        <hr>
-
-                        <a
-                            href="{{url_for('auth.logout')}}"
-                            class="profile-dropdown-item logout-item"
-                        >
-                            Logout
-                        </a>
-
-                    </div>
-
-                </div>
-
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-text">
+            <span class="badge">MENTAL HEALTH PLATFORM</span>
+
+            <h1>You Are Not <span class="highlight">Alone.</span></h1>
+
+            <p>
+                MindCare is a safe, anonymous platform where you can track
+                your mental health, connect with peer volunteers, and access
+                professional support — all in one place.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="{{ url_for('auth.login') }}" class="btn-solid">
+                    Get Started &rarr;
+                </a>
             </div>
-
-        </header>
-
-        {% endif %}
-
-
-        <!-- ===================== -->
-        <!-- PAGE BODY -->
-        <!-- ===================== -->
-
-        <div class="page-body">
-
-            {% with messages = get_flashed_messages(with_categories=true) %}
-
-            {% if messages %}
-
-            {% for category, message in messages %}
-
-            <div class="flash {{ category }}">
-                {{ message }}
-            </div>
-
-            {% endfor %}
-
-            {% endif %}
-
-            {% endwith %}
-
-
-            {% block content %}
-            {% endblock %}
-
         </div>
 
-    </main>
+    <section class="offer" id="services">
+        <h2>Support for Your Well-Being</h2>
+        <p class="subtitle">
+            Explore simple ways to care for your mental health.
+        </p>
 
+        <div class="offer-cards">
+            <div class="card">
+                <div class="icon">&#9825;</div>
+                <h3>Anonymous Support</h3>
+                <p>
+                    Share your thoughts in a supportive community
+                    while protecting your identity.
+                </p>
+            </div>
 
-    <!-- ===================== -->
-    <!-- SOCKET.IO -->
-    <!-- ===================== -->
+            <div class="card">
+                <div class="icon">&#128101;</div>
+                <h3>Peer Volunteers</h3>
+                <p>
+                    Connect with peer volunteers who can listen
+                    and offer supportive conversation.
+                </p>
+            </div>
 
-    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+            <div class="card">
+                <div class="icon">&#128202;</div>
+                <h3>Mood Tracking</h3>
+                <p>
+                    Record your moods and reflect on your
+                    emotional well-being over time.
+                </p>
+            </div>
 
+            <div class="card">
+                <div class="icon">&#128218;</div>
+                <h3>Mental Health Resources</h3>
+                <p>
+                    Explore helpful information and resources
+                    related to mental health and self-care.
+                </p>
+            </div>
+        </div>
+    </section>
 
-    {% if current_user.is_authenticated %}
+    <section class="about" id="about">
+        <div class="about-text">
+            <span class="section-label">ABOUT US</span>
+            <h2>A little support can make a difference.</h2>
 
-    <script>
+            <p>
+                MindCare was created to help make mental health support
+                more approachable and accessible.
+            </p>
 
-        const currentUserId =
-            {{ current_user.user_id | tojson }};
+            <p>
+                Through anonymous community support, mood tracking,
+                helpful resources, and connections to volunteers
+                and counselors, MindCare provides a space where
+                people can take steps toward their well-being.
+            </p>
+        </div>
 
+        <div class="stats-grid">
+            <div class="stat-box">
+                <span>Community</span>
+                <h3>Connection</h3>
+            </div>
 
-        const acceptRequestUrl =
-            {{ url_for(
-                'volunteer.accept_request',
-                request_id=0
-            ) | tojson }};
+            <div class="stat-box">
+                <span>Peer Support</span>
+                <h3>Listening</h3>
+            </div>
 
+            <div class="stat-box">
+                <span>Self-Reflection</span>
+                <h3>Awareness</h3>
+            </div>
 
-        const rejectRequestUrl =
-            {{ url_for(
-                'volunteer.reject_request',
-                request_id=0
-            ) | tojson }};
+            <div class="stat-box">
+                <span>Mental Wellness</span>
+                <h3>Care</h3>
+            </div>
+        </div>
+    </section>
 
-    </script>
+    <section class="volunteer-cta" id="volunteer">
+        <span class="section-label">MAKE A DIFFERENCE</span>
 
-    {% endif %}
+        <h2>Be there for someone.</h2>
 
+        <p>
+            Join our peer volunteer community and help create
+            a welcoming space where people feel heard and supported.
+        </p>
 
-    <!-- ===================== -->
-    <!-- NOTIFICATION JAVASCRIPT -->
-    <!-- ===================== -->
+        <a href="{{ url_for('auth.login') }}" class="btn-solid">
+            Join Our Community &rarr;
+        </a>
+    </section>
 
-    <script src="{{ url_for('static', filename='js/notification.js') }}"></script>
-
-
-    <!-- ===================== -->
-    <!-- PROFILE DROPDOWN -->
-    <!-- ===================== -->
-
-    <script>
-
-        document.addEventListener(
-            'DOMContentLoaded',
-            function () {
-
-                const profileButton =
-                    document.getElementById('profile-button');
-
-                const profileDropdown =
-                    document.getElementById('profile-dropdown');
-
-
-                if (
-                    profileButton &&
-                    profileDropdown
-                ) {
-
-                    profileButton.addEventListener(
-                        'click',
-                        function (e) {
-
-                            e.stopPropagation();
-
-                            profileDropdown.hidden =
-                                !profileDropdown.hidden;
-
-                        }
-                    );
-
-
-                    document.addEventListener(
-                        'click',
-                        function (e) {
-
-                            if (
-                                !profileDropdown.hidden &&
-                                !profileDropdown.contains(e.target) &&
-                                e.target !== profileButton
-                            ) {
-
-                                profileDropdown.hidden = true;
-
-                            }
-
-                        }
-                    );
-
-                }
-
-            }
-        );
-
-    </script>
-
-
-    {% block scripts %}
-    {% endblock %}
+    <footer class="footer">
+        <a href="#" class="footer-brand">MINDCARE</a>
+        <p>A space for understanding, connection, and well-being.</p>
+        <p class="copyright">&copy; 2026 MindCare. All rights reserved.</p>
+    </footer>
 
 </body>
-
 </html>

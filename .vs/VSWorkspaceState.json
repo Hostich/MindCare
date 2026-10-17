@@ -5,11 +5,8 @@
     "\\app\\static",
     "\\app\\static\\css",
     "\\app\\templates",
-    "\\app\\templates\\community",
-    "\\app\\templates\\mood",
-    "\\app\\templates\\profile",
-    "\\app\\templates\\seeker"
+    "\\app\\templates\\counselor"
   ],
-  "SelectedNode": "\\app\\templates\\community\\community.html",
+  "SelectedNode": "\\app\\templates\\counselor\\session.html",
   "PreviewInSolutionExplorer": false
 }
