@@ -371,7 +371,6 @@ ul {
     text-align: center;
     transition: transform .2s ease, background .2s ease;
 }
-
 .stat-box:hover {
     transform: translateY(-3px);
     background: var(--white);
