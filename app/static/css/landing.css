@@ -1,8 +1,9 @@
-/* ==========================================
-   MINDCARE LANDING PAGE — CLEAN RESPONSIVE CSS
-   Keeps the existing HTML and Flask routes.
-   ========================================== */
 
+/* =====================================================
+   MINDCARE — CLEAN, MINIMALIST, RESPONSIVE LANDING PAGE
+   ===================================================== */
+
+/* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
 
 /* Theme */
@@ -16,6 +17,7 @@
     --text: #263d39;
     --muted: #64756f;
     --border: #e5e7df;
+    --shadow: 0 12px 35px rgba(22, 78, 70, 0.08);
 }
 
 /* Reset */
@@ -36,6 +38,7 @@ body {
     background: var(--cream);
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
 }
 
 a {
@@ -47,59 +50,64 @@ ul {
     list-style: none;
 }
 
+section {
+    width: 100%;
+    scroll-margin-top: 85px;
+}
+
 /* Buttons */
 .btn-solid {
-    display: inline-block;
-    padding: 12px 23px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 13px 24px;
     border: 1px solid var(--teal);
-    border-radius: 7px;
+    border-radius: 8px;
     background: var(--teal);
     color: var(--white);
     font-size: 14px;
-    font-weight: 600;
-    transition: background .2s ease, transform .2s ease;
+    font-weight: 700;
+    line-height: 1.5;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .btn-solid:hover {
     background: var(--teal-dark);
+    border-color: var(--teal-dark);
     transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 61, 55, 0.15);
 }
 
 /* Navigation */
 .navbar {
-    min-height: 70px;
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    gap: 24px;
-    padding: 9px 5.5%;
-    background: rgba(248, 247, 241, .97);
-    border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
     z-index: 100;
+    width: 100%;
+    min-height: 80px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 25px;
+    padding: 12px 5.5%;
+    background: rgba(248, 247, 241, 0.97);
+    border-bottom: 1px solid var(--border);
     backdrop-filter: blur(12px);
 }
 
 .logo {
-    display: flex;
-    align-items: center;
     justify-self: start;
-    gap: 10px;
     color: var(--teal);
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 25px;
     font-weight: 700;
+    letter-spacing: 1px;
     white-space: nowrap;
-}
-
-.logo img {
-    display: block;
-    width: 48px;
-    height: 48px;
-    object-fit: contain;
-    object-position: center;
-    flex-shrink: 0;
 }
 
 .nav-links {
@@ -111,13 +119,12 @@ ul {
 
 .nav-links a {
     color: #4e625c;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
-    transition: color .2s ease;
+    transition: color 0.2s ease;
 }
 
-.nav-links a:hover,
-.nav-links a.active {
+.nav-links a:hover {
     color: var(--teal);
 }
 
@@ -127,20 +134,21 @@ ul {
     justify-content: flex-end;
 }
 
-/* Hero — one full-width background image */
+/* Hero */
 .hero {
     position: relative;
     isolation: isolate;
+    width: 100%;
+    min-height: 560px;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(220px, .65fr);
+    grid-template-columns: minmax(0, 1fr);
     align-items: center;
-    gap: 30px;
-    min-height: 440px;
-    padding: 55px 5.5%;
+    padding: 75px 8%;
     overflow: hidden;
-    background: #e9eee4;
+    background-color: #e9eee7;
 }
 
+/* Hero background image */
 .hero::before {
     content: "";
     position: absolute;
@@ -152,6 +160,7 @@ ul {
     background-repeat: no-repeat;
 }
 
+/* Light overlay keeps the text readable */
 .hero::after {
     content: "";
     position: absolute;
@@ -159,17 +168,18 @@ ul {
     z-index: -1;
     background: linear-gradient(
         90deg,
-        rgba(248, 247, 241, .96) 0%,
-        rgba(248, 247, 241, .88) 32%,
-        rgba(248, 247, 241, .48) 58%,
-        rgba(16, 61, 55, .08) 100%
+        rgba(248, 247, 241, 0.97) 0%,
+        rgba(248, 247, 241, 0.90) 36%,
+        rgba(248, 247, 241, 0.58) 60%,
+        rgba(248, 247, 241, 0.12) 100%
     );
 }
 
 .hero-text {
     position: relative;
     z-index: 1;
-    max-width: 510px;
+    width: 100%;
+    max-width: 570px;
 }
 
 .badge,
@@ -180,29 +190,37 @@ ul {
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 1.8px;
+    text-transform: uppercase;
+}
+
+.badge {
+    padding: 8px 14px;
+    border: 1px solid #d6e4d9;
+    border-radius: 50px;
+    background: rgba(255, 254, 250, 0.85);
 }
 
 .hero-text h1 {
-    margin-bottom: 18px;
+    margin-bottom: 22px;
     color: var(--teal-dark);
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(43px, 5vw, 65px);
+    font-size: clamp(45px, 5.5vw, 72px);
     font-weight: 600;
-    line-height: 1.08;
-    letter-spacing: -1.4px;
+    line-height: 1.12;
+    letter-spacing: -1.5px;
 }
 
 .hero-text .highlight {
-    color: var(--sage);
+    color: #719886;
     font-style: italic;
 }
 
 .hero-text p {
-    max-width: 460px;
-    margin-bottom: 25px;
+    max-width: 500px;
+    margin-bottom: 30px;
     color: #405b54;
-    font-size: 14px;
-    line-height: 1.9;
+    font-size: 16px;
+    line-height: 1.95;
 }
 
 .hero-buttons {
@@ -211,99 +229,93 @@ ul {
     gap: 14px;
 }
 
-/* Existing photo container is kept for HTML compatibility.
-   Its text/card is hidden so it no longer covers the person's face.
-   The photo itself is displayed as the full-width .hero background. */
+/* Empty visual container: no phone card, emojis, or text */
 .hero-image {
-    position: relative;
-    z-index: 1;
-    display: block;
-    width: 100%;
-    min-width: 0;
+    display: none !important;
 }
 
-.phone-mockup {
-    position: relative;
-    display: block;
-    width: 100%;
-    min-height: 0;
-    height: auto;
-    overflow: visible;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-}
-
-.phone-mockup .photo-overlay,
-.phone-mockup .photo-content {
+.phone-mockup,
+.phone-icon,
+.phone-title,
+.emoji-row,
+.phone-badge {
     display: none !important;
 }
 
 /* Services */
 .offer {
-    padding: 75px 5.5% 85px;
+    padding: 85px 5.5%;
     background: var(--cream);
     border-top: 1px solid var(--border);
 }
 
-.offer h2 {
+.section-heading {
+    max-width: 720px;
+    margin: 0 auto 42px;
+    text-align: center;
+}
+
+.offer h2,
+.about-text h2,
+.volunteer-cta h2 {
     color: var(--teal-dark);
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(28px, 3vw, 38px);
+    font-size: clamp(30px, 3.5vw, 42px);
     font-weight: 600;
-    line-height: 1.25;
-    text-align: center;
+    line-height: 1.3;
 }
 
 .offer .subtitle {
     max-width: 600px;
-    margin: 14px auto 40px;
+    margin: 12px auto 0;
     color: var(--muted);
     font-size: 15px;
-    text-align: center;
 }
 
 .offer-cards {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 20px;
+    gap: 22px;
     max-width: 1400px;
     margin: 0 auto;
 }
 
 .card {
-    padding: 28px 23px;
+    min-width: 0;
+    padding: 29px 24px;
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 14px;
     background: var(--white);
-    box-shadow: 0 5px 20px rgba(22, 78, 70, .035);
-    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    box-shadow: 0 5px 20px rgba(22, 78, 70, 0.035);
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
 }
 
 .card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px);
     border-color: #a9c3b4;
-    box-shadow: 0 12px 25px rgba(28, 58, 49, .08);
+    box-shadow: var(--shadow);
 }
 
 .card .icon {
+    width: 49px;
+    height: 49px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
-    margin-bottom: 20px;
-    border-radius: 12px;
+    margin-bottom: 21px;
+    border-radius: 13px;
     background: var(--sage-light);
     color: var(--teal);
-    font-size: 23px;
+    font-size: 25px;
 }
 
 .card h3 {
-    margin-bottom: 10px;
+    margin-bottom: 11px;
     color: var(--teal-dark);
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 700;
     line-height: 1.5;
 }
@@ -316,83 +328,85 @@ ul {
 
 /* About */
 .about {
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
     align-items: center;
-    justify-content: space-between;
-    gap: 50px;
-    padding: 80px 5.5%;
+    gap: 65px;
+    padding: 85px 7%;
     background: var(--sage-light);
 }
 
 .about-text {
-    flex: 1;
-    max-width: 560px;
-}
-
-.about-text .section-label {
-    margin-bottom: 12px;
+    width: 100%;
+    max-width: 570px;
 }
 
 .about-text h2 {
     margin-bottom: 20px;
-    color: var(--teal-dark);
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(29px, 3vw, 39px);
-    font-weight: 600;
-    line-height: 1.3;
 }
 
 .about-text p {
-    margin-bottom: 14px;
+    margin-bottom: 16px;
     color: var(--muted);
     font-size: 14px;
-    line-height: 1.9;
+    line-height: 1.95;
 }
 
+.about-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* About information cards */
 .stats-grid {
-    flex: 1;
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 15px;
-    min-width: 0;
-    max-width: 480px;
+    gap: 16px;
 }
 
 .stat-box {
-    min-height: 120px;
+    min-width: 0;
+    min-height: 150px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 22px 15px;
     border: 1px solid #d7e2d8;
-    border-radius: 12px;
-    background: rgba(255, 254, 250, .78);
+    border-radius: 13px;
+    background: rgba(255, 254, 250, 0.82);
     text-align: center;
-    transition: transform .2s ease, background .2s ease;
+    transition: transform 0.2s ease, background 0.2s ease;
 }
+
 .stat-box:hover {
     transform: translateY(-3px);
     background: var(--white);
 }
 
-.stat-box span {
+.stat-symbol {
     display: block;
-    margin-bottom: 7px;
+    margin-bottom: 8px;
+    color: #719886;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 24px;
+}
+
+.stat-box h3 {
+    margin-bottom: 4px;
+    color: var(--teal);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.stat-box p {
     color: var(--muted);
     font-size: 12px;
 }
 
-.stat-box h3 {
-    color: var(--teal);
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 20px;
-    font-weight: 600;
-}
-
-/* Volunteer */
+/* Volunteer call to action */
 .volunteer-cta {
-    padding: 80px 6%;
+    padding: 85px 6%;
     background: var(--cream);
     text-align: center;
 }
@@ -401,36 +415,36 @@ ul {
     margin-bottom: 12px;
 }
 
+.cta-icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    background: var(--sage-light);
+    color: var(--teal);
+    font-size: 29px;
+}
+
 .volunteer-cta h2 {
     margin-bottom: 16px;
-    color: var(--teal-dark);
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(30px, 3.5vw, 42px);
-    font-weight: 600;
-    line-height: 1.3;
 }
 
 .volunteer-cta p {
-    max-width: 600px;
+    max-width: 610px;
     margin: 0 auto 28px;
     color: var(--muted);
     font-size: 14px;
     line-height: 2;
 }
 
-.volunteer-cta .btn-solid {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 14px 25px;
-    border-radius: 7px;
-}
-
 /* Footer */
 .footer {
-    padding: 35px 20px 25px;
+    padding: 32px 20px 22px;
     border-top: 1px solid var(--border);
-    background: #f3f2e9;
+    background: #f1f0e8;
     color: var(--muted);
     text-align: center;
 }
@@ -445,14 +459,14 @@ ul {
 }
 
 .footer p {
-    margin-top: 8px;
+    margin-top: 7px;
     font-size: 12px;
     line-height: 1.8;
 }
 
 .footer .copyright {
-    margin-top: 18px;
-    padding-top: 16px;
+    margin-top: 17px;
+    padding-top: 15px;
     border-top: 1px solid var(--border);
     font-size: 11px;
 }
@@ -462,16 +476,11 @@ ul {
     .navbar {
         padding-right: 4%;
         padding-left: 4%;
-        gap: 16px;
+        gap: 18px;
     }
 
     .logo {
-        font-size: 21px;
-    }
-
-    .logo img {
-        width: 42px;
-        height: 42px;
+        font-size: 22px;
     }
 
     .nav-links {
@@ -479,15 +488,9 @@ ul {
     }
 
     .hero {
-        grid-template-columns: minmax(0, 1fr) minmax(180px, .55fr);
-        gap: 20px;
-        padding-right: 4%;
-        padding-left: 4%;
-        min-height: 410px;
-    }
-
-    .hero-text h1 {
-        font-size: clamp(40px, 5.5vw, 55px);
+        min-height: 500px;
+        padding-right: 6%;
+        padding-left: 6%;
     }
 
     .offer-cards {
@@ -495,9 +498,9 @@ ul {
     }
 
     .about {
-        gap: 30px;
-        padding-right: 4%;
-        padding-left: 4%;
+        gap: 35px;
+        padding-right: 5%;
+        padding-left: 5%;
     }
 }
 
@@ -512,44 +515,37 @@ ul {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
-        gap: 8px 12px;
-        padding: 12px 5%;
+        gap: 12px;
+        padding: 15px 5%;
     }
 
     .logo {
-        gap: 7px;
-        font-size: 20px;
+        font-size: 21px;
     }
 
-    .logo img {
-        width: 37px;
-        height: 37px;
+    .nav-buttons .btn-solid {
+        padding: 9px 12px;
+        font-size: 11px;
     }
 
     .nav-links {
         order: 3;
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
         width: 100%;
-        gap: 8px 20px;
-        padding: 5px 0 2px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 9px 20px;
+        padding-top: 5px;
     }
 
     .nav-links a {
         font-size: 12px;
     }
 
-    .nav-buttons .btn-solid {
-        padding: 9px 13px;
-        font-size: 11px;
-    }
-
     .hero {
-        grid-template-columns: 1fr;
-        gap: 0;
-        min-height: 420px;
-        padding: 44px 5% 38px;
+        min-height: 470px;
+        display: block;
+        padding: 65px 6%;
     }
 
     .hero::before {
@@ -559,9 +555,9 @@ ul {
     .hero::after {
         background: linear-gradient(
             180deg,
-            rgba(248, 247, 241, .94) 0%,
-            rgba(248, 247, 241, .83) 65%,
-            rgba(248, 247, 241, .65) 100%
+            rgba(248, 247, 241, 0.96) 0%,
+            rgba(248, 247, 241, 0.86) 65%,
+            rgba(248, 247, 241, 0.68) 100%
         );
     }
 
@@ -570,69 +566,58 @@ ul {
     }
 
     .hero-text h1 {
-        font-size: clamp(40px, 10vw, 53px);
+        font-size: clamp(40px, 10vw, 54px);
     }
 
     .hero-text p {
         font-size: 14px;
     }
 
-    .hero-image {
-        display: none;
+    .offer {
+        padding: 58px 5%;
     }
 
-    .offer {
-        padding: 55px 5%;
+    .section-heading {
+        margin-bottom: 30px;
     }
 
     .offer h2,
     .about-text h2,
     .volunteer-cta h2 {
-        font-size: 29px;
+        font-size: 30px;
     }
 
     .offer .subtitle {
-        margin: 12px auto 28px;
         font-size: 14px;
     }
 
     .offer-cards {
         grid-template-columns: 1fr;
-        gap: 15px;
+        gap: 16px;
     }
 
     .card {
-        padding: 24px 22px;
+        padding: 25px 23px;
     }
 
     .about {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 28px;
-        padding: 55px 5%;
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding: 60px 6%;
     }
 
     .stats-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
-        max-width: none;
     }
 
     .stat-box {
-        min-height: 110px;
-        padding: 18px 10px;
-    }
-
-    .stat-box h3 {
-        font-size: 18px;
+        min-height: 125px;
+        padding: 17px 10px;
     }
 
     .volunteer-cta {
-        padding: 60px 6%;
-    }
-
-    .volunteer-cta p {
-        font-size: 13px;
+        padding: 65px 6%;
     }
 
     .footer {
@@ -643,16 +628,11 @@ ul {
 /* Small phones */
 @media (max-width: 380px) {
     .logo {
-        font-size: 17px;
-    }
-
-    .logo img {
-        width: 32px;
-        height: 32px;
+        font-size: 18px;
     }
 
     .nav-links {
-        gap: 7px 13px;
+        gap: 8px 14px;
     }
 
     .nav-buttons .btn-solid {
@@ -660,19 +640,41 @@ ul {
         font-size: 10px;
     }
 
+    .hero {
+        min-height: 450px;
+        padding-top: 50px;
+        padding-bottom: 45px;
+    }
+
     .hero-text h1 {
         font-size: 38px;
     }
 
     .offer h2 {
-        font-size: 26px;
+        font-size: 27px;
     }
 
     .card {
-        padding: 21px 18px;
+        padding: 22px 19px;
+    }
+}
+
+/* Keyboard accessibility */
+a:focus-visible {
+    outline: 3px solid var(--sage);
+    outline-offset: 4px;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
     }
 
-    .stat-box h3 {
-        font-size: 16px;
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
     }
 }

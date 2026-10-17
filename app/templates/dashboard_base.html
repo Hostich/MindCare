@@ -1,160 +1,97 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MindCare - Mental Health Platform</title>
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/landing.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindCare - Mental Health Platform</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='css/landing.css')}}">
 </head>
 <body>
 
-    <nav class="navbar">
-        <a href="#" class="logo">
-            <img src="{{ url_for('static', filename='images/mindcare-logo.jpg') }}"
-                 alt="MindCare Logo">
-            <span>MINDCARE</span>
-        </a>
+  <nav class="navbar">
+    <div class="logo">MINDCARE</div>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About Us</a></li>
+      <li><a href="#">Volunteer</a></li>
+      <li><a href="#">Services</a></li>
+    </ul>
+    <div class="nav-buttons">
+      <a href="{{ url_for('auth.login')}}" class="btn-solid">login/Sign Up</a>
+    </div>
+  </nav>
 
-        <ul class="nav-links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#about">About Us</a></li>
-            <li><a href="#volunteer">Volunteer</a></li>
-            <li><a href="#services">Services</a></li>
-        </ul>
+  <section class="hero">
+    <div class="hero-text">
+      <span class="badge">Mental Health Platform</span>
+      <h1>You Are Not <span class="highlight">Alone.</span></h1>
+      <p>MindCare is a safe, anonymous platform where you can track
+        your mental health, connect with peer volunteers, and access
+        professional support &mdash; all in one place.</p>
+      <div class="hero-buttons">
+        <a href="{{url_for('auth.login')}}" class="btn-solid">Get Started &rarr;</a>
+      </div>
+    </div>
 
-        <div class="nav-buttons">
-            <a href="{{ url_for('auth.login') }}" class="btn-solid">
-                Login / Sign Up
-            </a>
-        </div>
-    </nav>
+    <div class="hero-image">
+      <div class="phone-mockup">
+        <div class="phone-icon">&#9825;</div>
+        <p class="phone-title">Your mental wellness journey<br>starts here</p>
+        <div class="emoji-row">&#128522; &#128512; &#128519;</div>
+        <div class="phone-badge">100% Anonymous &amp;<br>Confidential</div>
+      </div>
+    </div>
+  </section>
 
-    <section class="hero">
-        <div class="hero-text">
-            <span class="badge">MENTAL HEALTH PLATFORM</span>
+  <section class="offer">
+    <h2>What We Offer</h2>
+    <p class="subtitle">Everything you need for your mental wellness journey</p>
 
-            <h1>You Are Not <span class="highlight">Alone.</span></h1>
+    <div class="offer-cards">
+      <div class="card">
+        <h3>Anonymous Support</h3>
+        <p>Share your thoughts safely. Your identity is always protected in our community.</p>
+      </div>
+      <div class="card">
+        <h3>Peer Volunteers</h3>
+        <p>Connect with volunteers available to listen and support you.</p>
+      </div>
+      <div class="card">
+        <h3>Mood Tracking</h3>
+        <p>Track your emotional journey over time with our intuitive mood tools.</p>
+      </div>
+      <div class="card">
+        <h3>Mental Health Resources</h3>
+        <p>Access articles, videos, and audio guides curated by mental health professionals.</p>
+      </div>
+    </div>
+  </section>
 
-            <p>
-                MindCare is a safe, anonymous platform where you can track
-                your mental health, connect with peer volunteers, and access
-                professional support — all in one place.
-            </p>
+  <section class="about">
+    <div class="about-text">
+      <h2>About MindCare</h2>
+      <p>MindCare was created to bridge the gap in mental health support.
+         We believe everyone deserves access to compassionate, anonymous
+         help &mdash; regardless of their background or situation.</p>
+      <p>Our platform connects users with peer volunteers, provides mood
+         tracking tools.</p>
+    </div>
 
-            <div class="hero-buttons">
-                <a href="{{ url_for('auth.login') }}" class="btn-solid">
-                    Get Started &rarr;
-                </a>
-            </div>
-        </div>
+    <div class="stats-grid">
+      <div class="stat-box"><span>Active Users</span></div>
+      <div class="stat-box"><span>Peer Volunteers</span></div>
+      <div class="stat-box"><span>Resources</span></div>
+      <div class="stat-box"><span>Support</span></div>
+    </div>
+  </section>
 
-    <section class="offer" id="services">
-        <h2>Support for Your Well-Being</h2>
-        <p class="subtitle">
-            Explore simple ways to care for your mental health.
-        </p>
-
-        <div class="offer-cards">
-            <div class="card">
-                <div class="icon">&#9825;</div>
-                <h3>Anonymous Support</h3>
-                <p>
-                    Share your thoughts in a supportive community
-                    while protecting your identity.
-                </p>
-            </div>
-
-            <div class="card">
-                <div class="icon">&#128101;</div>
-                <h3>Peer Volunteers</h3>
-                <p>
-                    Connect with peer volunteers who can listen
-                    and offer supportive conversation.
-                </p>
-            </div>
-
-            <div class="card">
-                <div class="icon">&#128202;</div>
-                <h3>Mood Tracking</h3>
-                <p>
-                    Record your moods and reflect on your
-                    emotional well-being over time.
-                </p>
-            </div>
-
-            <div class="card">
-                <div class="icon">&#128218;</div>
-                <h3>Mental Health Resources</h3>
-                <p>
-                    Explore helpful information and resources
-                    related to mental health and self-care.
-                </p>
-            </div>
-        </div>
-    </section>
-    <section class="about" id="about">
-        <div class="about-text">
-            <span class="section-label">ABOUT US</span>
-            <h2>A little support can make a difference.</h2>
-
-            <p>
-                MindCare was created to help make mental health support
-                more approachable and accessible.
-            </p>
-
-            <p>
-                Through anonymous community support, mood tracking,
-                helpful resources, and connections to volunteers
-                and counselors, MindCare provides a space where
-                people can take steps toward their well-being.
-            </p>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-box">
-                <span>Community</span>
-                <h3>Connection</h3>
-            </div>
-
-            <div class="stat-box">
-                <span>Peer Support</span>
-                <h3>Listening</h3>
-            </div>
-
-            <div class="stat-box">
-                <span>Self-Reflection</span>
-                <h3>Awareness</h3>
-            </div>
-
-            <div class="stat-box">
-                <span>Mental Wellness</span>
-                <h3>Care</h3>
-            </div>
-        </div>
-    </section>
-
-    <section class="volunteer-cta" id="volunteer">
-        <span class="section-label">MAKE A DIFFERENCE</span>
-
-        <h2>Be there for someone.</h2>
-
-        <p>
-            Join our peer volunteer community and help create
-            a welcoming space where people feel heard and supported.
-        </p>
-
-        <a href="{{ url_for('auth.login') }}" class="btn-solid">
-            Join Our Community &rarr;
-        </a>
-    </section>
-
-    <footer class="footer">
-        <a href="#" class="footer-brand">MINDCARE</a>
-        <p>A space for understanding, connection, and well-being.</p>
-        <p class="copyright">&copy; 2026 MindCare. All rights reserved.</p>
-    </footer>
+  <section class="volunteer-cta">
+    <div class="cta-icon">&#9825;</div>
+    <h2>Become a Volunteer</h2>
+    <p>Help others on their mental health journey. Join our team of peer
+       volunteers and make a meaningful difference in someone's life.</p>
+    <a href="#" class="btn-solid">Apply to Volunteer</a>
+  </section>
 
 </body>
 </html>
